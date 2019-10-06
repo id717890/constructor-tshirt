@@ -1,0 +1,115 @@
+.menu-btn {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.vh100 {
+  height: 100vh;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.skewed {
+  // margin-top: 100px;
+  position: relative;
+  right: -45px;
+  // top: -11px;
+  // width: 49%;
+  height: 100vh;
+  -webkit-transform: skew(-2deg) rotate(2deg);
+  -moz-transform: skew(-2deg) rotate(2deg);
+  -ms-transform: skew(-2deg) rotate(2deg);
+  -o-transform: skew(-2deg) rotate(2deg);
+  transform: skew(-2deg) rotate(2deg);
+  overflow: hidden;
+  background-image: url(../public/img/background.jpg);
+  background-size: cover;
+  // background-position: ;
+}
+
+.skewed-responsive {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(../public/img/background.jpg);
+  background-size: cover;
+  // background-position: ;
+}
+
+.f1 {
+  // font: normal normal normal 75px/1.4em 'arial black', arial-w01-black, arial-w02-black, 'arial-w10 black', sans-serif;
+  color: #00D646;
+  letter-spacing: 0.4rem;
+}
+
+.f2 {
+  // font: normal normal normal 24px/1.4em 'open sans', sans-serif;
+  color: #d9f7d5;
+  letter-spacing: 0.18rem;
+}
+
+.v-image__image {
+  z-index: 2;
+}
+
+.top-menu {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.nav-link-wrapper {
+  font-weight: bolder;
+  padding: 15px;
+  margin-right: 30px;
+}
+
+.nav-link-wrapper.active {
+  border-bottom: 3px solid #0bceaf;
+}
+
+.nav-link-wrapper.active .nav-item-link {
+  color: #0bceaf !important;
+}
+
+.nav-item-link {
+  padding: 10px;
+  color: white !important;
+}
+
+.nav-item-link:hover {
+  color: #0bceaf !important;
+}
+
+.nav-item-link:active {
+  color: #0bceaf !important;
+}
+
+.top-menu {
+  z-index: 20;
+}
+
+.top-menu .v-toolbar__content {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.2rem;
+  background-color: #293247 !important;
+  height: auto !important;
+}
