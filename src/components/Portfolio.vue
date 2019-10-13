@@ -41,12 +41,20 @@ export default {
   data: () => ({
     products: [
       {
+        id: 17,
+        name: 'Меховые изделия',
+        tech: 'JavaScript (Vue)',
+        text: 'ИНТЕРНЕТ-МАГАЗИН МЕХОВЫХ ИЗДЕЛИЙ.',
+        site: 'http://dazzlingfurs.ru',
+        img: ['./img/products/20/201.jpg', './img/products/20/202.jpg']
+      },
+      {
         id: 1,
         name: 'Animal Flow',
         tech: 'PHP (Lumen) + MySQL + JS (Vue + Vuex) ',
         text: 'Web-сайт сертифицированного инструктора методики ANIMAL FLOW.',
         site: 'https://evgeniakabanova.com/',
-        img: ['./img/products/p19_3.jpg', './img/products/p19_1.jpg', './img/products/p19_2.jpg']
+        img: ['./img/products/19/191.jpg', './img/products/19/192.jpg']
       },
       {
         id: 2,

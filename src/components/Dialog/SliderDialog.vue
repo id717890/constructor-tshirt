@@ -5,7 +5,7 @@
         <h1 class="text-center mb-5">{{product.name}}</h1>
         <p class="font-weight-bold" v-if="product.tech !== null">{{product.tech}}</p>
         <p v-if="product.text !== null">{{product.text}}</p>
-        <code class="mb-5" v-if="product.site !== null"><a :href="product.site"></a>Перейти на сайт</code>
+        <code class="mb-5" v-if="product.site !== null"><a :href="product.site" target="_blank">Перейти на сайт</a></code>
         <v-carousel :show-arrows="true" :hide-delimiters="true" :cycle="true" :interval="66000" height="auto">
           <v-carousel-item v-for="(img, index) in product.img" :key="index">
             <v-img :src="img"></v-img>
