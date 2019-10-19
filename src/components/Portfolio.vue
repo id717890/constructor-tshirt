@@ -62,7 +62,7 @@ export default {
         tech: 'PHP (Lumen) + MySQL + JS (Vue + Vuex) ',
         text: 'Web-интерфейс для агрегирования и управления поддомена клстера РБТ',
         site: null,
-        img: ['./img/products/rbt1.jpg', './img/products/rbt2.jpg']
+        img: ['./img/products/18/181.jpg', './img/products/182.jpg']
       },
       {
         id: 15,
@@ -78,7 +78,7 @@ export default {
         name: 'CRM транспортные перевозки',
         text: 'Доработка раздела контрагенты, доавление возмжности загрузки изображений логотипов, подписей рукводителй, факсимиле, для дальнейшего вывода в отчетности. Реализация отчетов договор-поручение, договор-заявка, счет.',
         site: null,
-        img: ['./img/products/s17-1.jpg', './img/products/s17-2.jpg']
+        img: ['./img/products/17/171.jpg', './img/products/17/172.jpg']
       },
       {
         id: 4,
@@ -86,7 +86,7 @@ export default {
         name: 'Программа лояльности "HOLIKA"',
         text: 'Верстка личного кабинет по PSD шаблону, реализация взаимодействия ЛК с WebAPI программы лояльности, авторизация через JSON WEB TOKEN.',
         site: 'http://kbeautyclub.ru/',
-        img: ['./img/products/s15-1.jpg', './img/products/s15-2.jpg', './img/products/s15-3.jpg', './img/products/s15-4.jpg']
+        img: ['./img/products/15/151.jpg', './img/products/15/152.jpg', './img/products/15/153.jpg', './img/products/15/154.jpg']
       },
       {
         id: 5,
