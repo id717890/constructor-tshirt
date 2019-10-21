@@ -5,13 +5,13 @@
 </head>
 <body>
 <div>
-    Новое уведомление с <a href="{{getenv('WEB_SITE')}}" target="_blank">сайта</a>.
+    Новое уведомление с <a href="{{getenv('WEB_SITE')}}" target="_blank">сайта визитки</a>.
     <br>
     {{ $text }}
     <br>
-    Имя: {{ $name }}
+    Запрошенный объект:
     <br>
-    Телефон: {{ $phone }}
+    {!! $result  !!}
 </div>
 </body>
 </html>

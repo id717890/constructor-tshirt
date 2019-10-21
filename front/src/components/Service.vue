@@ -8,10 +8,10 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="text-center">
-        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-if="language === 'en'">
+        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-if="language === 'en'" @click="showCallDialog">
           <v-icon class="mr-5">fab fa-telegram-plane</v-icon> Send Request
         </v-btn>
-        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-else>
+        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-else @click="showCallDialog">
           <v-icon class="mr-5">fab fa-telegram-plane</v-icon>Отправить запрос
         </v-btn>
       </v-col>
@@ -152,10 +152,10 @@
     </v-row>
     <v-row class="mb-12 pb-4">
       <v-col cols="12" class="text-center">
-        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-if="language === 'en'">
+        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-if="language === 'en'" @click="showCallDialog">
           <v-icon class="mr-5">fab fa-telegram-plane</v-icon> Send Request
         </v-btn>
-        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-else>
+        <v-btn :disabled="status" x-large color="green darken-2" dark tile v-else @click="showCallDialog">
           <v-icon class="mr-5">fab fa-telegram-plane</v-icon>Отправить запрос
         </v-btn>
       </v-col>
@@ -164,6 +164,15 @@
 </template>
 
 <script>
+import CallDialog from './Dialog/CallDialog'
+const settings = {
+  height: 'auto',
+  maxWidth: 400,
+  adaptive: true,
+  transition: 'nice-modal-fade',
+  clickToClose: true
+}
+
 export default {
   props: ['language'],
   data: () => ({
@@ -261,6 +270,15 @@ export default {
         I can implement any part and than you could manage your news, products, 
         feedbacks or others part of your website. 
         But you should understand it will increase price of developing and time almost double.`
+      },
+      {
+        id: 7,
+        showDesc: false,
+        selected: false,
+        nameRu: 'Верстка макетов по PSD файлам',
+        nameEn: 'Create templates from scratch (Vue + HTML + CSS).',
+        shortDescRu: `Помогу сверстать пользовательскую часть по вашим макетам из PSD файлов. По итогу вы получите работающий прототип вашего Web-приложения с заглушками.`,
+        shortDescEn: `I will help to develop frontend part of your web application if you provide me PSD files. As a result you'll get completly work application with stubs.`
       }
     ],
     typeAdditonalServices: [
@@ -287,13 +305,37 @@ export default {
   methods: {
     selectJobType (id) {
       this.typeJobSelected === id ? this.typeJobSelected = null : this.typeJobSelected = id
+    },
+    showCallDialog (e) {
+      e.preventDefault()
+      let result = ''
+      if (this.typeJobSelected !== null) {
+        let findJob1 = this.typeJobs.find(x => x.id === this.typeJobSelected)
+        if (findJob1 !== null && findJob1 !== undefined && findJob1 !== 'undefined') {
+          result = 'Тип сайта: ' + findJob1.nameRu + '<br><br>'
+        }
+      }
+      let job2 = this.typeAdditonalJobs.filter(x => x.selected)
+      if (job2.length > 0) {
+        result += 'Доп. требования: <br>'
+        job2.forEach(x => {
+          result += x.nameRu + '<br>'
+        })
+      }
+      let job3 = this.typeAdditonalServices.filter(x => x.selected)
+      if (job3.length > 0) {
+        result += '<br>Доп. услуги: <br>'
+        job3.forEach(x => {
+          result += x.nameRu + '<br>'
+        })
+      }
+      this.$modal.show(CallDialog, { language: this.language, result: result }, settings)
     }
   },
   computed: {
     status () {
       let findJob1 = this.typeAdditonalJobs.filter(x => x.selected === true).length
       let findJob2 = this.typeAdditonalServices.filter(x => x.selected === true).length
-      console.log(this.selectJobType === null)
       return this.typeJobSelected === null && findJob1 === 0 && findJob2 === 0
     }
   }

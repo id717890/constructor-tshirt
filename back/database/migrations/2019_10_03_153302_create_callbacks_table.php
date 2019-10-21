@@ -15,9 +15,8 @@ class CreateCallbacksTable extends Migration
     {
         Schema::create('callbacks', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('name')->nullable(true)->default(null);
-            $table->text('phone')->nullable(false);
-            $table->boolean('is_coupon')->default(false);
+            $table->text('contact')->nullable(true)->default(null);
+            $table->text('result')->nullable(true)->default(null);
             $table->timestamps();
         });
     }

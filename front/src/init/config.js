@@ -1,6 +1,6 @@
 export default {
-  apiAddress: 'https://api.dazzlingfurs.ru',
-  // apiAddress: 'http://localhost/furs/back/public',
+  apiAddress: 'https://api.yusupovz.ru'
+  // apiAddress: 'http://localhost/resume/back/public',
   // webAddress: 'http://localhost:8080/'
-  webAddress: 'https://dazzlingfurs.ru'
+  // webAddress: 'https://dazzlingfurs.ru'
 }

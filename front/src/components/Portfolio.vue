@@ -62,7 +62,7 @@ export default {
         tech: 'PHP (Lumen) + MySQL + JS (Vue + Vuex) ',
         text: 'Web-интерфейс для агрегирования и управления поддомена клстера РБТ',
         site: null,
-        img: ['./img/products/18/181.jpg', './img/products/182.jpg']
+        img: ['./img/products/18/181.jpg', './img/products/18/182.jpg']
       },
       {
         id: 15,
