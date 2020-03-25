@@ -8,8 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [
     store => {
-      store.subscribeAction((action, state) => {
-      })
+      store.subscribeAction((action, state) => {})
     }
   ],
   modules: {

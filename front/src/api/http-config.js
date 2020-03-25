@@ -6,7 +6,7 @@ import config from '../init/config'
 
 const Axios = axios.create({
   baseURL: config.apiAddress,
-  // baseURL: 'http://localhost/enw/backend/public/',
+  //baseURL: 'http://localhost/enw/backend/public/',
   headers: {
     // Accept: 'application/json',
     // 'Content-Type': 'application/json',
@@ -14,25 +14,28 @@ const Axios = axios.create({
   }
 })
 
-Axios.interceptors.request.use((config) => {
+Axios.interceptors.request.use(config => {
   // config.headers.Authorization = 'Bearer ' + Vue.auth.getToken()
   return config
 })
 
-Axios.interceptors.response.use(response => {
-  // NProgress.done()
-  // store.dispatch('setLoading', false)
-  return response
-}, error => {
-  if (error.response !== null && error.response !== undefined) {
-    if (error.response.status === 403 || error.response.status === 401) {
-      // store.dispatch('logout')
-      // store.dispatch('redirectToSignIn')
+Axios.interceptors.response.use(
+  response => {
+    // NProgress.done()
+    // store.dispatch('setLoading', false)
+    return response
+  },
+  error => {
+    if (error.response !== null && error.response !== undefined) {
+      if (error.response.status === 403 || error.response.status === 401) {
+        // store.dispatch('logout')
+        // store.dispatch('redirectToSignIn')
+      }
     }
+    // NProgress.done()
+    // store.dispatch('setLoading', false)
+    return error
   }
-  // NProgress.done()
-  // store.dispatch('setLoading', false)
-  return error
-})
+)
 
 export default Axios

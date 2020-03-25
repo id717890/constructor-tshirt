@@ -1,20 +1,16 @@
 /* eslint-disable */
 import * as types from '../mutation-types'
 
-const state = {
-}
+const state = {}
 
 // actions
-const actions = {
-}
+const actions = {}
 
 // mutations
-const mutations = {
-}
+const mutations = {}
 
 // getters
-const getters = {
-}
+const getters = {}
 
 export default {
   state,

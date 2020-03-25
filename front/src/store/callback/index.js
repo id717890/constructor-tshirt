@@ -1,78 +1,89 @@
 import context from '../../api/callback'
 import * as types from '../mutation-types'
 
-const state = {
-}
+const state = {}
 
 // actions
 const actions = {
-  async createCallback ({ commit }, payload) {
+  async createCallback({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      context.createCallback(payload).then((x) => {
-        if (x.status === 200) {
-          resolve()
-        } else {
+      context
+        .createCallback(payload)
+        .then(x => {
+          if (x.status === 200) {
+            resolve()
+          } else {
+            console.log(x.response.data)
+            reject(x.response.data)
+          }
+        })
+        .catch(x => {
           console.log(x.response.data)
           reject(x.response.data)
-        }
-      }).catch(x => {
-        console.log(x.response.data)
-        reject(x.response.data)
-      })
+        })
     })
   },
-  async saveAdminFeedback ({ commit, dispatch }, payload) {
+  async saveAdminFeedback({ commit, dispatch }, payload) {
     // console.log(payload)
     dispatch('clearAllMessages')
     return new Promise((resolve, reject) => {
-      context.saveAdminFeedback(payload).then((x) => {
-        if (x.status === 200) {
-          commit(types.SAVE_ADMIN_FEEDBACK, payload)
-          resolve()
-        } else {
+      context
+        .saveAdminFeedback(payload)
+        .then(x => {
+          if (x.status === 200) {
+            commit(types.SAVE_ADMIN_FEEDBACK, payload)
+            resolve()
+          } else {
+            reject(x.response.data)
+            dispatch('setErrors', x.response.data)
+          }
+        })
+        .catch(x => {
           reject(x.response.data)
           dispatch('setErrors', x.response.data)
+        })
+    })
+  },
+  async getAdminFeedbacks({ commit, dispatch }) {
+    dispatch('clearAllMessages')
+    context
+      .getAdminFeedbacks()
+      .then(x => {
+        if (x.status === 200) {
+          commit(types.RECIEVE_ADMIN_FEEDBACKS, x.data)
+        } else {
+          dispatch('setErrors', x.response.data)
         }
-      }).catch(x => {
-        reject(x.response.data)
+      })
+      .catch(x => {
         dispatch('setErrors', x.response.data)
       })
-    })
   },
-  async getAdminFeedbacks ({ commit, dispatch }) {
-    dispatch('clearAllMessages')
-    context.getAdminFeedbacks().then((x) => {
-      if (x.status === 200) {
-        commit(types.RECIEVE_ADMIN_FEEDBACKS, x.data)
-      } else {
+  async getUserFeedbacks({ commit, dispatch }) {
+    context
+      .getUserFeedbacks()
+      .then(x => {
+        if (x.status === 200) {
+          commit(types.RECIEVE_USER_FEEDBACKS, x.data)
+        } else {
+          dispatch('setErrors', x.response.data)
+        }
+      })
+      .catch(x => {
         dispatch('setErrors', x.response.data)
-      }
-    }).catch(x => {
-      dispatch('setErrors', x.response.data)
-    })
-  },
-  async getUserFeedbacks ({ commit, dispatch }) {
-    context.getUserFeedbacks().then((x) => {
-      if (x.status === 200) {
-        commit(types.RECIEVE_USER_FEEDBACKS, x.data)
-      } else {
-        dispatch('setErrors', x.response.data)
-      }
-    }).catch(x => {
-      dispatch('setErrors', x.response.data)
-    })
+      })
   }
 }
 
 // mutations
 const mutations = {
-  [types.RECIEVE_ADMIN_FEEDBACKS] (state, payload) {
+  [types.RECIEVE_ADMIN_FEEDBACKS](state, payload) {
     state.feedbacksOfAdmin = payload
   },
-  [types.RECIEVE_USER_FEEDBACKS] (state, payload) {
+  [types.RECIEVE_USER_FEEDBACKS](state, payload) {
     state.feedbacksOfUser = payload
   },
-  [types.SAVE_ADMIN_FEEDBACK] (state, payload) {
+  [types.SAVE_ADMIN_FEEDBACK](state, payload) {
     let find = state.feedbacksOfAdmin.find(x => x.id === payload.id)
     if (find !== null && find !== undefined && find !== 'undefined') {
       find.is_show = payload.is_show === false ? 0 : 1
@@ -83,8 +94,7 @@ const mutations = {
 }
 
 // getters
-const getters = {
-}
+const getters = {}
 
 export default {
   state,

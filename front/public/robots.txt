@@ -1,2 +1,19 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://zamiryusupov.com/sitemap.xml
+Sitemap: hhttps://zamiryusupov.com/images_sitemap.xml
+
+User-agent: Yandex
+Allow: /
+Disallow: /*js
+Disallow: /css/
+
+Sitemap: https://zamiryusupov.com/sitemap.xml
+Sitemap: hhttps://zamiryusupov.com/images_sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://zamiryusupov.com/sitemap.xml
+Sitemap: hhttps://zamiryusupov.com/images_sitemap.xmll

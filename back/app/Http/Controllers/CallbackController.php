@@ -16,7 +16,7 @@ class CallbackController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'contact' => 'required|max:50',
+                'contact' => 'required|max:100',
                 'result' => 'required',
             ]);
 //        return response()->json(Input::all(), 200);

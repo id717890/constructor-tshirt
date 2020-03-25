@@ -1,22 +1,96 @@
 <template>
   <v-app id="inspire" ref="home">
-    <v-toolbar tile dense max-height="70" class="main-bg hidden-sm-and-down main-bg elevation-0 top-menu" dark>
+    <v-toolbar
+      tile
+      dense
+      max-height="70"
+      class="main-bg hidden-sm-and-down main-bg elevation-0 top-menu"
+      dark
+    >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <!-- <v-toolbar-title>Title</v-toolbar-title> -->
       <!-- <div class="flex-grow-1"></div> -->
       <v-toolbar-items v-if="language === 'en'">
-        <div class="nav-link-wrapper" :class="active === 'home' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'home')">Home</a></div>
-        <div class="nav-link-wrapper" :class="active === 'about' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'about')">About</a></div>
-        <div class="nav-link-wrapper" :class="active === 'products' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'products')">Portfolio</a></div>
-        <div class="nav-link-wrapper" :class="active === 'services' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'services')">Services</a></div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'home' ? 'active' : ''"
+        >
+          <a href="#" class="nav-item-link" @click="scrollTo($event, 'home')"
+            >Home</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'about' ? 'active' : ''"
+        >
+          <a href="#" class="nav-item-link" @click="scrollTo($event, 'about')"
+            >About</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'products' ? 'active' : ''"
+        >
+          <a
+            href="#"
+            class="nav-item-link"
+            @click="scrollTo($event, 'products')"
+            >Portfolio</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'services' ? 'active' : ''"
+        >
+          <a
+            href="#"
+            class="nav-item-link"
+            @click="scrollTo($event, 'services')"
+            >Services</a
+          >
+        </div>
         <v-btn text @click="language = 'ru'" v-if="language === 'en'">RU</v-btn>
         <v-btn text @click="language = 'en'" v-if="language === 'ru'">EN</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="language === 'ru'">
-        <div class="nav-link-wrapper" :class="active === 'home' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'home')">Главная</a></div>
-        <div class="nav-link-wrapper" :class="active === 'about' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'about')">Обо мне</a></div>
-        <div class="nav-link-wrapper" :class="active === 'products' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'products')">Портфолио</a></div>
-        <div class="nav-link-wrapper" :class="active === 'services' ? 'active' : ''"><a href="#" class="nav-item-link" @click="scrollTo($event, 'services')">Услуги</a></div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'home' ? 'active' : ''"
+        >
+          <a href="#" class="nav-item-link" @click="scrollTo($event, 'home')"
+            >Главная</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'about' ? 'active' : ''"
+        >
+          <a href="#" class="nav-item-link" @click="scrollTo($event, 'about')"
+            >Обо мне</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'products' ? 'active' : ''"
+        >
+          <a
+            href="#"
+            class="nav-item-link"
+            @click="scrollTo($event, 'products')"
+            >Портфолио</a
+          >
+        </div>
+        <div
+          class="nav-link-wrapper"
+          :class="active === 'services' ? 'active' : ''"
+        >
+          <a
+            href="#"
+            class="nav-item-link"
+            @click="scrollTo($event, 'services')"
+            >Услуги</a
+          >
+        </div>
         <v-btn text @click="language = 'ru'" v-if="language === 'en'">RU</v-btn>
         <v-btn text @click="language = 'en'" v-if="language === 'ru'">EN</v-btn>
       </v-toolbar-items>
@@ -33,15 +107,24 @@
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn> -->
     </v-toolbar>
-    <modals-container/>
-    <v-navigation-drawer v-model="drawer" app dark clipped temporary class="main-bg">
+    <modals-container />
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      dark
+      clipped
+      temporary
+      class="main-bg"
+    >
       <v-list-item @click="scrollTo($event, 'home')">
         <v-list-item-action>
           <i class="fa fa-home"></i>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title v-if="language === 'en'">Home</v-list-item-title>
-          <v-list-item-title v-if="language === 'ru'">Главная</v-list-item-title>
+          <v-list-item-title v-if="language === 'ru'"
+            >Главная</v-list-item-title
+          >
         </v-list-item-content>
       </v-list-item>
       <v-list dense>
@@ -50,8 +133,12 @@
             <i class="fa fa-tag"></i>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-if="language === 'en'">About</v-list-item-title>
-            <v-list-item-title v-if="language === 'ru'">Обо мне</v-list-item-title>
+            <v-list-item-title v-if="language === 'en'"
+              >About</v-list-item-title
+            >
+            <v-list-item-title v-if="language === 'ru'"
+              >Обо мне</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="scrollTo($event, 'products')">
@@ -59,8 +146,12 @@
             <i class="fa fa-tag"></i>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-if="language === 'en'">Portfolio</v-list-item-title>
-            <v-list-item-title v-if="language === 'ru'">Портфолио</v-list-item-title>
+            <v-list-item-title v-if="language === 'en'"
+              >Portfolio</v-list-item-title
+            >
+            <v-list-item-title v-if="language === 'ru'"
+              >Портфолио</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="scrollTo($event, 'services')">
@@ -68,8 +159,12 @@
             <i class="fa fa-tag"></i>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-if="language === 'en'">Services</v-list-item-title>
-            <v-list-item-title v-if="language === 'ru'">Услуги</v-list-item-title>
+            <v-list-item-title v-if="language === 'en'"
+              >Services</v-list-item-title
+            >
+            <v-list-item-title v-if="language === 'ru'"
+              >Услуги</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="changeLanguage('ru')" v-if="language === 'en'">
@@ -90,14 +185,21 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-btn class="menu-btn hidden-md-and-up" small text dark fab @click="showMenu">
+    <v-btn
+      class="menu-btn hidden-md-and-up"
+      small
+      text
+      dark
+      fab
+      @click="showMenu"
+    >
       <i class="fa fa-align-justify"></i>
     </v-btn>
-    <home :language="language"/>
-    <about ref="about" :language="language"/>
-    <skills ref="skills" :language="language"/>
-    <products :language="language" ref="products"/>
-    <services :language="language" ref="services"/>
+    <home :language="language" />
+    <about ref="about" :language="language" />
+    <skills ref="skills" :language="language" />
+    <products :language="language" ref="products" />
+    <services :language="language" ref="services" />
     <!-- <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
         <v-list-item @click="test">
@@ -157,19 +259,31 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="3" class="text-center">
-            <span class="font-weight-bold">Skype:&nbsp;</span><span style="color: #adc42c">jz_user</span>
+            <span class="font-weight-bold">Skype:&nbsp;</span
+            ><span style="color: #adc42c">jz_user</span>
           </v-col>
           <v-col cols="12" md="3" class="text-center">
-            <span class="font-weight-bold">E-mail:&nbsp;</span><span style="color: #adc42c">jusupovz@gmail.com</span>
+            <span class="font-weight-bold">E-mail:&nbsp;</span
+            ><span style="color: #adc42c">jusupovz@gmail.com</span>
           </v-col>
           <v-col cols="12" md="3" class="text-center">
-            <span class="font-weight-bold">Phone:&nbsp;</span><span style="color: #adc42c">
-              <a style="color: #adc42c" href="tel:+79527247500">+7 (952) 724 7500</a>
+            <span class="font-weight-bold">Phone:&nbsp;</span
+            ><span style="color: #adc42c">
+              <a style="color: #adc42c" href="tel:+79527247500"
+                >+7 (952) 724 7500</a
+              >
             </span>
           </v-col>
           <v-col cols="12" md="3" class="text-center">
             <span>All rights reserved &copy; 2019</span>
-            <v-btn fab outlined color="white" small  class="ml-5 " @click="scrollTo($event, 'home')">
+            <v-btn
+              fab
+              outlined
+              color="white"
+              small
+              class="ml-5 "
+              @click="scrollTo($event, 'home')"
+            >
               <i class="fa fa-chevron-up"></i>
             </v-btn>
           </v-col>
@@ -188,11 +302,11 @@ import Services from './components/Service'
 
 export default {
   components: {
-    'home': Home,
-    'about': About,
-    'skills': Skills,
-    'products': Products,
-    'services': Services
+    home: Home,
+    about: About,
+    skills: Skills,
+    products: Products,
+    services: Services
   },
   props: {
     source: String
@@ -202,26 +316,25 @@ export default {
     active: 'home',
     language: 'en'
   }),
-  computed: {
-  },
-  created () {
+  computed: {},
+  created() {
     // window.addEventListener('scroll', this.scroll)
   },
-  destroyed () {
+  destroyed() {
     // window.removeEventListener('scroll', this.scroll)
   },
   methods: {
-    changeLanguage (language) {
+    changeLanguage(language) {
       this.language = language
       this.drawer = false
     },
-    scroll (e) {
+    scroll(e) {
       console.log(window.scrollY)
     },
-    showMenu () {
+    showMenu() {
       this.drawer = !this.drawer
     },
-    scrollTo (e, elementName) {
+    scrollTo(e, elementName) {
       this.active = elementName
       e.preventDefault()
       let element = this.$refs[elementName].$el
