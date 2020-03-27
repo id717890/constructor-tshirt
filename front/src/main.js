@@ -11,6 +11,10 @@ import VueAnalytics from 'vue-analytics'
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
 
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+AOS.init()
+
 Vue.config.productionTip = false
 Vue.use(VueJsModal, { dynamic: true })
 

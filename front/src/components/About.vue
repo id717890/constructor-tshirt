@@ -24,32 +24,168 @@
             технологиями:
           </p>
           <p>
-            <v-chip color="red accent-4" outlined class="ma-2"
+            <v-chip
+              color="red accent-4"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-up"
+              data-aos-delay="50"
+              data-aos-duration="700"
               >ASP.NET MVC</v-chip
             >
-            <v-chip color="success" outlined class="ma-2">.NET Core</v-chip>
-            <v-chip color="yellow" outlined class="ma-2"
+            <v-chip
+              color="success"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in"
+              data-aos-delay="150"
+              data-aos-duration="700"
+              >.NET Core</v-chip
+            >
+            <v-chip
+              color="yellow"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-left"
+              data-aos-delay="100"
+              data-aos-duration="600"
               >ASP.NET Web Api</v-chip
             >
-            <v-chip color="purple" outlined class="ma-2"
+            <v-chip
+              color="purple"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-down"
+              data-aos-delay="350"
+              data-aos-duration="700"
               >Laravel Framework</v-chip
             >
-            <v-chip color="pink" outlined class="ma-2">Lumen Framework</v-chip>
-            <v-chip color="green darken-3" outlined class="ma-2">Vue</v-chip>
-            <v-chip color="primary" outlined class="ma-2">Vuex</v-chip>
-            <v-chip color="indigo" outlined class="ma-2"
+            <v-chip
+              color="pink"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in"
+              data-aos-delay="50"
+              data-aos-duration="500"
+              >Lumen Framework</v-chip
+            >
+            <v-chip
+              color="green darken-3"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-up"
+              data-aos-delay="450"
+              data-aos-duration="500"
+              >Vue</v-chip
+            >
+            <v-chip
+              color="primary"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-right"
+              data-aos-delay="110"
+              data-aos-duration="700"
+              >Vuex</v-chip
+            >
+            <v-chip
+              color="indigo"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in"
+              data-aos-delay="50"
+              data-aos-duration="600"
               >ORM Entity Framework</v-chip
             >
-            <v-chip color="cyan" outlined class="ma-2">ORM NHibernate</v-chip>
-            <v-chip color="success" outlined class="ma-2">ORM Eloquent</v-chip>
-            <v-chip color="error" outlined class="ma-2">DB MS SQL</v-chip>
-            <v-chip color="lime" outlined class="ma-2">DB MySQL</v-chip>
-            <v-chip color="orange" outlined class="ma-2">DB Oracle</v-chip>
-            <v-chip color="success" outlined class="ma-2">T-SQL, PL/SQL</v-chip>
-            <v-chip color="warning" outlined class="ma-2">GIT</v-chip>
-            <v-chip color="amber" outlined class="ma-2">SVN Tortoise</v-chip>
-            <v-chip color="deep-orange" outlined class="ma-2">CSS</v-chip>
-            <v-chip color="teal" outlined class="ma-2">HTML</v-chip>
+            <v-chip
+              color="cyan"
+              outlined
+              class="ma-2"
+              data-aos="zoom-out"
+              data-aos-delay="550"
+              data-aos-duration="700"
+              >ORM NHibernate</v-chip
+            >
+            <v-chip
+              color="success"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-left"
+              data-aos-delay="350"
+              data-aos-duration="700"
+              >ORM Eloquent</v-chip
+            >
+            <v-chip
+              color="error"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in"
+              data-aos-delay="550"
+              data-aos-duration="300"
+              >DB MS SQL</v-chip
+            >
+            <v-chip
+              color="lime"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in"
+              data-aos-delay="50"
+              data-aos-duration="700"
+              >DB MySQL</v-chip
+            >
+            <v-chip
+              color="orange"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-right"
+              data-aos-delay="350"
+              data-aos-duration="700"
+              >DB Oracle</v-chip
+            >
+            <v-chip
+              color="success"
+              outlined
+              class="ma-2"
+              data-aos="zoom-out-left"
+              data-aos-delay="350"
+              data-aos-duration="300"
+              >T-SQL, PL/SQL</v-chip
+            >
+            <v-chip
+              color="warning"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-up"
+              data-aos-delay="250"
+              data-aos-duration="700"
+              >GIT</v-chip
+            >
+            <v-chip
+              color="amber"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-up"
+              data-aos-delay="650"
+              data-aos-duration="700"
+              >SVN Tortoise</v-chip
+            >
+            <v-chip
+              color="deep-orange"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-down"
+              data-aos-delay="350"
+              data-aos-duration="300"
+              >CSS</v-chip
+            >
+            <v-chip
+              color="teal"
+              outlined
+              class="ma-2"
+              data-aos="zoom-in-right"
+              data-aos-delay="850"
+              data-aos-duration="700"
+              >HTML</v-chip
+            >
           </p>
         </section>
       </v-col>

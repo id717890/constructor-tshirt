@@ -15,8 +15,11 @@
         cols="12"
         md="4"
         class="pa-5"
-        v-for="product in products"
+        v-for="(product, index) in products"
         :key="product.id"
+        data-aos="zoom-in"
+        :data-aos-delay="index * 75"
+        data-aos-duration="500"
       >
         <figure @click="openDialog($event, product)">
           <img :src="product.img[0]" alt="img04" />
