@@ -15,20 +15,30 @@ class CallbackController extends Controller
     public function create(Request $request)
     {
         try {
-
-            $zakazTovar = Input::get('zakazTovar');
-            $zakazNanesenie = Input::get('zakazNanesenie');
-            $zakazNumberName = Input::get('zakazNumberName');
+            $zakazTovar = json_decode(Input::get('zakazTovar'), true);
+            $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
+            $zakazNanesenie = json_decode(Input::get('zakazNanesenie'), true);
+            $zakazNanesenieEach = json_decode(Input::get('zakazNanesenieEach'), true);
+            $images = $request->file('images');
             $subject = "Уведомление о заказе";
             $email = [];
 
+//            if (count($images) > 0) {
+//                foreach ($images as $file) {
+//
+//                    dd(base64_encode($file));
+//                }
+//            }
+//            dd(1);
             // if (!is_null(getenv('EMAIL1')) && getenv('EMAIL1') !== '') array_push($email, getenv('EMAIL1'));
             // if (!is_null(getenv('EMAIL2')) && getenv('EMAIL2') !== '') array_push($email, getenv('EMAIL2'));
-            array_push($email, 'jus_za@mail.ru');
+//            array_push($email, 'jus_za@mail.ru');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
             array_push($email, 'jusupovz@gmail.com');
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
-            // return response()->json($zakazTovar, 200);
+//            dd($zakazNanesenieEach);
+//             return response()->json(count($images), 200);
             //  return response()->json($zakazNanesenie, 200);
             //   return response()->json($zakazNumberName, 200);
             // return response()->json($email, 200);
@@ -37,15 +47,26 @@ class CallbackController extends Controller
             // return response()->json(getenv('EMAIL2'), 200);
             // return response()->json(getenv('FROM_EMAIL_ADDRESS'), 200);
             // return response()->json(getenv('FROM_SEO'), 200);
+
             Mail::send('email.callback', [
                 'zakazTovar' => $zakazTovar,
                 'zakazNanesenie' => $zakazNanesenie,
-                'zakazNumberName' => $zakazNumberName
+                'zakazNumberName' => $zakazNumberName,
+                'zakazNanesenieEach' => $zakazNanesenieEach
             ],
-                function ($mail) use ($email, $subject, $fr, $seo) {
+                function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);
                     $mail->to($email);
                     $mail->subject($subject);
+
+                    if (count($images) > 0) {
+                        foreach ($images as $file) {
+                            $mail->attach($file, array(
+                                    'as' => $file->getClientOriginalName(), // If you want you can chnage original name to custom name
+                                    'mime' => $file->getMimeType())
+                            );
+                        }
+                    }
                 });
 
             return response()->json(200);
