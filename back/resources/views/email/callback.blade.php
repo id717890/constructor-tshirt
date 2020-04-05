@@ -234,17 +234,25 @@
 </head>
 <body>
 <div>
+    <h1>Информация о заказе</h1>
+    <div style="font-size: 1.3rem">{!! $info !!}</div>
+    <br><br>
     <h1>Заказ товар</h1>
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered"
+            style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6"
+            >
         <thead>
         <tr>
-            <th>Наименование</th>
-            <th>Размер</th>
-            <th>Количество Москва</th>
-            <th>Количество Испания</th>
-            <th>Общее количество</th>
-            <th>Цена (руб.)</th>
-            <th>Сумма (руб.)</th>
+            <th style="border: 1px solid #dee2e6">Наименование</th>
+            <th style="border: 1px solid #dee2e6">Размер</th>
+            <th style="border: 1px solid #dee2e6">Количество Москва</th>
+            <th style="border: 1px solid #dee2e6">Количество Испания</th>
+            <th style="border: 1px solid #dee2e6">Общее количество</th>
+            <th style="border: 1px solid #dee2e6">Цена (руб.)</th>
+            <th style="border: 1px solid #dee2e6">Сумма (руб.)</th>
         </tr>
         </thead>
         <tbody>
@@ -252,30 +260,69 @@
         @foreach($zakazTovar as $row)
             <?php $sum += $row['sum']; ?>
             <tr>
-                <td>{{$row['name']}}</td>
-                <td>{{$row['size']}}</td>
-                <td>{{$row['countMoscow']}}</td>
-                <td>{{$row['countSpain']}}</td>
-                <td>{{$row['count']}}</td>
-                <td>{{$row['price']}}</td>
-                <td>{{$row['sum']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['size']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['countMoscow']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['countSpain']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['count']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['price']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['sum']}}</td>
             </tr>
         @endforeach
         <tr>
-            <td colspan="6">Итого:</td>
-            <td>{{$sum}}</td>
+            <td colspan="6" style="border: 1px solid #dee2e6">Итого:</td>
+            <td style="border: 1px solid #dee2e6">{{$sum}}</td>
         </tr>
         </tbody>
     </table>
 
-    <br />
+    @foreach($zakazNanesenieEach as $order)
+        @foreach(array_keys($order) as $ordersKey)
+            <br/>
+            <h1>Заказ нанесение {{$ordersKey}}</h1>
+            <table class="table table-hover table-bordered" style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid #dee2e6">Наименование</th>
+                    <th style="border: 1px solid #dee2e6">Количество</th>
+                    <th style="border: 1px solid #dee2e6">Цена (руб.)</th>
+                    <th style="border: 1px solid #dee2e6">Сумма (руб.)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $sum = 0; ?>
+                @foreach($order[$ordersKey] as $row)
+                    <?php $sum += $row['sum']; ?>
+                    <tr>
+                        <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
+                        <td style="border: 1px solid #dee2e6">{{$row['count']}}</td>
+                        <td style="border: 1px solid #dee2e6">{{$row['price']}}</td>
+                        <td style="border: 1px solid #dee2e6">{{$row['sum']}}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <td colspan="3" style="border: 1px solid #dee2e6">Итого:</td>
+                    <td style="border: 1px solid #dee2e6">{{$sum}}</td>
+                </tr>
+                </tbody>
+            </table>
+        @endforeach
+    @endforeach
+
+    <br/>
     <h1>Заказ нанесение ИТОГО</h1>
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered" style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6">
         <thead>
         <tr>
-            <th>Наименование</th>
-            <th>Количество</th>
-            <th>Сумма (руб.)</th>
+            <th style="border: 1px solid #dee2e6">Наименование</th>
+            <th style="border: 1px solid #dee2e6">Количество</th>
+            <th style="border: 1px solid #dee2e6">Сумма (руб.)</th>
         </tr>
         </thead>
         <tbody>
@@ -283,38 +330,46 @@
         @foreach($zakazNanesenie as $row)
             <?php $sum += $row['sum']; ?>
             <tr>
-                <td>{{$row['name']}}</td>
-                <td>{{$row['count']}}</td>
-                <td>{{$row['sum']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['count']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['sum']}}</td>
             </tr>
         @endforeach
         <tr>
-            <td colspan="2">Итого:</td>
-            <td>{{$sum}}</td>
+            <td colspan="2" style="border: 1px solid #dee2e6">Итого:</td>
+            <td style="border: 1px solid #dee2e6">{{$sum}}</td>
         </tr>
         </tbody>
     </table>
 
-    <br />
+    <br/>
+
     <h1>Размер-номер-фамилия</h1>
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered" style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6">
         <thead>
         <tr>
-            <th>Размер</th>
-            <th>Номер</th>
-            <th>Фамилия</th>
+            <th style="border: 1px solid #dee2e6">Размер</th>
+            <th style="border: 1px solid #dee2e6">Номер</th>
+            <th style="border: 1px solid #dee2e6">Фамилия</th>
         </tr>
         </thead>
         <tbody>
         @foreach($zakazNumberName as $row)
             <tr>
-                <td>{{$row['size']}}</td>
-                <td>{{$row['number']}}</td>
-                <td>{{$row['name']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['size']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['number']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
+
+    <br>
+    <br>
+    <br>
 </div>
 </body>
 </html>
