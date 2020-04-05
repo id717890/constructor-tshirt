@@ -234,6 +234,9 @@
 </head>
 <body>
 <div>
+    <h1>Информация о заказе</h1>
+    <div style="font-size: 1.3rem">{!! $info !!}</div>
+    <br><br>
     <h1>Заказ товар</h1>
     <table class="table table-hover table-bordered"
             style="width: 100%;
@@ -363,6 +366,10 @@
         @endforeach
         </tbody>
     </table>
+
+    <br>
+    <br>
+    <br>
 </div>
 </body>
 </html>
