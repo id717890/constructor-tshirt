@@ -6,7 +6,6 @@ import config from '../init/config'
 
 const Axios = axios.create({
   baseURL: config.apiAddress,
-  //baseURL: 'http://localhost/enw/backend/public/',
   headers: {
     // Accept: 'application/json',
     // 'Content-Type': 'application/json',
@@ -26,14 +25,14 @@ Axios.interceptors.response.use(
     return response
   },
   error => {
-    if (error.response !== null && error.response !== undefined) {
-      if (error.response.status === 403 || error.response.status === 401) {
-        // store.dispatch('logout')
-        // store.dispatch('redirectToSignIn')
-      }
-    }
-    // NProgress.done()
-    // store.dispatch('setLoading', false)
+    // if (error.response !== null && error.response !== undefined) {
+    //   if (error.response.status === 403 || error.response.status === 401) {
+    //     // store.dispatch('logout')
+    //     // store.dispatch('redirectToSignIn')
+    //   }
+    // }
+    // // NProgress.done()
+    // // store.dispatch('setLoading', false)
     return error
   }
 )

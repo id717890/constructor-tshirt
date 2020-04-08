@@ -15,4 +15,5 @@
 
 
 Route::post('callback/create', 'CallbackController@create');
-
+Route::get('image/{filename}','ImageController@image');
+Route::get('types','HomeController@types');
