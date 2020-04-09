@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <router-view />
-  </div>
-  <!-- <v-app id="app" dark>
+  <v-app id="app" dark>
     <v-row v-if="lTypes">
       <v-col cols="1" v-for="type in lTypes" :key="type.id">
         <v-img :src="api + '/' + type.imgFront"></v-img>
@@ -19,6 +16,7 @@
       <v-col cols="2">
         <v-btn @click="addLogo(1)">Add Logo 1</v-btn>
         <v-btn @click="addLogo(2)">Add Logo 2</v-btn>
+        <v-btn to="/lk">LK</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -49,13 +47,13 @@
         </canvas>
       </v-col>
     </v-row>
-  </v-app> -->
+  </v-app>
 </template>
 
 <script>
 const url = 'http://localhost/jomafull/back/public/'
-import api from './api/api'
-import Canvas from './Canvas'
+import api from '../api/api'
+import Canvas from '../Canvas'
 export default {
   components: {},
   props: {
@@ -87,7 +85,7 @@ export default {
       canvas.addImage(logoId, this.api + '/' + this.lLogos[id].img, function(
         img
       ) {
-        /*считаем коэффициент масштабирования scale,чтобы изображения  добавлялись на холст всегда с одинаковыми размерами (или по высоте, или по ширине)*/
+        /*считаем коэффициент масштабирования scale, чтобы изображения добавлялись на холст всегда с одинаковыми размерами (или по высоте, или по ширине) */
         if (img.width >= img.height) {
           var scale = 300 / 3 / img.width
         } else {
@@ -186,5 +184,5 @@ export default {
 }
 </script>
 <style lang="scss">
-@import './assets/scss/_app';
+@import '../assets/scss/_app';
 </style>

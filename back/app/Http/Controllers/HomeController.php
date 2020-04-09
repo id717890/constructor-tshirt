@@ -18,4 +18,13 @@ class HomeController extends Controller
         ];
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
+
+    public function logos () {
+        $result = [
+            ['id'=>1, 'name'=>'Logo №1', 'img'=>'futbolist.png'],
+            ['id'=>2, 'name'=>'Logo №2', 'img'=>'logo1x1.png'],
+            ['id'=>3, 'name'=>'Logo №3', 'img'=>'manchester_united_PNG23.png'],
+        ];
+        return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+    }
 }

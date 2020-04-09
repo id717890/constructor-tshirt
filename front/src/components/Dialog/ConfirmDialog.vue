@@ -2,21 +2,21 @@
   <div class="dialog-body-wrapper">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
-        Confirmation
+        Подтверждение
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="display-1 mt-5">
         {{ question }}
       </v-card-text>
 
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn flat @click="cancel">
-          Cancel
+        <v-btn text @click="cancel">
+          Отмена
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" flat @click="confirm">
+        <v-btn color="success" text @click="confirm">
           Ok
         </v-btn>
       </v-card-actions>
