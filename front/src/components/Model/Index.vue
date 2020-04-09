@@ -92,7 +92,7 @@ export default {
       if (this.confirmDialogResult === true) {
         this.resetConfirmDialogResult()
         this.deleteModel(this.removedItem)
-        this.removedNews = null
+        this.removedItem = null
       }
     }
   },

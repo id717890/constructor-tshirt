@@ -18,6 +18,11 @@ Route::post('callback/create', 'CallbackController@create');
 Route::get('image/{filename}','ImageController@image');
 Route::get('logos','HomeController@logos');
 
+Route::get('colors','ColorController@index');
+Route::post('colors','ColorController@create');
+Route::post('colors/delete/{id}','ColorController@delete');
+Route::post('colors/update/{id}', 'ColorController@update');
+
 Route::get('models','ModelController@index');
 Route::post('models','ModelController@create');
 Route::post('models/delete/{id}','ModelController@delete');

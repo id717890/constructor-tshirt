@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import callback from './callback'
 import type from './type'
 import model from './model'
+import color from './color'
 import dialog from './dialog'
 import loading from './loading'
 import image from './image'
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     callback,
     type,
     model,
+    color,
     dialog,
     loading,
     image

@@ -2,8 +2,8 @@
   <v-row>
     <v-col cols="12">
       <h2>
-        Типы футболок
-        <v-btn fab small to="/lk/type/create">
+        Цвета футболок
+        <v-btn fab small to="/lk/color/create">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </h2>
@@ -11,11 +11,17 @@
     <v-col cols="12">
       <v-data-table
         :headers="headers"
-        :items="types"
+        :items="tableItems"
         class="elevation-1"
         hide-default-footer
         hide
       >
+        <template v-slot:item.image_front="{ item }">
+          <v-img max-width="90" :src="img(item.image_front)"></v-img>
+        </template>
+        <template v-slot:item.image_back="{ item }">
+          <v-img max-width="90" :src="img(item.image_back)"></v-img>
+        </template>
         <template v-slot:item.act="{ item }">
           <v-btn
             fab
@@ -23,7 +29,7 @@
             small
             title="Редакитровать"
             color="primary"
-            :to="'/lk/type/' + item.id"
+            :to="'/lk/color/' + item.id"
           >
             <v-icon>mdi-pen</v-icon>
           </v-btn>
@@ -57,16 +63,30 @@ const settings = {
 }
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ConfirmDialogModal from '../Dialog/ConfirmDialog'
+import config from '../../init/config'
+
 export default {
   data: () => ({
     removedItem: null,
     headers: [
-      { text: 'Наименование', value: 'name' },
+      { text: 'Цвет', value: 'name' },
+      { text: 'Артикул', value: 'article' },
+      { text: 'Модель', value: 'model.name' },
+      {
+        text: 'Вид спереди',
+        value: 'image_front',
+        width: '150',
+        sortable: false
+      },
+      { text: 'Вид сзади', value: 'image_back', width: '150', sortable: false },
       { text: '', value: '', value: 'act', width: '120', sortable: false }
     ]
   }),
   methods: {
-    ...mapActions(['getAllTypes', 'resetConfirmDialogResult', 'deleteType']),
+    ...mapActions(['getAllColors', 'resetConfirmDialogResult', 'deleteColor']),
+    img(url) {
+      return config.apiAddress + 'api/image/' + url
+    },
     deleteItem(item) {
       this.removedItem = item
       this.$modal.show(
@@ -81,19 +101,19 @@ export default {
     confirmDelete() {
       if (this.confirmDialogResult === true) {
         this.resetConfirmDialogResult()
-        this.deleteType(this.removedItem)
+        this.deleteColor(this.removedItem)
         this.removedItem = null
       }
     }
   },
   computed: {
     ...mapState({
-      types: state => state.type.allTypes,
+      tableItems: state => state.color.allColors,
       confirmDialogResult: state => state.dialog.confirmDialogResult
     })
   },
   async mounted() {
-    await this.getAllTypes()
+    await this.getAllColors()
   }
 }
 </script>

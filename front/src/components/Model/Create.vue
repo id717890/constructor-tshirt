@@ -129,7 +129,7 @@ export default {
     },
     save() {
       this.setLoad(true)
-      if (this.$refs.form.validate() && this.preview) {
+      if (this.$refs.form.validate() && this.preview && this.form.type) {
         this.createModel({
           name: this.form.name,
           description: this.form.description,

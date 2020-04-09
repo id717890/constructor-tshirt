@@ -1,3 +1,6 @@
+/* COLOR */
+export const GET_ALL_COLORS = 'GET_ALL_COLORS'
+
 /* MODEL */
 export const GET_ALL_MODELS = 'GET_ALL_MODELS'
 

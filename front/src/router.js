@@ -22,6 +22,19 @@ export default new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'colors',
+          component: () => import('./components/Color/Index.vue')
+        },
+        {
+          path: 'color/create',
+          component: () => import('./components/Color/Create.vue')
+        },
+        {
+          path: 'color/:id',
+          props: true,
+          component: () => import('./components/Color/Edit.vue')
+        },
+        {
           path: 'models',
           component: () => import('./components/Model/Index.vue')
         },
