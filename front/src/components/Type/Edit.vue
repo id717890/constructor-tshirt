@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <h1>Новый тип футболки</h1>
+          <h1>Редактирование типа футболки</h1>
         </v-col>
       </v-row>
       <v-row>

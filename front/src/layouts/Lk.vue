@@ -21,7 +21,7 @@
         </v-list-item>
         <v-list-item link to="/lk/models">
           <v-list-item-action>
-            <v-icon>mdi-check</v-icon>
+            <v-icon>mdi-tshirt-crew</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Модели</v-list-item-title>

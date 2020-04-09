@@ -18,7 +18,14 @@ Route::post('callback/create', 'CallbackController@create');
 Route::get('image/{filename}','ImageController@image');
 Route::get('logos','HomeController@logos');
 
+Route::get('models','ModelController@index');
+Route::post('models','ModelController@create');
+Route::post('models/delete/{id}','ModelController@delete');
+Route::post('models/update/{id}', 'ModelController@update');
+
 Route::get('types','TypeController@index');
 Route::post('types','TypeController@create');
 Route::post('types/delete/{id}','TypeController@delete');
 Route::post('types/update/{id}', 'TypeController@update');
+
+Route::post('imagesUpload', 'ImageController@upload');

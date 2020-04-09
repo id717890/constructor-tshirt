@@ -1,3 +1,6 @@
+/* MODEL */
+export const GET_ALL_MODELS = 'GET_ALL_MODELS'
+
 /* TYPE */
 export const GET_ALL_TYPES = 'GET_ALL_TYPES'
 

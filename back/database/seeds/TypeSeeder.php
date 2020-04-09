@@ -14,11 +14,13 @@ class TypeSeeder extends Seeder
         DB::table('types')->delete();
 
         DB::table('types')->insert([
+            'id'=>1,
             'name' => 'Футбол',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
         DB::table('types')->insert([
+            'id'=>2,
             'name' => 'Волейбол',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')

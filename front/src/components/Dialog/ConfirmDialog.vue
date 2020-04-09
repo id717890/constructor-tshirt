@@ -1,11 +1,11 @@
 <template>
   <div class="dialog-body-wrapper">
     <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
+      <!-- <v-card-title class="headline grey lighten-2" primary-title>
         Подтверждение
-      </v-card-title>
+      </v-card-title> -->
 
-      <v-card-text class="display-1 mt-5">
+      <v-card-text class="display-1">
         {{ question }}
       </v-card-text>
 
@@ -13,10 +13,12 @@
 
       <v-card-actions>
         <v-btn text @click="cancel">
+          <v-icon>mdi-close</v-icon>
           Отмена
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn color="success" text @click="confirm">
+          <v-icon>mdi-check</v-icon>
           Ok
         </v-btn>
       </v-card-actions>

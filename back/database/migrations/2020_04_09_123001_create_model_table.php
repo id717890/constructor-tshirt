@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTypesTable extends Migration
+class CreateModelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('types', function (Blueprint $table) {
+        Schema::create('models', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable(false);
+            $table->text('description')->nullable(false);
+            $table->string('image')->nullable(false);
+            $table->integer('type_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
         });
     }
 
@@ -28,6 +33,6 @@ class CreateTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('types');
+        Schema::dropIfExists('models');
     }
 }
