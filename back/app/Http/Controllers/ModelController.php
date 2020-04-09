@@ -21,8 +21,8 @@ class ModelController extends Controller
             $description = Input::get('description');
             $type = Input::get('type_id');
             $image = Input::get('image');
-            $model = ModelT::create(['name' => $name, 'description' => $description, 'type_id' => $type, 'image'=>$image]);
-            return response()->json($model, 200, JSON_UNESCAPED_UNICODE);
+            $model = ModelT::create(['name' => $name, 'description' => $description, 'type_id' => $type, 'image' => $image]);
+            return response()->json($model, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
         }
@@ -42,7 +42,7 @@ class ModelController extends Controller
             $find->type_id = $type;
             $find->image = $image;
             $find->save();
-            return response()->json(['success' => true], 200, JSON_UNESCAPED_UNICODE);
+            return response()->json(['success' => true], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
         }

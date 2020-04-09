@@ -102,21 +102,21 @@ export default {
     preview: null
   }),
   beforeMount() {
-    if (this.model) {
-      this.form.name = this.model.name
-      this.form.description = this.model.description
-      this.form.type = this.model.type
-      this.preview = this.model.image
-    } else {
-      setTimeout(() => {
-        if (this.model) {
-          this.form.name = this.model.name
-          this.form.description = this.model.description
-          this.form.type = this.model.type
-          this.preview = this.model.image
-        }
-      }, 1800)
-    }
+    // if (this.model) {
+    //   this.form.name = this.model.name
+    //   this.form.description = this.model.description
+    //   this.form.type = this.model.type
+    //   this.preview = this.model.image
+    // } else {
+    //   setTimeout(() => {
+    //     if (this.model) {
+    //       this.form.name = this.model.name
+    //       this.form.description = this.model.description
+    //       this.form.type = this.model.type
+    //       this.preview = this.model.image
+    //     }
+    //   }, 1800)
+    // }
   },
   created() {},
   async mounted() {
@@ -125,6 +125,12 @@ export default {
     this.setLoad(false)
     setTimeout(() => {
       this.form.type = this.types[0]
+      if (this.model) {
+        this.form.name = this.model.name
+        this.form.description = this.model.description
+        this.form.type = this.model.type
+        this.preview = this.model.image
+      }
     }, 800)
   },
   computed: {
