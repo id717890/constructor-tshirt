@@ -22,6 +22,32 @@ export default new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'logo_sizes',
+          component: () => import('./components/LogoSize/Index.vue')
+        },
+        {
+          path: 'logo_size/create',
+          component: () => import('./components/LogoSize/Create.vue')
+        },
+        {
+          path: 'logo_size/:id',
+          props: true,
+          component: () => import('./components/LogoSize/Edit.vue')
+        },
+        {
+          path: 'logo_types',
+          component: () => import('./components/LogoType/Index.vue')
+        },
+        {
+          path: 'logo_type/create',
+          component: () => import('./components/LogoType/Create.vue')
+        },
+        {
+          path: 'logo_type/:id',
+          props: true,
+          component: () => import('./components/LogoType/Edit.vue')
+        },
+        {
           path: 'logos',
           component: () => import('./components/Logo/Index.vue')
         },

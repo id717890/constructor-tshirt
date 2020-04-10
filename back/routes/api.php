@@ -18,6 +18,16 @@ Route::post('callback/create', 'CallbackController@create');
 Route::get('image/{filename}','ImageController@image');
 Route::get('logos','HomeController@logos');
 
+Route::get('logo_sizes','LogoSizeController@index');
+Route::post('logo_sizes','LogoSizeController@create');
+Route::post('logo_sizes/delete/{id}','LogoSizeController@delete');
+Route::post('logo_sizes/update/{id}', 'LogoSizeController@update');
+
+Route::get('logo_types','LogoTypeController@index');
+Route::post('logo_types','LogoTypeController@create');
+Route::post('logo_types/delete/{id}','LogoTypeController@delete');
+Route::post('logo_types/update/{id}', 'LogoTypeController@update');
+
 Route::get('logos','LogoController@index');
 Route::post('logos','LogoController@create');
 Route::post('logos/delete/{id}','LogoController@delete');

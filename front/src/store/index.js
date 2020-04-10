@@ -9,6 +9,8 @@ import dialog from './dialog'
 import loading from './loading'
 import image from './image'
 import logo from './logo'
+import logoSize from './logoSize'
+import logoType from './logoType'
 
 Vue.use(Vuex)
 
@@ -26,6 +28,8 @@ export default new Vuex.Store({
     dialog,
     loading,
     image,
-    logo
+    logo,
+    logoSize,
+    logoType
   }
 })

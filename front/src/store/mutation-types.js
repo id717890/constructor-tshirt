@@ -1,5 +1,7 @@
 /* LOGO */
 export const GET_ALL_LOGOS = 'GET_ALL_LOGOS'
+export const GET_ALL_LOGO_SIZES = 'GET_ALL_LOGO_SIZES'
+export const GET_ALL_LOGO_TYPES = 'GET_ALL_LOGO_TYPES'
 
 /* COLOR */
 export const GET_ALL_COLORS = 'GET_ALL_COLORS'

@@ -44,6 +44,22 @@
             <v-list-item-title>Логотипы</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/logo_sizes">
+          <v-list-item-action>
+            <v-icon>mdi-drawing</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Лого - размеры</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/lk/logo_types">
+          <v-list-item-action>
+            <v-icon>mdi-drawing</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Лого - типы</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
