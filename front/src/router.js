@@ -22,6 +22,19 @@ export default new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'logos',
+          component: () => import('./components/Logo/Index.vue')
+        },
+        {
+          path: 'logo/create',
+          component: () => import('./components/Logo/Create.vue')
+        },
+        {
+          path: 'logo/:id',
+          props: true,
+          component: () => import('./components/Logo/Edit.vue')
+        },
+        {
           path: 'colors',
           component: () => import('./components/Color/Index.vue')
         },

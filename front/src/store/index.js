@@ -8,6 +8,7 @@ import color from './color'
 import dialog from './dialog'
 import loading from './loading'
 import image from './image'
+import logo from './logo'
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     color,
     dialog,
     loading,
-    image
+    image,
+    logo
   }
 })

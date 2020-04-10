@@ -1,3 +1,6 @@
+/* LOGO */
+export const GET_ALL_LOGOS = 'GET_ALL_LOGOS'
+
 /* COLOR */
 export const GET_ALL_COLORS = 'GET_ALL_COLORS'
 

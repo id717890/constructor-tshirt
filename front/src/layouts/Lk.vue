@@ -35,6 +35,15 @@
             <v-list-item-title>Цвета</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider vertical></v-divider>
+        <v-list-item link to="/lk/logos">
+          <v-list-item-action>
+            <v-icon>mdi-drawing</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Логотипы</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
