@@ -22,6 +22,32 @@ export default new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'number_sizes',
+          component: () => import('./components/NumberSize/Index.vue')
+        },
+        {
+          path: 'number_size/create',
+          component: () => import('./components/NumberSize/Create.vue')
+        },
+        {
+          path: 'number_size/:id',
+          props: true,
+          component: () => import('./components/NumberSize/Edit.vue')
+        },
+        {
+          path: 'text_sizes',
+          component: () => import('./components/TextSize/Index.vue')
+        },
+        {
+          path: 'text_size/create',
+          component: () => import('./components/TextSize/Create.vue')
+        },
+        {
+          path: 'text_size/:id',
+          props: true,
+          component: () => import('./components/TextSize/Edit.vue')
+        },
+        {
           path: 'logo_sizes',
           component: () => import('./components/LogoSize/Index.vue')
         },

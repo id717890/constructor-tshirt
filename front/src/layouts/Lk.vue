@@ -60,6 +60,24 @@
             <v-list-item-title>Лого - типы</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider vertical></v-divider>
+        <v-list-item link to="/lk/number_sizes">
+          <v-list-item-action>
+            <v-icon>mdi-numeric</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Номер - размеры</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider vertical></v-divider>
+        <v-list-item link to="/lk/text_sizes">
+          <v-list-item-action>
+            <v-icon>mdi-format-text</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Надпись - размеры</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

@@ -11,6 +11,8 @@ import image from './image'
 import logo from './logo'
 import logoSize from './logoSize'
 import logoType from './logoType'
+import numberSize from './numberSize'
+import textSize from './textSize'
 
 Vue.use(Vuex)
 
@@ -30,6 +32,8 @@ export default new Vuex.Store({
     image,
     logo,
     logoSize,
-    logoType
+    logoType,
+    numberSize,
+    textSize
   }
 })

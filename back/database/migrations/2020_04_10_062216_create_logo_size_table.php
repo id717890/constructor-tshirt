@@ -20,6 +20,24 @@ class CreateLogoSizeTable extends Migration
             $table->integer('size')->nullable(false);
             $table->timestamps();
         });
+
+        Schema::create('number_sizes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->string('name')->nullable(false);
+            $table->integer('size')->nullable(false);
+            $table->integer('price')->unsigned();
+            $table->timestamps();
+        });
+
+        Schema::create('text_sizes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->string('name')->nullable(false);
+            $table->integer('size')->nullable(false);
+            $table->integer('price')->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -30,5 +48,7 @@ class CreateLogoSizeTable extends Migration
     public function down()
     {
         Schema::dropIfExists('logo_sizes');
+        Schema::dropIfExists('number_sizes');
+        Schema::dropIfExists('text_sizes');
     }
 }
