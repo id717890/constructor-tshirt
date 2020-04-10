@@ -1,6 +1,98 @@
 <template>
-  <v-app id="app" dark>
-    <v-row v-if="lTypes">
+  <v-app id="app" dark style="background: white">
+    <v-container>
+      <v-row>
+        <v-col>
+          <v-btn class="w100" to="/lk">ЛК</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-tabs v-if="orders && orders.length > 0" v-model="tab">
+            <v-tab
+              v-for="order in orders"
+              :key="order.id"
+              @click="selectOrder(order)"
+            >
+              {{ order.titleTab }}
+            </v-tab>
+            <v-tab @click="newOrder">NEW</v-tab>
+          </v-tabs>
+        </v-col>
+      </v-row>
+      <v-row v-if="this.order === null || order.isDone === false">
+        <v-col v-for="type in allTypes" :key="type.id">
+          <v-btn
+            large
+            color="primary"
+            class="w100"
+            @click.native="selType(type)"
+            >{{ type.name }}</v-btn
+          >
+        </v-col>
+      </v-row>
+      <v-row v-if="order === null || order.isDone === false">
+        <v-col cols="12">
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide
+              @click.native="selModel(model)"
+              v-for="model in modelsByType"
+              :key="model.id"
+              class="swiper-element"
+              :class="{
+                'swiper-active': currentModel && model.id === currentModel.id
+              }"
+              style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
+            >
+              <v-img :src="img(model.image)" max-width="260"></v-img>
+            </swiper-slide>
+            <!-- Стрелки прокрутки моделей -->
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </swiper>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="order === null || order.isDone === false">
+        <v-col>
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide
+              @click.native="selColor(color)"
+              v-for="color in colorsByModel"
+              :key="color.id"
+              class="swiper-element"
+              :class="{
+                'swiper-active': currentColor && color.id === currentColor.id
+              }"
+              style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
+            >
+              <v-img :src="img(color.image_front)" max-width="260"></v-img>
+            </swiper-slide>
+            <!-- Стрелки прокрутки моделей -->
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </swiper>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
+          v-for="order in orders"
+          :key="order.id"
+          v-show="order.id === currentOrderId"
+        >
+          <canvas
+            height="350"
+            width="700"
+            v-bind:id="'orderCanvas_' + order.id"
+            ref="canvasImg"
+          >
+          </canvas>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- <v-row v-if="lTypes">
       <v-col cols="1" v-for="type in lTypes" :key="type.id">
         <v-img :src="api + '/' + type.imgFront"></v-img>
         <v-btn
@@ -18,8 +110,8 @@
         <v-btn @click="addLogo(2)">Add Logo 2</v-btn>
         <v-btn to="/lk">LK</v-btn>
       </v-col>
-    </v-row>
-    <v-row>
+    </v-row> -->
+    <!-- <v-row>
       <v-col cols="12">
         <a
           href="#"
@@ -30,8 +122,8 @@
           >{{ order.id }}</a
         >
       </v-col>
-    </v-row>
-    <v-row>
+    </v-row> -->
+    <!-- <v-row>
       <v-col
         cols="12"
         v-for="order in orders"
@@ -46,39 +138,95 @@
         >
         </canvas>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-app>
 </template>
 
 <script>
-const url = 'http://localhost/jomafull/back/public/'
 import api from '../api/api'
 import Canvas from '../Canvas'
+import { mapActions, mapState } from 'vuex'
+import config from '../init/config'
 export default {
   components: {},
   props: {
     source: String
   },
   data: () => ({
-    api: url + 'api/image',
+    tab: 0,
+    currentType: null,
+    currentModel: null,
+    currentColor: null,
+    swiperOptions: {
+      slidesPerView: 4,
+      spaceBetween: 10,
+      slidesPerGroup: 1,
+      loop: false,
+      loopFillGroupWithBlank: false,
+      slidesOffsetBefore: 0,
+      slidesOffsetAfter: 40,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      }
+    },
+    // api: url + 'api/image',
     lTypes: [],
     lLogos: [],
     selectedType: null,
     currentOrderId: 0,
     orders: []
   }),
-  created() {
-    api.getTypes().then(x => {
-      this.lTypes = x
-    })
-    api.getLogos().then(x => {
-      this.lLogos = x
-    })
+  async created() {
+    this.getAllTypes()
+    this.getAllModels()
+    this.getAllColors()
   },
+  mounted() {},
   destroyed() {
     // window.removeEventListener('scroll', this.scroll)
   },
+  computed: {
+    ...mapState({
+      allTypes: state => state.type.allTypes,
+      allModels: state => state.model.allModels,
+      allColors: state => state.color.allColors
+    }),
+    modelsByType() {
+      if (this.currentType && this.currentType.id)
+        return this.allModels.filter(x => x.type_id === this.currentType.id)
+      return []
+    },
+    colorsByModel() {
+      if (this.currentModel && this.currentModel.id)
+        return this.allColors.filter(x => x.model_id === this.currentModel.id)
+      return []
+    },
+    order() {
+      return this.getOrder()
+    },
+    getTitleTab() {
+      if (this.order && this.order.model && this.order.color)
+        return this.order.model.name + ' ' + this.order.color.name
+      return 'N/D'
+    }
+  },
   methods: {
+    ...mapActions(['getAllTypes', 'getAllModels', 'getAllColors']),
+    selectOrder(order) {
+      this.currentOrderId = order.id
+    },
+    newOrder() {
+      this.currentOrderId = null
+    },
+    img(url) {
+      return config.apiAddress + 'api/image/' + url
+    },
+    getOrder() {
+      if (this.currentOrderId && this.orders && this.orders.length > 0)
+        return this.orders.find(x => x.id === this.currentOrderId)
+      return null
+    },
     addLogo(id) {
       let canvas = this.getCanvasByOrderId()
       const logoId = this.guid()
@@ -113,6 +261,77 @@ export default {
         img.setControlVisible('mb', false)
         img.setControlVisible('mtr', false)
       })
+    },
+    selType(type) {
+      this.currentType = type
+    },
+    selModel(model) {
+      this.currentModel = model
+    },
+    selColor(color) {
+      this.currentColor = color
+      const id = this.guid()
+      this.currentOrderId = id
+      let newOrder = {
+        id: id,
+        titleTab: this.currentModel.name + ' ' + this.currentColor.name,
+        type: this.currentType,
+        model: this.currentModel,
+        color: this.currentColor,
+        canvas: null,
+        isDone: false
+      }
+      this.orders.push(newOrder)
+      this.currentColor = null
+      this.currentModel = null
+      this.currentType = null
+      let order = this.getOrder()
+      setTimeout(() => {
+        if (this.orders.length === 1) this.tab = 0
+        else this.tab = this.orders.length
+        order.canvas = new Canvas('orderCanvas_' + newOrder.id)
+        if (order && order.color && order.color.image_back) {
+          let canvas = order.canvas
+          // console.log(this.$refs)
+          // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
+          canvas.addImage(
+            'front',
+            this.img(order.color.image_front),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: 0,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            function(img) {
+              img.sendToBack()
+            }
+          )
+
+          canvas.addImage(
+            'back',
+            this.img(order.color.image_back),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: -1,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            function(img) {
+              img.sendToBack()
+            }
+          )
+
+          order.isDone = true
+        }
+      }, 600)
+      // this.selectedType = type
     },
     selectType(type) {
       const id = this.guid()
@@ -169,9 +388,9 @@ export default {
 
       this.selectedType = type
     },
-    image(image) {
-      return this.api + '/' + image
-    },
+    // image(image) {
+    //   return this.api + '/' + image
+    // },
     getCanvasByOrderId() {
       const order = this.orders.find(x => x.id === this.currentOrderId)
       if (order && order.canvas) return order.canvas
