@@ -32,5 +32,15 @@ class ModelSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+
+        DB::table('models')->insert([
+            'id'=>3,
+            'name' => 'Футболка SPIKE lady',
+            'type_id' => 2,
+            'image' => '58425abdea3a36b0b0df76e719078a64.jpg',
+            'description' => 'Описание футболки SPIKE lady',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 }

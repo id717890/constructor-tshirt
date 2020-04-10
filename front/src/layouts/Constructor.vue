@@ -15,6 +15,9 @@
               @click="selectOrder(order)"
             >
               {{ order.titleTab }}
+              <v-icon class="ml-6" @click.prevent.stop="deleteOrder(order)"
+                >mdi-close</v-icon
+              >
             </v-tab>
             <v-tab @click="newOrder">NEW</v-tab>
           </v-tabs>
@@ -216,6 +219,21 @@ export default {
     selectOrder(order) {
       this.currentOrderId = order.id
     },
+    deleteOrder(order) {
+      const find = this.orders.indexOf(order)
+      if (find !== -1) this.orders.splice(find, 1)
+      if (this.orders.length > 0) {
+        this.currentOrderId = this.orders[this.orders.length - 1].id
+      }
+      if (this.orders.length === 1) this.tab = 0
+      else this.tab = this.orders.length
+    },
+    clearSelection() {
+      this.currentType = null
+      this.currentModel = null
+      this.currentColor = null
+      this.currentOrderId = null
+    },
     newOrder() {
       this.currentOrderId = null
     },
@@ -286,9 +304,9 @@ export default {
       this.currentModel = null
       this.currentType = null
       let order = this.getOrder()
+      if (this.orders.length === 1) this.tab = 0
+      else this.tab = this.orders.length
       setTimeout(() => {
-        if (this.orders.length === 1) this.tab = 0
-        else this.tab = this.orders.length
         order.canvas = new Canvas('orderCanvas_' + newOrder.id)
         if (order && order.color && order.color.image_back) {
           let canvas = order.canvas
@@ -327,10 +345,9 @@ export default {
               img.sendToBack()
             }
           )
-
           order.isDone = true
         }
-      }, 600)
+      }, 1000)
       // this.selectedType = type
     },
     selectType(type) {

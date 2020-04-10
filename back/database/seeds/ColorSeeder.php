@@ -45,5 +45,46 @@ class ColorSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+
+        DB::table('colors')->insert([
+            'id'=>4,
+            'name' => 'Белый',
+            'model_id' => 2,
+            'article'=>'100681.200',
+            'image_front' => 'c1e67bca39f2ba306af501aa9a8e4a80.jpg',
+            'image_back' => 'c1e67bca39f2ba306af501aa9a8e4a80.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>5,
+            'name' => 'Синий',
+            'model_id' => 2,
+            'article'=>'100681.702',
+            'image_front' => '5cd2cc390c36967a8d8dfa9af4a8648b.jpg',
+            'image_back' => '5cd2cc390c36967a8d8dfa9af4a8648b.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>6,
+            'name' => 'Фиолетовый',
+            'model_id' => 2,
+            'article'=>'100681.552',
+            'image_front' => '22eca4eec574dac0a86ad2ffa2ab037e.jpg',
+            'image_back' => '22eca4eec574dac0a86ad2ffa2ab037e.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>7,
+            'name' => 'Черный',
+            'model_id' => 2,
+            'article'=>'100681.102',
+            'image_front' => 'd756cd018a3a150db1af8ef55293c4a9.jpg',
+            'image_back' => 'd756cd018a3a150db1af8ef55293c4a9.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 }
