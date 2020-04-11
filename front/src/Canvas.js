@@ -55,6 +55,15 @@ export default class Canvas {
         } finally {
           // устанавливаем текущее изображение активным объектом FabricJS
           that.ctx.setActiveObject(img)
+          // if (imageName === 'front' || imageName === 'back') {
+          //   console.log('backward')
+          //   console.log(img)
+          //   console.log(that.ctx.getActiveObjects())
+
+          //   that.ctx.sendToBack(img)
+          //   // img.sendBackwards()
+          //   // img.sendToBack()
+          // }
           // сохраняем объект изображения в наш список
           that.images[imageName] = that.ctx.getActiveObject()
           // снимаем выделение активного объекта
@@ -65,7 +74,7 @@ export default class Canvas {
         }
       },
       {
-        crossOrigin: 'anonymous'
+        crossOrigin: ''
       }
     )
     console.log('Добавлено изображение ' + imageName)
@@ -73,16 +82,12 @@ export default class Canvas {
 
   // удаление изображения
   removeImage(imageName) {
-    console.log('in')
     console.log(imageName)
     if (this.images[imageName] != undefined) {
-      console.log('2')
       this.ctx.remove(this.images[imageName])
       delete this.images[imageName]
       console.log('Изображение ' + imageName + '  удалено')
     } else {
-      console.log('3')
-
       console.log('Не удалось найти изображение ' + imageName)
     }
   }

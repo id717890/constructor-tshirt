@@ -6,6 +6,7 @@
           <v-btn class="w100" to="/lk">ЛК</v-btn>
         </v-col>
       </v-row>
+      <!-- Вкладки заказов -->
       <v-row>
         <v-col>
           <v-tabs v-if="orders && orders.length > 0" v-model="tab">
@@ -23,7 +24,12 @@
           </v-tabs>
         </v-col>
       </v-row>
-      <v-row v-if="this.order === null || order.isDone === false">
+      <!-- Выбор типов -->
+      <v-row
+        v-if="
+          this.order === null || order.isDone === false || isChangeType === true
+        "
+      >
         <v-col v-for="type in allTypes" :key="type.id">
           <v-btn
             large
@@ -34,13 +40,12 @@
           >
         </v-col>
       </v-row>
-      <v-row id="row2" v-if="order === null || order.isDone === false">
-        <v-col cols="12" v-if="order === null || order.isDone === false">
-          <swiper
-            ref="mySwiper"
-            :options="swiperOptions"
-            v-if="order === null || order.isDone === false"
-          >
+      <!-- Выбор моделей -->
+      <v-row
+        v-if="order === null || order.isDone === false || isChangeType === true"
+      >
+        <v-col>
+          <swiper ref="mySwiperModel" :options="swiperOptions">
             <swiper-slide
               @click.native="selModel(model)"
               v-for="model in modelsByType"
@@ -66,9 +71,9 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="order === null || order.isDone === false">
+      <v-row v-if="order === null || order.isDone === false || isChangeColor">
         <v-col cols="12">
-          <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper ref="mySwiperColor" :options="swiperOptions">
             <swiper-slide
               @click.native="selColor(color)"
               v-for="color in colorsByModel"
@@ -94,6 +99,30 @@
           :key="order.id"
           v-show="currentOrderId === order.id"
         >
+          <v-row>
+            <v-col>
+              <v-btn
+                class="w100"
+                tile
+                color="primary"
+                @click="changeModelTshirt"
+              >
+                Изменить модель
+                <v-icon>mdi-tshirt-v</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn
+                class="w100"
+                tile
+                color="primary"
+                @click="changeColorTshirt"
+              >
+                Изменить цвет
+                <v-icon>mdi-palette</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols="7">
               <h2 v-html="order.titleCanvas" class="text-center mb-12"></h2>
@@ -446,6 +475,8 @@ export default {
     orders: [],
     showColorPanel: false,
     showColorPanelFio: false,
+    isChangeColor: false,
+    isChangeType: false,
     swiperOptions: config.swiperOptions
   }),
   async created() {
@@ -515,7 +546,9 @@ export default {
       return []
     },
     order() {
-      return this.getOrder()
+      if (this.currentOrderId && this.orders && this.orders.length > 0)
+        return this.orders.find(x => x.id === this.currentOrderId)
+      return null
     }
   },
   methods: {
@@ -528,6 +561,17 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
+    changeModelTshirt() {
+      this.currentType = this.order.type
+      this.currentModel = this.order.model
+      this.currentColor = this.order.color
+      this.isChangeType = true
+      this.isChangeColor = true
+    },
+    changeColorTshirt() {
+      this.currentModel = this.order.model
+      this.isChangeColor = true
+    },
     changeFont(event) {
       this.fontExample = event
     },
@@ -762,6 +806,64 @@ export default {
     },
     selColor(color) {
       this.currentColor = color
+      if (
+        (this.isChangeColor && this.isChangeColor === true) ||
+        (this.isChangeType && this.isChangeType === true)
+      ) {
+        let order = this.getOrder()
+        let canvas = order.canvas
+        order.color = color
+        order.isDone = false
+        canvas.removeImage('front')
+        canvas.removeImage('back')
+
+        canvas.addImage(
+          'front',
+          this.img(order.color.image_front),
+          function(img) {
+            img.set({
+              scaleX: canvas.ctx.width / img.width / 2,
+              scaleY: canvas.ctx.height / img.height,
+              originX: 0,
+              originY: 'top',
+              selectable: false
+            })
+          },
+          this,
+          function(img) {
+            img.sendToBack()
+          }
+        )
+
+        canvas.addImage(
+          'back',
+          this.img(order.color.image_back),
+          function(img) {
+            img.set({
+              scaleX: canvas.ctx.width / img.width / 2,
+              scaleY: canvas.ctx.height / img.height,
+              originX: -1,
+              originY: 'top',
+              selectable: false
+            })
+          },
+          this,
+          function(img) {
+            img.sendToBack()
+          }
+        )
+        order.type = this.currentType
+        order.model = this.currentModel
+        order.color = this.currentColor
+        order.titleTab = this.currentModel.name + ' ' + this.currentColor.name
+        order.titleCanvas =
+          this.currentModel.name + '<br/>' + this.currentColor.article
+        this.isChangeColor = false
+        this.isChangeType = false
+        order.isDone = true
+        return
+      }
+
       const id = this.guid()
       this.currentOrderId = id
       let newOrder = {
@@ -800,6 +902,7 @@ export default {
                 selectable: false
               })
             },
+            this,
             function(img) {
               img.sendToBack()
             }
@@ -817,6 +920,7 @@ export default {
                 selectable: false
               })
             },
+            this,
             function(img) {
               img.sendToBack()
             }
