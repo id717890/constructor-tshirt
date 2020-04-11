@@ -34,9 +34,13 @@
           >
         </v-col>
       </v-row>
-      <v-row v-if="order === null || order.isDone === false">
-        <v-col cols="12">
-          <swiper ref="mySwiper" :options="swiperOptions">
+      <v-row id="row2" v-if="order === null || order.isDone === false">
+        <v-col cols="12" v-if="order === null || order.isDone === false">
+          <swiper
+            ref="mySwiper"
+            :options="swiperOptions"
+            v-if="order === null || order.isDone === false"
+          >
             <swiper-slide
               @click.native="selModel(model)"
               v-for="model in modelsByType"
@@ -45,7 +49,13 @@
               :class="{
                 'swiper-active': currentModel && model.id === currentModel.id
               }"
-              style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
+              style="
+              justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  transition: 1s;
+              background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
             >
               <v-img :src="img(model.image)" max-width="260"></v-img>
             </swiper-slide>
@@ -56,8 +66,8 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="order === null || order.isDone === false">
-        <v-col>
+      <v-row id="row123" v-if="order === null || order.isDone === false">
+        <v-col cols="12">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide
               @click.native="selColor(color)"
@@ -82,15 +92,115 @@
           cols="12"
           v-for="order in orders"
           :key="order.id"
-          v-show="order.id === currentOrderId"
+          v-show="currentOrderId === order.id"
         >
-          <canvas
-            height="350"
-            width="700"
-            v-bind:id="'orderCanvas_' + order.id"
-            ref="canvasImg"
-          >
-          </canvas>
+          <v-row>
+            <v-col cols="7">
+              <h2 v-html="order.titleCanvas"></h2>
+              <canvas
+                height="350"
+                width="700"
+                v-bind:id="'orderCanvas_' + order.id"
+                ref="canvasImg"
+              >
+              </canvas>
+            </v-col>
+            <v-col cols="5">
+              <div>
+                <div class="mb-3" style="height: 40px">
+                  <v-btn
+                    v-if="showDeleteLogo"
+                    color="error"
+                    class="w100"
+                    @click="deleteSelectedDrawing"
+                  >
+                    Удалить выбранное нанесение
+                    <v-icon class="ml-4">mdi-delete</v-icon>
+                  </v-btn>
+                </div>
+
+                <h3 class="text-center mb-5">Нанесения логотипа</h3>
+                <div
+                  style="position: relative; height: 150px; max-height: 150px;"
+                >
+                  <swiper :options="swiperOptions" ref="swiperLogos">
+                    <!-- Слайды логотипов -->
+                    <swiper-slide
+                      @click.native="selLogo(logo)"
+                      v-for="logo in allLogos"
+                      :key="logo.id"
+                      class="swiper-element"
+                      :class="{
+                        'swiper-active':
+                          currentLogo && logo.id === currentLogo.id
+                      }"
+                      style="
+                      background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
+                    "
+                    >
+                      <v-img
+                        contain
+                        :src="img(logo.image)"
+                        max-height="130"
+                      ></v-img>
+                    </swiper-slide>
+                    <div class="swiper-button-prev" slot="button-prev"></div>
+                    <div class="swiper-button-next" slot="button-next"></div>
+
+                    <!-- <swiper-slide
+                    :class="{ 'swiper-slide_active': i == logoProps.i }"
+                    :style="
+                      'background-image: url(' +
+                        logo.Изображение +
+                        '); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
+                    "
+                    @click.native="setLogoImage(logo.Изображение, i)"
+                    v-for="(logo, i) in logos"
+                  >
+                  </swiper-slide>
+
+                  <div class="swiper-button-prev" slot="button-prev"></div>
+                  <div class="swiper-button-next" slot="button-next"></div>
+                  -->
+                  </swiper>
+                </div>
+
+                <div class="mt-3">
+                  <v-btn color="primary" class="w100">
+                    Загрузить свой логотип
+                    <v-icon class="ml-5">mdi-image</v-icon>
+                  </v-btn>
+                </div>
+                <v-row>
+                  <v-col cols="12" class="d-flex flex-flow">
+                    <v-btn
+                      :color="
+                        currentLogoSize && currentLogoSize.id === logoSize.id
+                          ? 'success'
+                          : ''
+                      "
+                      tile
+                      v-for="logoSize in allLogoSizes"
+                      :key="logoSize.id"
+                      style="flex: 1 1 auto;"
+                      @click="currentLogoSize = logoSize"
+                    >
+                      {{ logoSize.name }}
+                    </v-btn>
+                    <v-btn
+                      tile
+                      color="primary"
+                      @click.prevent.stop="addLogo"
+                      style="flex: 0 1 auto;"
+                    >
+                      Добавить
+                      <v-icon class="ml-3">mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -160,6 +270,8 @@ export default {
     currentType: null,
     currentModel: null,
     currentColor: null,
+    currentLogo: null,
+    currentLogoSize: null,
     swiperOptions: {
       slidesPerView: 4,
       spaceBetween: 10,
@@ -181,11 +293,28 @@ export default {
     orders: []
   }),
   async created() {
-    this.getAllTypes()
-    this.getAllModels()
-    this.getAllColors()
+    await this.getAllTypes()
+    await this.getAllModels()
+    await this.getAllColors()
+    await this.getAllLogos()
+    await this.getAllLogoSizes()
   },
-  mounted() {},
+  mounted() {
+    if (this.allLogoSizes) {
+      this.currentLogoSize = this.allLogoSizes[0]
+    } else {
+      setTimeout(() => {
+        this.currentLogoSize = this.allLogoSizes[0]
+      }, 800)
+    }
+    if (this.allLogos) {
+      this.currentLogo = this.allLogos[0]
+    } else {
+      setTimeout(() => {
+        this.currentLogo = this.allLogos[0]
+      }, 800)
+    }
+  },
   destroyed() {
     // window.removeEventListener('scroll', this.scroll)
   },
@@ -193,7 +322,10 @@ export default {
     ...mapState({
       allTypes: state => state.type.allTypes,
       allModels: state => state.model.allModels,
-      allColors: state => state.color.allColors
+      allColors: state => state.color.allColors,
+      allLogos: state => state.logo.allLogos,
+      allLogoSizes: state => state.logoSize.allLogoSizes,
+      showDeleteLogo: state => state.canvas.showDeleteBtn
     }),
     modelsByType() {
       if (this.currentType && this.currentType.id)
@@ -207,15 +339,59 @@ export default {
     },
     order() {
       return this.getOrder()
-    },
-    getTitleTab() {
-      if (this.order && this.order.model && this.order.color)
-        return this.order.model.name + ' ' + this.order.color.name
-      return 'N/D'
     }
   },
   methods: {
-    ...mapActions(['getAllTypes', 'getAllModels', 'getAllColors']),
+    ...mapActions([
+      'getAllTypes',
+      'getAllModels',
+      'getAllColors',
+      'getAllLogos',
+      'getAllLogoSizes'
+    ]),
+    // функция удаления выбранного нанесения
+    deleteSelectedDrawing: function() {
+      console.log('Удаление выбранного нанесения...')
+      try {
+        let canvas = this.order.canvas
+        // выделенное нанесение
+        var selectedDrawing = canvas.ctx.getActiveObject()
+        // если выбрали изображение
+        if (selectedDrawing.type == 'image') {
+          console.log(' - Выбрали изображение')
+          Object.keys(canvas.images).forEach(key => {
+            if (canvas.images[key] === selectedDrawing) {
+              canvas.removeImage(key)
+            }
+          })
+          // for (imageId in canvas.images) {
+          //   console.log(imageId)
+          //   if (canvas.images[imageId] === selectedDrawing) {
+          //     console.log(' - ID удаляемого изображения: ' + imageId)
+          //     // удаляем логотип из заказа
+          //     // currentOrder.order.removeLogotype(imageId)
+          //     // удаляем изображение логотипа с холста
+          //     canvas.removeImage(imageId)
+          //   }
+          // }
+        }
+        // если выбрали текст
+        else if (selectedDrawing.type == 'text') {
+          console.log(' - Выбрали текст')
+          for (textName in canvases[appData.selectedOrder].texts) {
+            if (
+              canvases[appData.selectedOrder].texts[textName] == selectedDrawing
+            ) {
+              // удаляем номер или надпись из заказа
+              currentOrder.order.removeNumber(textName)
+              currentOrder.order.removeString(textName)
+              // удаляем текст с холста
+              canvases[appData.selectedOrder].removeText(textName)
+            }
+          }
+        }
+      } catch {}
+    },
     selectOrder(order) {
       this.currentOrderId = order.id
     },
@@ -245,46 +421,57 @@ export default {
         return this.orders.find(x => x.id === this.currentOrderId)
       return null
     },
-    addLogo(id) {
-      let canvas = this.getCanvasByOrderId()
+    addLogo() {
+      if (!this.currentLogoSize) {
+        alert('Не выбран размер нанесения')
+        return
+      }
+      let canvas = this.order.canvas
       const logoId = this.guid()
-      canvas.addImage(logoId, this.api + '/' + this.lLogos[id].img, function(
-        img
-      ) {
-        /*считаем коэффициент масштабирования scale, чтобы изображения добавлялись на холст всегда с одинаковыми размерами (или по высоте, или по ширине) */
-        if (img.width >= img.height) {
-          var scale = 300 / 3 / img.width
-        } else {
-          var scale = 300 / 3 / img.height
-        }
-        // устанавливаем настройки изображения
-        img.set({
-          scaleX: scale,
-          scaleY: scale,
-          left: canvas.ctx.width / 2,
-          top: canvas.ctx.height / 2,
-          originX: 'center',
-          originY: 'center',
-          centeredScaling: true,
-          padding: 10,
-          transparentCorners: false,
-          borderColor: '#000000',
-          cornerColor: '#000000',
-          cornerStrokeColor: '#000000'
-        })
-        // скрываем элементы управления нанесением
-        img.setControlVisible('ml', false)
-        img.setControlVisible('mr', false)
-        img.setControlVisible('mt', false)
-        img.setControlVisible('mb', false)
-        img.setControlVisible('mtr', false)
-      })
+      const that = this
+      canvas.addImage(
+        logoId,
+        this.img(this.currentLogo.image),
+        function(img, context) {
+          /*считаем коэффициент масштабирования scale, чтобы изображения добавлялись на холст всегда с одинаковыми размерами (или по высоте, или по ширине) */
+          if (img.width >= img.height) {
+            var scale = context.currentLogoSize.size / 3 / img.width
+          } else {
+            var scale = context.currentLogoSize.size / 3 / img.height
+          }
+          // устанавливаем настройки изображения
+          img.set({
+            scaleX: scale,
+            scaleY: scale,
+            left: canvas.ctx.width / 2,
+            top: canvas.ctx.height / 2,
+            originX: 'center',
+            originY: 'center',
+            centeredScaling: true,
+            padding: 10,
+            transparentCorners: false,
+            borderColor: '#000000',
+            cornerColor: '#000000',
+            cornerStrokeColor: '#000000'
+          })
+          // скрываем элементы управления нанесением
+          img.setControlVisible('ml', false)
+          img.setControlVisible('mr', false)
+          img.setControlVisible('mt', false)
+          img.setControlVisible('mb', false)
+          img.setControlVisible('mtr', false)
+        },
+        this
+      )
     },
     selType(type) {
       this.currentType = type
     },
     selModel(model) {
       this.currentModel = model
+    },
+    selLogo(logo) {
+      this.currentLogo = logo
     },
     selColor(color) {
       this.currentColor = color
@@ -293,6 +480,8 @@ export default {
       let newOrder = {
         id: id,
         titleTab: this.currentModel.name + ' ' + this.currentColor.name,
+        titleCanvas:
+          this.currentModel.name + '<br/>' + this.currentColor.article,
         type: this.currentType,
         model: this.currentModel,
         color: this.currentColor,
@@ -346,9 +535,11 @@ export default {
             }
           )
           order.isDone = true
+          this.$forceUpdate()
         }
-      }, 1000)
+      }, 600)
       // this.selectedType = type
+      this.$forceUpdate()
     },
     selectType(type) {
       const id = this.guid()
@@ -419,6 +610,27 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-@import '../assets/scss/_app';
+
+<style scoped>
+/* .swiper-container {
+  height: 300px;
+  width: 100%;
+}
+
+.swiper-wrapper {
+  margin: auto 50px;
+}
+
+.swiper-slide {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  transition: 1s;
+} */
 </style>

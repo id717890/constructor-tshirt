@@ -8,6 +8,9 @@ export const GET_ALL_LOGO_TYPES = 'GET_ALL_LOGO_TYPES'
 /* COLOR */
 export const GET_ALL_COLORS = 'GET_ALL_COLORS'
 
+/* CANAVAS */
+export const SHOW_DELETE_BTN = 'SHOW_DELETE_BTN'
+
 /* MODEL */
 export const GET_ALL_MODELS = 'GET_ALL_MODELS'
 

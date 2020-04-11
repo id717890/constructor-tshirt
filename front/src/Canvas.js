@@ -1,4 +1,5 @@
 import { fabric } from 'fabric'
+import store from './store'
 
 // класс Холста
 export default class Canvas {
@@ -14,12 +15,14 @@ export default class Canvas {
     this.ctx.on('selection:created', function(options) {
       if (options.target) {
         // appData.showButtonDeleteDrawing = true
+        store.dispatch('toggleDeleteBtn', true)
         console.log('Выделен объект')
       }
     })
     // обработка снятия фокуса с объекта
     this.ctx.on('selection:cleared', function(options) {
       // appData.showButtonDeleteDrawing = false
+      store.dispatch('toggleDeleteBtn', false)
       console.log('Снято выделение с объекта')
     })
   }
@@ -35,14 +38,20 @@ export default class Canvas {
 
   // добавление изображения в список
   // название изображения, URL изображения, функция установки настроек
-  addImage(imageName, imageUrl, setFunction, callback = function() {}) {
+  addImage(
+    imageName,
+    imageUrl,
+    setFunction,
+    context = null,
+    callback = function() {}
+  ) {
     // сохраняем текущий контекст this
     var that = this
     fabric.Image.fromURL(
       imageUrl,
       function(img) {
         try {
-          setFunction(img)
+          setFunction(img, context)
         } finally {
           // устанавливаем текущее изображение активным объектом FabricJS
           that.ctx.setActiveObject(img)
@@ -64,11 +73,16 @@ export default class Canvas {
 
   // удаление изображения
   removeImage(imageName) {
+    console.log('in')
+    console.log(imageName)
     if (this.images[imageName] != undefined) {
+      console.log('2')
       this.ctx.remove(this.images[imageName])
       delete this.images[imageName]
       console.log('Изображение ' + imageName + '  удалено')
     } else {
+      console.log('3')
+
       console.log('Не удалось найти изображение ' + imageName)
     }
   }

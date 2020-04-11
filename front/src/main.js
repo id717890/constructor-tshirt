@@ -9,7 +9,7 @@ import VueJsModal from 'vue-js-modal'
 import VueAnalytics from 'vue-analytics'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
-
+import './assets/scss/_app.scss'
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
 
