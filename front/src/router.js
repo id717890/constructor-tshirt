@@ -100,6 +100,11 @@ export default new Router({
           component: () => import('./components/Color/Edit.vue')
         },
         {
+          path: 'color/size/:id',
+          props: true,
+          component: () => import('./components/Color/Size.vue')
+        },
+        {
           path: 'models',
           component: () => import('./components/Model/Index.vue')
         },

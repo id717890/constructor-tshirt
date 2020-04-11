@@ -27,6 +27,16 @@
             fab
             text
             small
+            title="Размеры и цены"
+            color="success"
+            :to="'/lk/color/size/' + item.id"
+          >
+            <v-icon>mdi-currency-rub</v-icon>
+          </v-btn>
+          <v-btn
+            fab
+            text
+            small
             title="Редакитровать"
             color="primary"
             :to="'/lk/color/' + item.id"
@@ -79,7 +89,7 @@ export default {
         sortable: false
       },
       { text: 'Вид сзади', value: 'image_back', width: '150', sortable: false },
-      { text: '', value: '', value: 'act', width: '120', sortable: false }
+      { text: '', value: '', value: 'act', width: '170', sortable: false }
     ]
   }),
   methods: {
