@@ -191,7 +191,7 @@
                       tile
                       color="primary"
                       @click.prevent.stop="addLogo"
-                      style="flex: 0 1 auto;"
+                      style="flex: 0 1 140px;"
                     >
                       Добавить
                       <v-icon class="ml-3">mdi-plus</v-icon>
@@ -201,7 +201,7 @@
                 <div>
                   <h3 class="text-center mb-2 mt-4">Нанесения номера</h3>
                   <div class="d-flex flex-row flex-nowrap" style="height: 55px">
-                    <div>
+                    <div style="flex: 1 1 auto">
                       <v-text-field
                         label="Номер"
                         class="custom-dense mr-3"
@@ -210,7 +210,7 @@
                         v-model="currentNumberText"
                       ></v-text-field>
                     </div>
-                    <div>
+                    <div style="flex: 0 1 150px">
                       <v-select
                         dense
                         :items="allFonts"
@@ -271,60 +271,86 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <div>
+                  <h3 class="text-center mb-2 mt-4">
+                    Нанесение надписи макс. 300 мм
+                  </h3>
+                  <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                    <div style="flex: 1 1 auto">
+                      <v-text-field
+                        label="Фамилия или текс"
+                        class="custom-dense mr-3"
+                        dense
+                        outlined
+                        v-model="currentFioText"
+                      ></v-text-field>
+                    </div>
+                    <div style="flex: 0 1 150px">
+                      <v-select
+                        dense
+                        :items="allFonts"
+                        label="Шрифт"
+                        class="mr-3"
+                        v-model="currentFontFio"
+                        outlined
+                      ></v-select>
+                    </div>
+                    <div style="position: relative">
+                      <div
+                        :style="
+                          'background-color: ' + currentTextColorFio.code + ';'
+                        "
+                        :title="currentTextColorFio.text"
+                        @click="showColorPanelFio = !showColorPanelFio"
+                        class="nav-item boxColor boxColorActive boxColor-single"
+                      ></div>
+                      <div class="boxSelectColors" v-show="showColorPanelFio">
+                        <div
+                          :class="['nav-item boxColor']"
+                          :style="'background-color: ' + textColor.code + ';'"
+                          :title="textColor.text"
+                          @click="selTextColorFio(textColor)"
+                          v-for="textColor in allTextColors"
+                          v-show="currentTextColorFio.code !== textColor.code"
+                          :key="textColor.text"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <v-row>
+                  <v-col cols="12" class="d-flex flex-flow">
+                    <v-btn
+                      :color="
+                        currentTextSize && currentTextSize.id === textSize.id
+                          ? 'success'
+                          : ''
+                      "
+                      tile
+                      v-for="textSize in allTextSizes"
+                      :key="textSize.id"
+                      style="flex: 1 1 auto;"
+                      @click="currentTextSize = textSize"
+                    >
+                      {{ textSize.name }}
+                    </v-btn>
+                    <v-btn
+                      tile
+                      color="primary"
+                      @click.prevent.stop="addString"
+                      style="flex: 0 1 140px;"
+                    >
+                      Добавить
+                      <v-icon class="ml-1">mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </div>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- <v-row v-if="lTypes">
-      <v-col cols="1" v-for="type in lTypes" :key="type.id">
-        <v-img :src="api + '/' + type.imgFront"></v-img>
-        <v-btn
-          :color="
-            selectedType && selectedType.id === type.id ? 'success' : 'primary'
-          "
-          class="mt-3"
-          @click="selectType(type)"
-        >
-          Select
-        </v-btn>
-      </v-col>
-      <v-col cols="2">
-        <v-btn @click="addLogo(1)">Add Logo 1</v-btn>
-        <v-btn @click="addLogo(2)">Add Logo 2</v-btn>
-        <v-btn to="/lk">LK</v-btn>
-      </v-col>
-    </v-row> -->
-    <!-- <v-row>
-      <v-col cols="12">
-        <a
-          href="#"
-          class="mr-5"
-          @click.prevent.stop="currentOrderId = order.id"
-          v-for="order in orders"
-          :key="order.id"
-          >{{ order.id }}</a
-        >
-      </v-col>
-    </v-row> -->
-    <!-- <v-row>
-      <v-col
-        cols="12"
-        v-for="order in orders"
-        :key="order.id"
-        v-show="order.id === currentOrderId"
-      >
-        <canvas
-          height="350"
-          width="700"
-          v-bind:id="'test' + order.id"
-          ref="canvasImg"
-        >
-        </canvas>
-      </v-col>
-    </v-row> -->
   </v-app>
 </template>
 
@@ -349,6 +375,10 @@ export default {
     currentNumberText: null,
     currentFont: 'Nike',
     currentTextColor: { text: 'Черный', code: '#000000' },
+    currentTextSize: null,
+    currentFioText: null,
+    currentFontFio: 'Nike',
+    currentTextColorFio: { text: 'Черный', code: '#000000' },
     allFonts: ['Nike', 'Adidas', 'Alternativ', 'Atletico', 'Real'],
     allTextColors: [
       { text: 'Белый', code: '#ffffff' },
@@ -375,6 +405,7 @@ export default {
     currentOrderId: 0,
     orders: [],
     showColorPanel: false,
+    showColorPanelFio: false,
     swiperOptions: config.swiperOptions
   }),
   async created() {
@@ -384,29 +415,37 @@ export default {
     await this.getAllLogos()
     await this.getAllLogoSizes()
     await this.getAllNumberSizes()
+    await this.getAllTextSizes()
   },
   mounted() {
-    if (this.allNumberSizes) {
-      this.currentNumberSize = this.allNumberSizes[0]
-    } else {
-      setTimeout(() => {
-        this.currentNumberSize = this.allNumberSizes[0]
-      }, 800)
-    }
-    if (this.allLogoSizes) {
-      this.currentLogoSize = this.allLogoSizes[0]
-    } else {
-      setTimeout(() => {
-        this.currentLogoSize = this.allLogoSizes[0]
-      }, 800)
-    }
-    if (this.allLogos) {
-      this.currentLogo = this.allLogos[0]
-    } else {
-      setTimeout(() => {
-        this.currentLogo = this.allLogos[0]
-      }, 800)
-    }
+    // if (this.allTextSizes) {
+    //   this.currentTextSize = this.allTextSizes[0]
+    // } else {
+    //   setTimeout(() => {
+    //     this.currentTextSize = this.allTextSizes[0]
+    //   }, 800)
+    // }
+    // if (this.allNumberSizes) {
+    //   this.currentNumberSize = this.allNumberSizes[0]
+    // } else {
+    //   setTimeout(() => {
+    //     this.currentNumberSize = this.allNumberSizes[0]
+    //   }, 800)
+    // }
+    // if (this.allLogoSizes) {
+    //   this.currentLogoSize = this.allLogoSizes[0]
+    // } else {
+    //   setTimeout(() => {
+    //     this.currentLogoSize = this.allLogoSizes[0]
+    //   }, 800)
+    // }
+    // if (this.allLogos) {
+    //   this.currentLogo = this.allLogos[0]
+    // } else {
+    //   setTimeout(() => {
+    //     this.currentLogo = this.allLogos[0]
+    //   }, 800)
+    // }
   },
   destroyed() {
     // window.removeEventListener('scroll', this.scroll)
@@ -419,6 +458,7 @@ export default {
       allLogos: state => state.logo.allLogos,
       allLogoSizes: state => state.logoSize.allLogoSizes,
       allNumberSizes: state => state.numberSize.allNumberSizes,
+      allTextSizes: state => state.textSize.allTextSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn
     }),
     modelsByType() {
@@ -442,8 +482,13 @@ export default {
       'getAllColors',
       'getAllLogos',
       'getAllLogoSizes',
-      'getAllNumberSizes'
+      'getAllNumberSizes',
+      'getAllTextSizes'
     ]),
+    selTextColorFio(textColor) {
+      this.currentTextColorFio = textColor
+      this.showColorPanelFio = false
+    },
     selTextColor(textColor) {
       this.currentTextColor = textColor
       this.showColorPanel = false
@@ -524,6 +569,40 @@ export default {
       if (this.currentOrderId && this.orders && this.orders.length > 0)
         return this.orders.find(x => x.id === this.currentOrderId)
       return null
+    },
+    // добавление строки
+    addString() {
+      // если строки нет, выходим из функции
+      if (!this.currentTextSize || !this.currentFioText) return
+
+      let canvas = this.order.canvas
+      const stringId = this.guid()
+      // добавляем строку к текущему заказу
+      // stringId = currentOrder.order.addString(
+      //   appData.stringProps.size,
+      //   appData.stringProps.price,
+      //   appData.stringProps.value,
+      //   appData.fontName,
+      //   appData.stringProps.color
+      // )
+      // console.log(stringId)
+
+      // добавляем строку на холст
+      canvas.addText(stringId, this.currentFioText, {
+        originX: 'center',
+        originY: 'center',
+        left: canvas.ctx.width * 0.5,
+        top: canvas.ctx.height * 0.5,
+        fontFamily: this.currentFontFio,
+        fontSize: this.currentTextSize.size * 0.35,
+        fill: this.currentTextColor.code,
+        centeredScaling: true,
+        padding: 10,
+        transparentCorners: false,
+        borderColor: '#000000',
+        cornerColor: '#000000',
+        cornerStrokeColor: '#000000'
+      })
     },
     addNumber() {
       if (!this.currentNumberSize || !this.currentNumberText) return
@@ -741,6 +820,20 @@ export default {
     // },
     guid() {
       return Math.floor(Math.random() * 1000000000000000)
+    }
+  },
+  watch: {
+    allTextSizes(value) {
+      this.currentTextSize = value[0]
+    },
+    allNumberSizes(value) {
+      this.currentNumberSize = value[0]
+    },
+    allLogoSizes(value) {
+      this.currentLogoSize = value[0]
+    },
+    allLogos(value) {
+      this.currentLogo = value[0]
     }
   }
 }
