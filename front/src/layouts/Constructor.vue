@@ -42,9 +42,11 @@
       </v-row>
       <!-- Выбор моделей -->
       <v-row
-        v-if="order === null || order.isDone === false || isChangeType === true"
+        id="row-model"
+        v-if="!order || order.isDone === false || isChangeType === true"
       >
         <v-col>
+          <h2 class="text-center">Модели</h2>
           <swiper ref="mySwiperModel" :options="swiperOptions">
             <swiper-slide
               @click.native="selModel(model)"
