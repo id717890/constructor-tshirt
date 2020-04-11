@@ -96,7 +96,7 @@
         >
           <v-row>
             <v-col cols="7">
-              <h2 v-html="order.titleCanvas"></h2>
+              <h2 v-html="order.titleCanvas" class="text-center mb-12"></h2>
               <canvas
                 height="350"
                 width="700"
@@ -104,6 +104,22 @@
                 ref="canvasImg"
               >
               </canvas>
+              <div class="mt-12">
+                <v-row>
+                  <v-col cols="7">
+                    {{ order.model.description }}
+                  </v-col>
+                  <v-col cols="5">
+                    <div
+                      :style="
+                        'font-family:' + fontExample + '; font-size: 3rem'
+                      "
+                    >
+                      0123456789
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
             </v-col>
             <v-col cols="5">
               <div>
@@ -127,7 +143,7 @@
                     <!-- Слайды логотипов -->
                     <swiper-slide
                       @click.native="selLogo(logo)"
-                      v-for="logo in allLogos"
+                      v-for="logo in allLogosList"
                       :key="logo.id"
                       class="swiper-element"
                       :class="{
@@ -138,7 +154,14 @@
                       background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
                     "
                     >
+                      <img
+                        v-if="logo.custom"
+                        :src="logo.image"
+                        alt=""
+                        style="max-height: 130px; max-width: 82px"
+                      />
                       <v-img
+                        v-else
                         contain
                         :src="img(logo.image)"
                         max-height="130"
@@ -166,10 +189,23 @@
                 </div>
 
                 <div class="mt-3">
-                  <v-btn color="primary" class="w100">
+                  <v-btn
+                    color="primary"
+                    class="w100"
+                    @click="$refs.uploadLogo[0].click()"
+                  >
                     Загрузить свой логотип
                     <v-icon class="ml-5">mdi-image</v-icon>
                   </v-btn>
+                  <input
+                    @change="addCustomLogo($event)"
+                    accept="image/*"
+                    id="uploadLogo"
+                    ref="uploadLogo"
+                    name="uploadLogo"
+                    style="display:none"
+                    type="file"
+                  />
                 </div>
                 <v-row>
                   <v-col cols="12" class="d-flex flex-flow">
@@ -217,6 +253,7 @@
                         label="Шрифт"
                         class="mr-3"
                         v-model="currentFont"
+                        @change="changeFont($event)"
                         outlined
                       ></v-select>
                     </div>
@@ -292,6 +329,7 @@
                         label="Шрифт"
                         class="mr-3"
                         v-model="currentFontFio"
+                        @change="changeFont($event)"
                         outlined
                       ></v-select>
                     </div>
@@ -374,6 +412,7 @@ export default {
     currentNumberSize: null,
     currentNumberText: null,
     currentFont: 'Nike',
+    fontExample: 'Nike',
     currentTextColor: { text: 'Черный', code: '#000000' },
     currentTextSize: null,
     currentFioText: null,
@@ -398,6 +437,7 @@ export default {
       { text: 'Золотой', code: '#CDA434' },
       { text: 'Серебряный', code: '#C0C0C0' }
     ],
+    allCustomLogos: [],
     // api: url + 'api/image',
     // lTypes: [],
     // lLogos: [],
@@ -461,6 +501,9 @@ export default {
       allTextSizes: state => state.textSize.allTextSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn
     }),
+    allLogosList() {
+      return [...this.allLogos, ...this.allCustomLogos]
+    },
     modelsByType() {
       if (this.currentType && this.currentType.id)
         return this.allModels.filter(x => x.type_id === this.currentType.id)
@@ -485,6 +528,33 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
+    changeFont(event) {
+      this.fontExample = event
+    },
+    addCustomLogo(event) {
+      var input = event.target
+      var reader = new FileReader()
+      let that = this
+      reader.onload = function() {
+        // console.log(reader.result)
+        // добавляем изображение в массив логотипов
+        const id = that.guid()
+        that.allCustomLogos.push({
+          id: id,
+          name: id,
+          image: reader.result,
+          custom: true
+        })
+        // appData.logos.splice(0, 0, {
+        //   Изображение: reader.result
+        // })
+        // выбираем добавленный логотип
+        // that.setLogoImage(reader.result, 0)
+        console.log(reader.result)
+      }
+      reader.readAsDataURL(input.files[0])
+      input.value = null
+    },
     selTextColorFio(textColor) {
       this.currentTextColorFio = textColor
       this.showColorPanelFio = false
@@ -643,9 +713,12 @@ export default {
       }
       let canvas = this.order.canvas
       const logoId = this.guid()
+      const url = this.currentLogo.custom
+        ? this.currentLogo.image
+        : this.img(this.currentLogo.image)
       canvas.addImage(
         logoId,
-        this.img(this.currentLogo.image),
+        url,
         function(img, context) {
           /*считаем коэффициент масштабирования scale, чтобы изображения добавлялись на холст всегда с одинаковыми размерами (или по высоте, или по ширине) */
           if (img.width >= img.height) {
