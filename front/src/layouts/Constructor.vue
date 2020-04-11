@@ -51,10 +51,10 @@
               }"
               style="
               justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  transition: 1s;
+              -webkit-box-align: center;
+              -ms-flex-align: center;
+              align-items: center;
+              transition: 1s;
               background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
             >
               <v-img :src="img(model.image)" max-width="260"></v-img>
@@ -66,7 +66,7 @@
         </v-col>
       </v-row>
 
-      <v-row id="row123" v-if="order === null || order.isDone === false">
+      <v-row v-if="order === null || order.isDone === false">
         <v-col cols="12">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide
@@ -198,6 +198,79 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <div>
+                  <h3 class="text-center mb-2 mt-4">Нанесения номера</h3>
+                  <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                    <div>
+                      <v-text-field
+                        label="Номер"
+                        class="custom-dense mr-3"
+                        dense
+                        outlined
+                        v-model="currentNumberText"
+                      ></v-text-field>
+                    </div>
+                    <div>
+                      <v-select
+                        dense
+                        :items="allFonts"
+                        label="Шрифт"
+                        class="mr-3"
+                        v-model="currentFont"
+                        outlined
+                      ></v-select>
+                    </div>
+                    <div style="position: relative">
+                      <div
+                        :style="
+                          'background-color: ' + currentTextColor.code + ';'
+                        "
+                        :title="currentTextColor.text"
+                        @click="showColorPanel = !showColorPanel"
+                        class="nav-item boxColor boxColorActive boxColor-single"
+                      ></div>
+                      <div class="boxSelectColors" v-show="showColorPanel">
+                        <div
+                          :class="['nav-item boxColor']"
+                          :style="'background-color: ' + textColor.code + ';'"
+                          :title="textColor.text"
+                          @click="selTextColor(textColor)"
+                          v-for="textColor in allTextColors"
+                          v-show="currentTextColor.code !== textColor.code"
+                          :key="textColor.text"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <v-row>
+                  <v-col cols="12" class="d-flex flex-flow">
+                    <v-btn
+                      :color="
+                        currentNumberSize &&
+                        currentNumberSize.id === numberSize.id
+                          ? 'success'
+                          : ''
+                      "
+                      tile
+                      v-for="numberSize in allNumberSizes"
+                      :key="numberSize.id"
+                      style="flex: 1 1 auto;"
+                      @click="currentNumberSize = numberSize"
+                    >
+                      {{ numberSize.name }}
+                    </v-btn>
+                    <v-btn
+                      tile
+                      color="primary"
+                      @click.prevent.stop="addNumber"
+                      style="flex: 0 1 140px;"
+                    >
+                      Добавить
+                      <v-icon class="ml-1">mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </div>
             </v-col>
           </v-row>
@@ -272,25 +345,37 @@ export default {
     currentColor: null,
     currentLogo: null,
     currentLogoSize: null,
-    swiperOptions: {
-      slidesPerView: 4,
-      spaceBetween: 10,
-      slidesPerGroup: 1,
-      loop: false,
-      loopFillGroupWithBlank: false,
-      slidesOffsetBefore: 0,
-      slidesOffsetAfter: 40,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      }
-    },
+    currentNumberSize: null,
+    currentNumberText: null,
+    currentFont: 'Nike',
+    currentTextColor: { text: 'Черный', code: '#000000' },
+    allFonts: ['Nike', 'Adidas', 'Alternativ', 'Atletico', 'Real'],
+    allTextColors: [
+      { text: 'Белый', code: '#ffffff' },
+      { text: 'Черный', code: '#000000' },
+      { text: 'Желтый', code: '#FFFF00' },
+      { text: 'Оранжевый', code: '#FFA500' },
+      { text: 'Красный', code: '#FF0000' },
+      { text: 'Бордовый', code: '#9B2D30' },
+      { text: 'Зеленый', code: '#008000' },
+      { text: 'Темно-синий', code: '#002137' },
+      { text: 'Синий', code: '#0000FF' },
+      { text: 'Голубой', code: '#42AAFF' },
+      { text: 'Мята', code: '#AAF0D1' },
+      { text: 'Серый', code: '#Серый' },
+      { text: 'Зеленый неон', code: '#66FF00' },
+      { text: 'Розовый неон', code: '#FC0FC0' },
+      { text: 'Золотой', code: '#CDA434' },
+      { text: 'Серебряный', code: '#C0C0C0' }
+    ],
     // api: url + 'api/image',
-    lTypes: [],
-    lLogos: [],
-    selectedType: null,
+    // lTypes: [],
+    // lLogos: [],
+    // selectedType: null,
     currentOrderId: 0,
-    orders: []
+    orders: [],
+    showColorPanel: false,
+    swiperOptions: config.swiperOptions
   }),
   async created() {
     await this.getAllTypes()
@@ -298,8 +383,16 @@ export default {
     await this.getAllColors()
     await this.getAllLogos()
     await this.getAllLogoSizes()
+    await this.getAllNumberSizes()
   },
   mounted() {
+    if (this.allNumberSizes) {
+      this.currentNumberSize = this.allNumberSizes[0]
+    } else {
+      setTimeout(() => {
+        this.currentNumberSize = this.allNumberSizes[0]
+      }, 800)
+    }
     if (this.allLogoSizes) {
       this.currentLogoSize = this.allLogoSizes[0]
     } else {
@@ -325,6 +418,7 @@ export default {
       allColors: state => state.color.allColors,
       allLogos: state => state.logo.allLogos,
       allLogoSizes: state => state.logoSize.allLogoSizes,
+      allNumberSizes: state => state.numberSize.allNumberSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn
     }),
     modelsByType() {
@@ -347,8 +441,13 @@ export default {
       'getAllModels',
       'getAllColors',
       'getAllLogos',
-      'getAllLogoSizes'
+      'getAllLogoSizes',
+      'getAllNumberSizes'
     ]),
+    selTextColor(textColor) {
+      this.currentTextColor = textColor
+      this.showColorPanel = false
+    },
     // функция удаления выбранного нанесения
     deleteSelectedDrawing: function() {
       console.log('Удаление выбранного нанесения...')
@@ -378,17 +477,22 @@ export default {
         // если выбрали текст
         else if (selectedDrawing.type == 'text') {
           console.log(' - Выбрали текст')
-          for (textName in canvases[appData.selectedOrder].texts) {
-            if (
-              canvases[appData.selectedOrder].texts[textName] == selectedDrawing
-            ) {
-              // удаляем номер или надпись из заказа
-              currentOrder.order.removeNumber(textName)
-              currentOrder.order.removeString(textName)
-              // удаляем текст с холста
-              canvases[appData.selectedOrder].removeText(textName)
+          Object.keys(canvas.texts).forEach(key => {
+            if (canvas.texts[key] === selectedDrawing) {
+              canvas.removeText(key)
             }
-          }
+          })
+          // for (textName in canvases[appData.selectedOrder].texts) {
+          //   if (
+          //     canvases[appData.selectedOrder].texts[textName] == selectedDrawing
+          //   ) {
+          //     // удаляем номер или надпись из заказа
+          //     currentOrder.order.removeNumber(textName)
+          //     currentOrder.order.removeString(textName)
+          //     // удаляем текст с холста
+          //     canvases[appData.selectedOrder].removeText(textName)
+          //   }
+          // }
         }
       } catch {}
     },
@@ -421,6 +525,38 @@ export default {
         return this.orders.find(x => x.id === this.currentOrderId)
       return null
     },
+    addNumber() {
+      if (!this.currentNumberSize || !this.currentNumberText) return
+      // если номера нет, выходим из функции
+      // // добавляем номер к текущему заказу
+      // numberId = currentOrder.order.addNumber(
+      //   appData.numberProps.size,
+      //   appData.numberProps.price,
+      //   appData.numberProps.value,
+      //   appData.fontName,
+      //   appData.numberProps.color
+      // )
+      // console.log(numberId)
+      let canvas = this.order.canvas
+      const numberId = this.guid()
+
+      // добавляем номер на холст
+      canvas.addText(numberId, this.currentNumberText, {
+        originX: 'center',
+        originY: 'center',
+        left: canvas.ctx.width * 0.5,
+        top: canvas.ctx.height * 0.5,
+        fontFamily: this.currentFont,
+        fontSize: this.currentNumberSize.size * 0.35,
+        fill: this.currentTextColor.code,
+        centeredScaling: true,
+        padding: 10,
+        transparentCorners: false,
+        borderColor: '#000000',
+        cornerColor: '#000000',
+        cornerStrokeColor: '#000000'
+      })
+    },
     addLogo() {
       if (!this.currentLogoSize) {
         alert('Не выбран размер нанесения')
@@ -428,7 +564,6 @@ export default {
       }
       let canvas = this.order.canvas
       const logoId = this.guid()
-      const that = this
       canvas.addImage(
         logoId,
         this.img(this.currentLogo.image),
@@ -541,69 +676,69 @@ export default {
       // this.selectedType = type
       this.$forceUpdate()
     },
-    selectType(type) {
-      const id = this.guid()
-      this.currentOrderId = id
-      let newOrder = {
-        id: id,
-        type: type,
-        canvas: null,
-        show: false
-      }
-      this.orders.push(newOrder)
-      setTimeout(() => {
-        newOrder.canvas = new Canvas('test' + newOrder.id)
-        // return
-        if (type.imgBack) {
-          let canvas = newOrder.canvas
-          // console.log(this.$refs)
-          // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
-          canvas.addImage(
-            'front',
-            this.image(type.imgFront),
-            function(img) {
-              img.set({
-                scaleX: canvas.ctx.width / img.width / 2,
-                scaleY: canvas.ctx.height / img.height,
-                originX: 0,
-                originY: 'top',
-                selectable: false
-              })
-            },
-            function(img) {
-              img.sendToBack()
-            }
-          )
+    // selectType(type) {
+    //   const id = this.guid()
+    //   this.currentOrderId = id
+    //   let newOrder = {
+    //     id: id,
+    //     type: type,
+    //     canvas: null,
+    //     show: false
+    //   }
+    //   this.orders.push(newOrder)
+    //   setTimeout(() => {
+    //     newOrder.canvas = new Canvas('test' + newOrder.id)
+    //     // return
+    //     if (type.imgBack) {
+    //       let canvas = newOrder.canvas
+    //       // console.log(this.$refs)
+    //       // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
+    //       canvas.addImage(
+    //         'front',
+    //         this.image(type.imgFront),
+    //         function(img) {
+    //           img.set({
+    //             scaleX: canvas.ctx.width / img.width / 2,
+    //             scaleY: canvas.ctx.height / img.height,
+    //             originX: 0,
+    //             originY: 'top',
+    //             selectable: false
+    //           })
+    //         },
+    //         function(img) {
+    //           img.sendToBack()
+    //         }
+    //       )
 
-          canvas.addImage(
-            'back',
-            this.image(type.imgBack),
-            function(img) {
-              img.set({
-                scaleX: canvas.ctx.width / img.width / 2,
-                scaleY: canvas.ctx.height / img.height,
-                originX: -1,
-                originY: 'top',
-                selectable: false
-              })
-            },
-            function(img) {
-              img.sendToBack()
-            }
-          )
-        }
-      }, 500)
+    //       canvas.addImage(
+    //         'back',
+    //         this.image(type.imgBack),
+    //         function(img) {
+    //           img.set({
+    //             scaleX: canvas.ctx.width / img.width / 2,
+    //             scaleY: canvas.ctx.height / img.height,
+    //             originX: -1,
+    //             originY: 'top',
+    //             selectable: false
+    //           })
+    //         },
+    //         function(img) {
+    //           img.sendToBack()
+    //         }
+    //       )
+    //     }
+    //   }, 500)
 
-      this.selectedType = type
-    },
+    //   this.selectedType = type
+    // },
     // image(image) {
     //   return this.api + '/' + image
     // },
-    getCanvasByOrderId() {
-      const order = this.orders.find(x => x.id === this.currentOrderId)
-      if (order && order.canvas) return order.canvas
-      return null
-    },
+    // getCanvasByOrderId() {
+    //   const order = this.orders.find(x => x.id === this.currentOrderId)
+    //   if (order && order.canvas) return order.canvas
+    //   return null
+    // },
     guid() {
       return Math.floor(Math.random() * 1000000000000000)
     }

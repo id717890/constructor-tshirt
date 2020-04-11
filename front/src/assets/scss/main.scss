@@ -109,3 +109,51 @@
   border: 1px solid #007bff;
     border-radius: 5px;
 }
+
+$size: 55px !important;
+
+.boxColor-single {
+  width: $size;
+  min-width: $size;
+  max-width: $size;
+  height: $size;
+}
+
+.boxColor {
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin-right: 2px;
+  margin-left: 2px;
+  display: inline-block;
+  transition-duration: 0.3s;
+}
+
+.boxColor:hover {
+  cursor: pointer;
+  box-shadow: inset 0px 0px 0px 2px #007bff;
+}
+
+.boxColorActive {
+  box-shadow: inset 0px 0px 0px 3px #007bff;
+}
+
+.boxSelectColors {
+  margin-left: -4px;
+  position: absolute;
+  right: 41px;
+  top: -46px;
+  max-width: 189px;
+  width: 189px;
+  display: inline-table;
+  z-index: 9999;
+  border: 1px solid #ced4da;
+  padding-left: 4px;
+  border-radius: 4px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-top: 6px;
+  background-color: #fbfbfb;
+}
