@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
       <!-- Выбор типов -->
-      <v-row v-if="showPanelTypes">
+      <v-row v-if="showPanelTypes && allTypes" ref="mySwiperTypes">
         <v-col v-for="type in allTypes" :key="type.id">
           <v-btn
             large
@@ -37,7 +37,10 @@
         </v-col>
       </v-row>
       <!-- Выбор моделей -->
-      <v-row id="row-model" v-if="showPanelModels && modelsByType && modelsByType.length>0">
+      <v-row
+        id="row-model"
+        v-if="showPanelModels && modelsByType && modelsByType.length > 0"
+      >
         <v-col>
           <h2 class="text-center">Модели</h2>
           <swiper ref="mySwiperModel" :options="swiperOptions">
@@ -66,9 +69,12 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="order === null || order.isDone === false || isChangeColor">
+      <v-row
+        v-if="showPanelColors && colorsByModel && colorsByModel.length > 0"
+      >
         <v-col cols="12">
-          <swiper ref="mySwiperColor" :options="swiperOptions">
+          <h2 class="text-center">Цвета</h2>
+          <swiper ref="myswipercolors" :options="swiperOptions">
             <swiper-slide
               @click.native="selColor(color)"
               v-for="color in colorsByModel"
@@ -410,6 +416,14 @@
               </div>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <table-size
+                :sizes="order.color.sizes"
+                @changeOrderedSizes="changeOrderedSizes($event)"
+              />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -421,16 +435,19 @@ import api from '../api/api'
 import Canvas from '../Canvas'
 import { mapActions, mapState } from 'vuex'
 import config from '../init/config'
+import TableSize from './ConstructorSize'
 export default {
-  components: {},
+  components: {
+    TableSize
+  },
   props: {
     source: String
   },
   data: () => ({
     tab: 0,
-    showPanelTypes: true,
-    showPanelModels: true,
-    showPanelColors: true,
+    showPanelTypes: false,
+    showPanelModels: false,
+    showPanelColors: false,
 
     currentType: null,
     currentModel: null,
@@ -488,34 +505,7 @@ export default {
     await this.getAllTextSizes()
   },
   mounted() {
-    // if (this.allTextSizes) {
-    //   this.currentTextSize = this.allTextSizes[0]
-    // } else {
-    //   setTimeout(() => {
-    //     this.currentTextSize = this.allTextSizes[0]
-    //   }, 800)
-    // }
-    // if (this.allNumberSizes) {
-    //   this.currentNumberSize = this.allNumberSizes[0]
-    // } else {
-    //   setTimeout(() => {
-    //     this.currentNumberSize = this.allNumberSizes[0]
-    //   }, 800)
-    // }
-    // if (this.allLogoSizes) {
-    //   this.currentLogoSize = this.allLogoSizes[0]
-    // } else {
-    //   setTimeout(() => {
-    //     this.currentLogoSize = this.allLogoSizes[0]
-    //   }, 800)
-    // }
-    // if (this.allLogos) {
-    //   this.currentLogo = this.allLogos[0]
-    // } else {
-    //   setTimeout(() => {
-    //     this.currentLogo = this.allLogos[0]
-    //   }, 800)
-    // }
+    this.showPanelTypes = true
   },
   destroyed() {
     // window.removeEventListener('scroll', this.scroll)
@@ -560,16 +550,32 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
+    scrollTo(elementName, delay) {
+      setTimeout(() => {
+        let element = this.$refs[elementName]
+        var top = element.offsetTop
+        window.scrollTo({ top: top, left: 0, behavior: 'smooth' })
+        this.drawer = false
+      }, delay)
+    },
+    changeOrderedSizes(e) {
+      let order = this.getOrder()
+      order.orderedSizes = e
+    },
     changeModelTshirt() {
       this.currentType = this.order.type
-      this.currentModel = this.order.model
-      this.currentColor = this.order.color
+      // this.currentModel = this.order.model
+      // this.currentColor = this.order.color
       this.isChangeType = true
       this.isChangeColor = true
+      this.showPanelTypes = true
+      // this.showPanelModels = true
+      // this.showPanelColors = true
     },
     changeColorTshirt() {
       this.currentModel = this.order.model
       this.isChangeColor = true
+      this.showPanelColors = true
     },
     changeFont(event) {
       this.fontExample = event
@@ -663,8 +669,10 @@ export default {
       if (this.orders.length > 0) {
         this.currentOrderId = this.orders[this.orders.length - 1].id
       }
-      if (this.orders.length === 1) this.tab = 0
-      else this.tab = this.orders.length
+      if (this.orders.length === 1) {
+        this.tab = 0
+      } else this.tab = this.orders.length
+      if (this.orders.length === 0) this.showPanelTypes = true
     },
     clearSelection() {
       this.currentType = null
@@ -674,6 +682,12 @@ export default {
     },
     newOrder() {
       this.currentOrderId = null
+      this.currentType = null
+      this.currentModel = null
+      this.currentColor = null
+      this.showPanelColors = false
+      this.showPanelModels = false
+      this.showPanelTypes = true
     },
     img(url) {
       return config.apiAddress + 'api/image/' + url
@@ -796,9 +810,11 @@ export default {
     },
     selType(type) {
       this.currentType = type
+      this.showPanelModels = true
     },
     selModel(model) {
       this.currentModel = model
+      this.showPanelColors = true
     },
     selLogo(logo) {
       this.currentLogo = logo
@@ -811,8 +827,15 @@ export default {
       ) {
         let order = this.getOrder()
         let canvas = order.canvas
-        order.color = color
         order.isDone = false
+
+        order.type = this.currentType
+        order.model = this.currentModel
+        order.color = this.currentColor
+        order.titleTab = this.currentModel.name + ' ' + this.currentColor.name
+        order.titleCanvas =
+          this.currentModel.name + '<br/>' + this.currentColor.article
+
         canvas.removeImage('front')
         canvas.removeImage('back')
 
@@ -851,15 +874,12 @@ export default {
             img.sendToBack()
           }
         )
-        order.type = this.currentType
-        order.model = this.currentModel
-        order.color = this.currentColor
-        order.titleTab = this.currentModel.name + ' ' + this.currentColor.name
-        order.titleCanvas =
-          this.currentModel.name + '<br/>' + this.currentColor.article
         this.isChangeColor = false
         this.isChangeType = false
         order.isDone = true
+        this.showPanelTypes = false
+        this.showPanelModels = false
+        this.showPanelColors = false
         return
       }
 
@@ -874,7 +894,8 @@ export default {
         model: this.currentModel,
         color: this.currentColor,
         canvas: null,
-        isDone: false
+        isDone: false,
+        orderedSizes: []
       }
       this.orders.push(newOrder)
       this.currentColor = null
@@ -928,94 +949,34 @@ export default {
           this.$forceUpdate()
         }
       }, 600)
-      // this.selectedType = type
       this.$forceUpdate()
+      this.showPanelTypes = false
+      this.showPanelModels = false
+      this.showPanelColors = false
     },
-    // selectType(type) {
-    //   const id = this.guid()
-    //   this.currentOrderId = id
-    //   let newOrder = {
-    //     id: id,
-    //     type: type,
-    //     canvas: null,
-    //     show: false
-    //   }
-    //   this.orders.push(newOrder)
-    //   setTimeout(() => {
-    //     newOrder.canvas = new Canvas('test' + newOrder.id)
-    //     // return
-    //     if (type.imgBack) {
-    //       let canvas = newOrder.canvas
-    //       // console.log(this.$refs)
-    //       // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
-    //       canvas.addImage(
-    //         'front',
-    //         this.image(type.imgFront),
-    //         function(img) {
-    //           img.set({
-    //             scaleX: canvas.ctx.width / img.width / 2,
-    //             scaleY: canvas.ctx.height / img.height,
-    //             originX: 0,
-    //             originY: 'top',
-    //             selectable: false
-    //           })
-    //         },
-    //         function(img) {
-    //           img.sendToBack()
-    //         }
-    //       )
-
-    //       canvas.addImage(
-    //         'back',
-    //         this.image(type.imgBack),
-    //         function(img) {
-    //           img.set({
-    //             scaleX: canvas.ctx.width / img.width / 2,
-    //             scaleY: canvas.ctx.height / img.height,
-    //             originX: -1,
-    //             originY: 'top',
-    //             selectable: false
-    //           })
-    //         },
-    //         function(img) {
-    //           img.sendToBack()
-    //         }
-    //       )
-    //     }
-    //   }, 500)
-
-    //   this.selectedType = type
-    // },
-    // image(image) {
-    //   return this.api + '/' + image
-    // },
-    // getCanvasByOrderId() {
-    //   const order = this.orders.find(x => x.id === this.currentOrderId)
-    //   if (order && order.canvas) return order.canvas
-    //   return null
-    // },
     guid() {
       return Math.floor(Math.random() * 1000000000000000)
     }
   },
   watch: {
     allTextSizes(value) {
-      this.currentTextSize = value[0]
+      if (value && value.length > 0) this.currentTextSize = value[0]
     },
     allNumberSizes(value) {
-      this.currentNumberSize = value[0]
+      if (value && value.length > 0) this.currentNumberSize = value[0]
     },
     allLogoSizes(value) {
-      this.currentLogoSize = value[0]
+      if (value && value.length > 0) this.currentLogoSize = value[0]
     },
     allLogos(value) {
-      this.currentLogo = value[0]
+      if (value && value.length > 0) this.currentLogo = value[0]
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+// @import '../assets/scss/_app';
 /* .swiper-container {
   height: 300px;
   width: 100%;

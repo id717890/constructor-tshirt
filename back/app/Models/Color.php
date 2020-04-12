@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Color extends Model
 {
     use Relation\BelongsTo\ModelT;
+    use Relation\HasMany\Size;
 
     protected $table = 'colors';
 

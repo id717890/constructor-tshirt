@@ -10,7 +10,7 @@ class ColorController extends Controller
 {
     public function index()
     {
-        $result = Color::with('model')->get();
+        $result = Color::with('model')->with('sizes')->get();
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
 
