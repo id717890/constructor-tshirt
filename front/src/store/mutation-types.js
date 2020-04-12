@@ -6,6 +6,8 @@ export const GET_ALL_LOGO_SIZES = 'GET_ALL_LOGO_SIZES'
 export const GET_ALL_LOGO_TYPES = 'GET_ALL_LOGO_TYPES'
 
 /* COLOR */
+export const GET_SIZES = 'GET_SIZES'
+export const GET_ALL_SIZES = 'GET_ALL_SIZES'
 export const GET_ALL_COLORS = 'GET_ALL_COLORS'
 
 /* CANAVAS */

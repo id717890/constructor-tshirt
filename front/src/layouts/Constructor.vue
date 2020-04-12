@@ -25,11 +25,7 @@
         </v-col>
       </v-row>
       <!-- Выбор типов -->
-      <v-row
-        v-if="
-          this.order === null || order.isDone === false || isChangeType === true
-        "
-      >
+      <v-row v-if="showPanelTypes">
         <v-col v-for="type in allTypes" :key="type.id">
           <v-btn
             large
@@ -41,10 +37,7 @@
         </v-col>
       </v-row>
       <!-- Выбор моделей -->
-      <v-row
-        id="row-model"
-        v-if="!order || order.isDone === false || isChangeType === true"
-      >
+      <v-row id="row-model" v-if="showPanelModels && modelsByType && modelsByType.length>0">
         <v-col>
           <h2 class="text-center">Модели</h2>
           <swiper ref="mySwiperModel" :options="swiperOptions">
@@ -435,6 +428,10 @@ export default {
   },
   data: () => ({
     tab: 0,
+    showPanelTypes: true,
+    showPanelModels: true,
+    showPanelColors: true,
+
     currentType: null,
     currentModel: null,
     currentColor: null,

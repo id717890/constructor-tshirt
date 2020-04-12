@@ -18,6 +18,13 @@ Route::post('callback/create', 'CallbackController@create');
 Route::get('image/{filename}','ImageController@image');
 Route::get('logos','HomeController@logos');
 
+
+Route::get('sizes','SizeController@index');
+Route::get('sizes/{color_id}','SizeController@get');
+Route::post('sizes','SizeController@create');
+Route::post('sizes/delete/{id}','SizeController@delete');
+Route::post('sizes/update/{id}', 'SizeController@update');
+
 Route::get('number_sizes','NumberSizeController@index');
 Route::post('number_sizes','NumberSizeController@create');
 Route::post('number_sizes/delete/{id}','NumberSizeController@delete');
