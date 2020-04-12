@@ -163,9 +163,10 @@ $size: 55px !important;
 }
 
 .fs12{
-  font-size: 1.2rem;
+  font-size: 1.2rem !important
 }
 
-.table-hint tr td {
-  padding: 10px;
+.table-hint thead th,
+.table-hint tbody td {
+  padding: 8px 15px;
 }

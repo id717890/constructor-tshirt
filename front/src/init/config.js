@@ -12,5 +12,11 @@ export default {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev'
     }
+  },
+  modalSettings: {
+    height: 'auto',
+    adaptive: true,
+    transition: 'nice-modal-fade',
+    clickToClose: false
   }
 }

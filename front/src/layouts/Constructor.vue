@@ -1,6 +1,7 @@
 <template>
   <v-app id="app" dark style="background: white">
     <v-container>
+      <modals-container />
       <v-row>
         <v-col>
           <v-btn class="w100" to="/lk">ЛК</v-btn>
@@ -419,9 +420,47 @@
           <v-row>
             <v-col cols="12">
               <table-size
-                :sizes="order.color.sizes"
+                :sizes="order.orderedSizes"
                 @changeOrderedSizes="changeOrderedSizes($event)"
               />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-btn
+                large
+                @click="openDialogZakazTovar"
+                color="primary"
+                class="w100"
+                >Заказ Товар</v-btn
+              >
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-btn
+                large
+                @click="openDialogZakazTovar"
+                color="primary"
+                class="w100"
+                >Заказ Товар</v-btn
+              >
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-btn
+                large
+                @click="openDialogZakazTovar"
+                color="primary"
+                class="w100"
+                >Заказ Товар</v-btn
+              >
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-btn
+                large
+                @click="openDialogZakazTovar"
+                color="success"
+                class="w100"
+                >Заказ Товар</v-btn
+              >
             </v-col>
           </v-row>
         </v-col>
@@ -436,6 +475,7 @@ import Canvas from '../Canvas'
 import { mapActions, mapState } from 'vuex'
 import config from '../init/config'
 import TableSize from './ConstructorSize'
+import DialogZakazTovar from '../components/Dialog/ZakazTovar'
 export default {
   components: {
     TableSize
@@ -444,6 +484,7 @@ export default {
     source: String
   },
   data: () => ({
+    // tableSizesData: [],
     tab: 0,
     showPanelTypes: false,
     showPanelModels: false,
@@ -550,6 +591,17 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
+    // setSizesForComp() {
+    //   const order = this.getOrder()
+    //   return order && order.color && order.color.sizes ? order.color.sizes.map(x=>x) : []
+    // },
+    openDialogZakazTovar() {
+      this.$modal.show(
+        DialogZakazTovar,
+        { orders: this.orders },
+        { width: '95%', ...config.modalSettings }
+      )
+    },
     scrollTo(elementName, delay) {
       setTimeout(() => {
         let element = this.$refs[elementName]
@@ -560,7 +612,7 @@ export default {
     },
     changeOrderedSizes(e) {
       let order = this.getOrder()
-      order.orderedSizes = e
+      order.orderedSizes = [...e]
     },
     changeModelTshirt() {
       this.currentType = this.order.type
@@ -672,7 +724,12 @@ export default {
       if (this.orders.length === 1) {
         this.tab = 0
       } else this.tab = this.orders.length
-      if (this.orders.length === 0) this.showPanelTypes = true
+      if (this.orders.length === 0) {
+        this.showPanelTypes = true
+        this.currentType = null
+        this.currentModel = null
+        this.currentColor = null
+      }
     },
     clearSelection() {
       this.currentType = null
@@ -722,7 +779,7 @@ export default {
         top: canvas.ctx.height * 0.5,
         fontFamily: this.currentFontFio,
         fontSize: this.currentTextSize.size * 0.35,
-        fill: this.currentTextColor.code,
+        fill: this.currentTextColorFio.code,
         centeredScaling: true,
         padding: 10,
         transparentCorners: false,
@@ -821,6 +878,7 @@ export default {
     },
     selColor(color) {
       this.currentColor = color
+      // this.tableSizesData = color.sizes.map
       if (
         (this.isChangeColor && this.isChangeColor === true) ||
         (this.isChangeType && this.isChangeType === true)
@@ -895,7 +953,7 @@ export default {
         color: this.currentColor,
         canvas: null,
         isDone: false,
-        orderedSizes: []
+        orderedSizes: color.sizes
       }
       this.orders.push(newOrder)
       this.currentColor = null
