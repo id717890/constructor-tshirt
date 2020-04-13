@@ -16,14 +16,14 @@ export default class Canvas {
       if (options.target) {
         // appData.showButtonDeleteDrawing = true
         store.dispatch('toggleDeleteBtn', true)
-        console.log('Выделен объект')
+        // console.log('Выделен объект')
       }
     })
     // обработка снятия фокуса с объекта
     this.ctx.on('selection:cleared', function(options) {
       // appData.showButtonDeleteDrawing = false
       store.dispatch('toggleDeleteBtn', false)
-      console.log('Снято выделение с объекта')
+      // console.log('Снято выделение с объекта')
     })
   }
 
@@ -77,16 +77,16 @@ export default class Canvas {
         crossOrigin: ''
       }
     )
-    console.log('Добавлено изображение ' + imageName)
+    // console.log('Добавлено изображение ' + imageName)
   }
 
   // удаление изображения
   removeImage(imageName) {
-    console.log(imageName)
+    // console.log(imageName)
     if (this.images[imageName] != undefined) {
       this.ctx.remove(this.images[imageName])
       delete this.images[imageName]
-      console.log('Изображение ' + imageName + '  удалено')
+      // console.log('Изображение ' + imageName + '  удалено')
     } else {
       console.log('Не удалось найти изображение ' + imageName)
     }

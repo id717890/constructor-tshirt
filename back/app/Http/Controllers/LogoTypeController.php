@@ -28,11 +28,13 @@ class LogoTypeController extends Controller
     {
         try {
             $name = Input::get('name');
+            $description = Input::get('description');
             $price = Input::get('price');
             $logo_size = Input::get('logo_size_id');
             $find = LogoType::find($id);
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
             $find->name = $name;
+            $find->description = $description;
             $find->price = $price;
             $find->logo_size_id = $logo_size;
             $find->save();

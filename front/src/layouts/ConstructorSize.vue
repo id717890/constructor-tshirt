@@ -29,7 +29,7 @@
             <td v-for="size in data" :key="size.id">{{ size.inSpain }}</td>
           </tr>
           <tr>
-            <td style="font-size: 1.2rem">Заказ</td>
+            <td style="font-size: 1.2rem; font-weight: bold">ЗАКАЗ</td>
             <td v-for="size in data" :key="size.id">
               <v-text-field
                 type="number"
@@ -53,14 +53,31 @@ export default {
     data: [],
     hints: hintsData
   }),
+  // watch: {
+  //   sizes(values) {
+  //     console.log('WATCHED')
+  //   }
+  // },
   created() {
-    // console.log('пришло')
+    // console.log('CREATED')
     // console.log(this.sizes)
+    this.data = []
+    this.copyArray(this.sizes)
+  },
+  mounted() {
+    // console.log('MOUNTED')
+  },
+  updated() {
+    // console.log('UPDATED')
+  },
+  beforeUpdate() {
+    // console.log('BEFORE UPDATED')
+    this.data = []
     this.copyArray(this.sizes)
   },
   methods: {
     copyArray(array) {
-      if (array)
+      if (array) {
         array.forEach(x => {
           let obj = {}
           obj.size = x.size
@@ -71,6 +88,7 @@ export default {
           obj.total = 0
           this.data.push(obj)
         })
+      }
     },
     changeOrder(e, order) {
       let ordered = 0

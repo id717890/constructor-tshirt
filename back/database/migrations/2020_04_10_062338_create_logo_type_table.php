@@ -17,6 +17,7 @@ class CreateLogoTypeTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable(false);
+            $table->text('description')->nullable(false);
             $table->integer('logo_size_id')->unsigned();
             $table->integer('price')->unsigned();
             $table->timestamps();

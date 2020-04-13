@@ -18,6 +18,16 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12">
+          <v-text-field
+            label="Описание"
+            v-model="form.description"
+            required
+            :rules="textField"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="6" md="8" sm="12" cols="12">
           <v-select
             :items="logoSizes"
             label="Размер"
@@ -73,6 +83,7 @@ export default {
     form: {
       valid: true,
       name: '',
+      description: '',
       price: 0,
       logo_size: null
     }

@@ -34,6 +34,7 @@ class LogoTypeSeeder extends Seeder
         DB::table('logo_types')->insert([
             'id'=>1,
             'name' => 'Флекс SISER 1 цв.',
+            'description' => 'Флекс SISER (Италия), в один цвет. Без ограничения по количеству',
             'logo_size_id' => 1,
             'price' => 100,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
@@ -43,6 +44,7 @@ class LogoTypeSeeder extends Seeder
         DB::table('logo_types')->insert([
             'id'=>2,
             'name' => 'Флекс SISER 2 цв.',
+            'description' => 'Флекс SISER (Италия), в два цвета. Без ограничения по количеству',
             'logo_size_id' => 1,
             'price' => 120,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),

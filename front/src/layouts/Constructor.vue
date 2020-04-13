@@ -2,15 +2,20 @@
   <v-app id="app" dark style="background: white">
     <v-container>
       <modals-container />
-      <v-row>
-        <v-col>
-          <v-btn class="w100" to="/lk">ЛК</v-btn>
-        </v-col>
-      </v-row>
+      <v-btn
+        style="position: fixed; left: 50px; top: 25px"
+        text
+        icon
+        large
+        class="w100"
+        to="/lk"
+      >
+        <v-icon>mdi-format-align-justify</v-icon>
+      </v-btn>
       <!-- Вкладки заказов -->
-      <v-row>
+      <v-row v-if="orders && orders.length > 0">
         <v-col>
-          <v-tabs v-if="orders && orders.length > 0" v-model="tab">
+          <v-tabs v-model="tab">
             <v-tab
               v-for="order in orders"
               :key="order.id"
@@ -127,7 +132,7 @@
           </v-row>
           <v-row>
             <v-col cols="7">
-              <h2 v-html="order.titleCanvas" class="text-center mb-12"></h2>
+              <h2 v-html="order.titleCanvas" class="text-center mb-0"></h2>
               <canvas
                 height="350"
                 width="700"
@@ -135,7 +140,7 @@
                 ref="canvasImg"
               >
               </canvas>
-              <div class="mt-12">
+              <div class="mt-4">
                 <v-row>
                   <v-col cols="7">
                     {{ order.model.description }}
@@ -152,9 +157,9 @@
                 </v-row>
               </div>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="5" class="pt-0">
               <div>
-                <div class="mb-3" style="height: 40px">
+                <div class="" style="height: 40px">
                   <v-btn
                     v-if="showDeleteLogo"
                     color="error"
@@ -166,7 +171,7 @@
                   </v-btn>
                 </div>
 
-                <h3 class="text-center mb-5">Нанесения логотипа</h3>
+                <h3 class="text-center mb-0">Нанесения логотипа</h3>
                 <div
                   style="position: relative; height: 150px; max-height: 150px;"
                 >
@@ -238,6 +243,32 @@
                     type="file"
                   />
                 </div>
+                <v-row>
+                  <v-col cols="12">
+                    <div style="height: 42px">
+                      <v-select
+                        dense
+                        :items="allLogoTypes"
+                        label="Тип логотипа"
+                        item-text="name"
+                        return-object
+                        v-model="currentLogoType"
+                        outlined
+                      >
+                        <template v-slot:item="{ item }">
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <div class="w100" v-on="on">{{ item.name }}</div>
+                            </template>
+                            <span class="pt-10 pb-10 px-5">{{
+                              item.description
+                            }}</span>
+                          </v-tooltip>
+                        </template>
+                      </v-select>
+                    </div>
+                  </v-col>
+                </v-row>
                 <v-row>
                   <v-col cols="12" class="d-flex flex-flow">
                     <v-btn
@@ -420,6 +451,7 @@
           <v-row>
             <v-col cols="12">
               <table-size
+                ref="tableSize"
                 :sizes="order.orderedSizes"
                 @changeOrderedSizes="changeOrderedSizes($event)"
               />
@@ -495,6 +527,7 @@ export default {
     currentColor: null,
     currentLogo: null,
     currentLogoSize: null,
+    currentLogoType: null,
     currentNumberSize: null,
     currentNumberText: null,
     currentFont: 'Nike',
@@ -542,6 +575,7 @@ export default {
     await this.getAllColors()
     await this.getAllLogos()
     await this.getAllLogoSizes()
+    await this.getAllLogoTypes()
     await this.getAllNumberSizes()
     await this.getAllTextSizes()
   },
@@ -558,6 +592,7 @@ export default {
       allColors: state => state.color.allColors,
       allLogos: state => state.logo.allLogos,
       allLogoSizes: state => state.logoSize.allLogoSizes,
+      allLogoTypes: state => state.logoType.allLogoTypes,
       allNumberSizes: state => state.numberSize.allNumberSizes,
       allTextSizes: state => state.textSize.allTextSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn
@@ -588,6 +623,7 @@ export default {
       'getAllColors',
       'getAllLogos',
       'getAllLogoSizes',
+      'getAllLogoTypes',
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
@@ -890,9 +926,18 @@ export default {
         order.type = this.currentType
         order.model = this.currentModel
         order.color = this.currentColor
+        order.orderedSizes = this.currentColor.sizes
+        // this.$set(order, 'orderedSizes', this.currentColor.sizes)
+        // console.log()
+        // this.$refs.tableSize.$forceUpdate()
+        // console.log('SEL COLOR')
+        // console.log(order.orderedSizes)
         order.titleTab = this.currentModel.name + ' ' + this.currentColor.name
         order.titleCanvas =
-          this.currentModel.name + '<br/>' + this.currentColor.article
+          this.currentModel.name +
+          '<br/>' +
+          'Артикул: ' +
+          this.currentColor.article
 
         canvas.removeImage('front')
         canvas.removeImage('back')
@@ -938,6 +983,8 @@ export default {
         this.showPanelTypes = false
         this.showPanelModels = false
         this.showPanelColors = false
+        // this.$forceUpdate()
+        this.$refs['tableSize'][0].$forceUpdate()
         return
       }
 
@@ -947,7 +994,10 @@ export default {
         id: id,
         titleTab: this.currentModel.name + ' ' + this.currentColor.name,
         titleCanvas:
-          this.currentModel.name + '<br/>' + this.currentColor.article,
+          this.currentModel.name +
+          '<br/>' +
+          'Артикул: ' +
+          this.currentColor.article,
         type: this.currentType,
         model: this.currentModel,
         color: this.currentColor,
@@ -1017,6 +1067,9 @@ export default {
     }
   },
   watch: {
+    allLogoTypes(value) {
+      if (value && value.length > 0) this.currentLogoType = value[0]
+    },
     allTextSizes(value) {
       if (value && value.length > 0) this.currentTextSize = value[0]
     },
