@@ -468,12 +468,8 @@
               >
             </v-col>
             <v-col cols="12" md="6">
-              <v-btn
-                large
-                @click="openDialogZakazTovar"
-                color="primary"
-                class="w100"
-                >Заказ Товар</v-btn
+              <v-btn large @click="openDialogLogos" color="primary" class="w100"
+                >Заказ Нанесение</v-btn
               >
             </v-col>
             <v-col cols="12" md="6">
@@ -509,6 +505,7 @@ import config from '../init/config'
 import TableSize from './ConstructorSize'
 import DialogZakazTovar from '../components/Dialog/ZakazTovar'
 import DialogZakazNomerFio from '../components/Dialog/ZakazNomerFio'
+import DialogZakazLogos from '../components/Dialog/ZakazLogos'
 export default {
   components: {
     TableSize
@@ -628,10 +625,37 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
-    // setSizesForComp() {
-    //   const order = this.getOrder()
-    //   return order && order.color && order.color.sizes ? order.color.sizes.map(x=>x) : []
-    // },
+    delLogoFromOrder(logoId) {
+      let order = this.getOrder()
+      if (order && order.orderedLogos) {
+        const find = order.orderedLogos.find(
+          x => Number(x.id) === Number(logoId)
+        )
+        if (find) {
+          const pos = order.orderedLogos.indexOf(find)
+          order.orderedLogos.splice(pos, 1)
+        }
+      }
+    },
+    addLogoToOrder(logoType, logoSize, logo, logoId) {
+      let order = this.getOrder()
+      if (!order.orderedLogos) order.orderedLogos = []
+      order.orderedLogos.push({
+        id: logoId,
+        logo: logo,
+        logoType: logoType,
+        logoSize: logoSize,
+        logoTypeId: logoType.id,
+        logoSizeId: logoSize.id
+      })
+    },
+    openDialogLogos() {
+      this.$modal.show(
+        DialogZakazLogos,
+        { orders: this.orders },
+        { width: '80%', ...config.modalSettings, scrollable: true }
+      )
+    },
     openDialogNomerFio() {
       this.$modal.show(
         DialogZakazNomerFio,
@@ -709,7 +733,7 @@ export default {
       this.showColorPanel = false
     },
     // функция удаления выбранного нанесения
-    deleteSelectedDrawing: function() {
+    deleteSelectedDrawing() {
       console.log('Удаление выбранного нанесения...')
       try {
         let canvas = this.order.canvas
@@ -721,6 +745,7 @@ export default {
           Object.keys(canvas.images).forEach(key => {
             if (canvas.images[key] === selectedDrawing) {
               canvas.removeImage(key)
+              this.delLogoFromOrder(key)
             }
           })
           // for (imageId in canvas.images) {
@@ -865,8 +890,8 @@ export default {
       })
     },
     addLogo() {
-      if (!this.currentLogoSize) {
-        alert('Не выбран размер нанесения')
+      if (!this.currentLogoSize || !this.currentLogoType) {
+        alert('Не выбран размер или тип нанесения')
         return
       }
       let canvas = this.order.canvas
@@ -874,6 +899,12 @@ export default {
       const url = this.currentLogo.custom
         ? this.currentLogo.image
         : this.img(this.currentLogo.image)
+      this.addLogoToOrder(
+        this.currentLogoType,
+        this.currentLogoSize,
+        this.currentLogo,
+        logoId
+      )
       canvas.addImage(
         logoId,
         url,
@@ -1011,7 +1042,10 @@ export default {
         color: this.currentColor,
         canvas: null,
         isDone: false,
-        orderedSizes: color.sizes
+        orderedSizes: color.sizes,
+        orderedLogos: [],
+        orderedNumbers: [],
+        orderedTexts: []
       }
       this.orders.push(newOrder)
       this.currentColor = null
