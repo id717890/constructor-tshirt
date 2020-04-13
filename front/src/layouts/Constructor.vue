@@ -479,10 +479,10 @@
             <v-col cols="12" md="6">
               <v-btn
                 large
-                @click="openDialogZakazTovar"
+                @click="openDialogNomerFio"
                 color="primary"
                 class="w100"
-                >Заказ Товар</v-btn
+                >Тиблица РАЗМЕР-НОМЕР-ФАМИЛИЯ</v-btn
               >
             </v-col>
             <v-col cols="12" md="6">
@@ -508,6 +508,7 @@ import { mapActions, mapState } from 'vuex'
 import config from '../init/config'
 import TableSize from './ConstructorSize'
 import DialogZakazTovar from '../components/Dialog/ZakazTovar'
+import DialogZakazNomerFio from '../components/Dialog/ZakazNomerFio'
 export default {
   components: {
     TableSize
@@ -631,6 +632,13 @@ export default {
     //   const order = this.getOrder()
     //   return order && order.color && order.color.sizes ? order.color.sizes.map(x=>x) : []
     // },
+    openDialogNomerFio() {
+      this.$modal.show(
+        DialogZakazNomerFio,
+        { orders: this.orders },
+        { width: '80%', ...config.modalSettings, scrollable: true }
+      )
+    },
     openDialogZakazTovar() {
       this.$modal.show(
         DialogZakazTovar,
