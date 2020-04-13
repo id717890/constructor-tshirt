@@ -1,494 +1,499 @@
 <template>
   <v-app id="app" dark style="background: white">
-    <v-container>
+    <v-container fluid>
       <modals-container />
-      <v-btn
-        style="position: fixed; left: 50px; top: 25px"
-        text
-        icon
-        large
-        class="w100"
-        to="/lk"
-      >
-        <v-icon>mdi-format-align-justify</v-icon>
-      </v-btn>
-      <!-- Вкладки заказов -->
-      <v-row v-if="orders && orders.length > 0">
-        <v-col>
-          <v-tabs v-model="tab">
-            <v-tab
+
+      <v-row>
+        <v-col cols="12" md="10" offset-md="1">
+          <v-btn
+            style="position: fixed; left: 50px; top: 25px"
+            text
+            icon
+            large
+            class="w100"
+            to="/lk"
+          >
+            <v-icon>mdi-format-align-justify</v-icon>
+          </v-btn>
+          <!-- Вкладки заказов -->
+          <v-row v-if="orders && orders.length > 0">
+            <v-col>
+              <v-tabs v-model="tab">
+                <v-tab
+                  v-for="order in orders"
+                  :key="order.id"
+                  @click="selectOrder(order)"
+                >
+                  {{ order.titleTab }}
+                  <v-icon class="ml-6" @click.prevent.stop="deleteOrder(order)"
+                    >mdi-close</v-icon
+                  >
+                </v-tab>
+                <v-tab @click="newOrder">NEW</v-tab>
+              </v-tabs>
+            </v-col>
+          </v-row>
+          <!-- Выбор типов -->
+          <v-row v-if="showPanelTypes && allTypes" ref="mySwiperTypes">
+            <v-col v-for="type in allTypes" :key="type.id">
+              <v-btn
+                large
+                color="primary"
+                class="w100"
+                @click.native="selType(type)"
+                >{{ type.name }}</v-btn
+              >
+            </v-col>
+          </v-row>
+          <!-- Выбор моделей -->
+          <v-row
+            id="row-model"
+            v-if="showPanelModels && modelsByType && modelsByType.length > 0"
+          >
+            <v-col>
+              <h2 class="text-center">Модели</h2>
+              <swiper ref="mySwiperModel" :options="swiperOptions">
+                <swiper-slide
+                  @click.native="selModel(model)"
+                  v-for="model in modelsByType"
+                  :key="model.id"
+                  class="swiper-element"
+                  :class="{
+                    'swiper-active': currentModel && model.id === currentModel.id
+                  }"
+                  style="
+                  justify-content: center;
+                  -webkit-box-align: center;
+                  -ms-flex-align: center;
+                  align-items: center;
+                  transition: 1s;
+                  background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
+                >
+                  <v-img :src="img(model.image)" max-width="260"></v-img>
+                </swiper-slide>
+                <!-- Стрелки прокрутки моделей -->
+                <div class="swiper-button-prev" slot="button-prev"></div>
+                <div class="swiper-button-next" slot="button-next"></div>
+              </swiper>
+            </v-col>
+          </v-row>
+
+          <v-row
+            v-if="showPanelColors && colorsByModel && colorsByModel.length > 0"
+          >
+            <v-col cols="12">
+              <h2 class="text-center">Цвета</h2>
+              <swiper ref="myswipercolors" :options="swiperOptions">
+                <swiper-slide
+                  @click.native="selColor(color)"
+                  v-for="color in colorsByModel"
+                  :key="color.id"
+                  class="swiper-element"
+                  :class="{
+                    'swiper-active': currentColor && color.id === currentColor.id
+                  }"
+                  style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
+                >
+                  <v-img :src="img(color.image_front)" max-width="260"></v-img>
+                </swiper-slide>
+                <!-- Стрелки прокрутки моделей -->
+                <div class="swiper-button-prev" slot="button-prev"></div>
+                <div class="swiper-button-next" slot="button-next"></div>
+              </swiper>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
               v-for="order in orders"
               :key="order.id"
-              @click="selectOrder(order)"
+              v-show="currentOrderId === order.id"
             >
-              {{ order.titleTab }}
-              <v-icon class="ml-6" @click.prevent.stop="deleteOrder(order)"
-                >mdi-close</v-icon
-              >
-            </v-tab>
-            <v-tab @click="newOrder">NEW</v-tab>
-          </v-tabs>
-        </v-col>
-      </v-row>
-      <!-- Выбор типов -->
-      <v-row v-if="showPanelTypes && allTypes" ref="mySwiperTypes">
-        <v-col v-for="type in allTypes" :key="type.id">
-          <v-btn
-            large
-            color="primary"
-            class="w100"
-            @click.native="selType(type)"
-            >{{ type.name }}</v-btn
-          >
-        </v-col>
-      </v-row>
-      <!-- Выбор моделей -->
-      <v-row
-        id="row-model"
-        v-if="showPanelModels && modelsByType && modelsByType.length > 0"
-      >
-        <v-col>
-          <h2 class="text-center">Модели</h2>
-          <swiper ref="mySwiperModel" :options="swiperOptions">
-            <swiper-slide
-              @click.native="selModel(model)"
-              v-for="model in modelsByType"
-              :key="model.id"
-              class="swiper-element"
-              :class="{
-                'swiper-active': currentModel && model.id === currentModel.id
-              }"
-              style="
-              justify-content: center;
-              -webkit-box-align: center;
-              -ms-flex-align: center;
-              align-items: center;
-              transition: 1s;
-              background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
-            >
-              <v-img :src="img(model.image)" max-width="260"></v-img>
-            </swiper-slide>
-            <!-- Стрелки прокрутки моделей -->
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
-          </swiper>
-        </v-col>
-      </v-row>
-
-      <v-row
-        v-if="showPanelColors && colorsByModel && colorsByModel.length > 0"
-      >
-        <v-col cols="12">
-          <h2 class="text-center">Цвета</h2>
-          <swiper ref="myswipercolors" :options="swiperOptions">
-            <swiper-slide
-              @click.native="selColor(color)"
-              v-for="color in colorsByModel"
-              :key="color.id"
-              class="swiper-element"
-              :class="{
-                'swiper-active': currentColor && color.id === currentColor.id
-              }"
-              style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
-            >
-              <v-img :src="img(color.image_front)" max-width="260"></v-img>
-            </swiper-slide>
-            <!-- Стрелки прокрутки моделей -->
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
-          </swiper>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          v-for="order in orders"
-          :key="order.id"
-          v-show="currentOrderId === order.id"
-        >
-          <v-row>
-            <v-col>
-              <v-btn
-                class="w100"
-                tile
-                color="primary"
-                @click="changeModelTshirt"
-              >
-                Изменить модель
-                <v-icon>mdi-tshirt-v</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                class="w100"
-                tile
-                color="primary"
-                @click="changeColorTshirt"
-              >
-                Изменить цвет
-                <v-icon>mdi-palette</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="7">
-              <h2 v-html="order.titleCanvas" class="text-center mb-0"></h2>
-              <canvas
-                height="350"
-                width="700"
-                v-bind:id="'orderCanvas_' + order.id"
-                ref="canvasImg"
-              >
-              </canvas>
-              <div class="mt-4">
-                <v-row>
-                  <v-col cols="7">
-                    {{ order.model.description }}
-                  </v-col>
-                  <v-col cols="5">
-                    <div
-                      :style="
-                        'font-family:' + fontExample + '; font-size: 3rem'
-                      "
-                    >
-                      0123456789
-                    </div>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-col>
-            <v-col cols="5" class="pt-0">
-              <div>
-                <div class="" style="height: 40px">
+              <v-row>
+                <v-col>
                   <v-btn
-                    v-if="showDeleteLogo"
-                    color="error"
                     class="w100"
-                    @click="deleteSelectedDrawing"
+                    tile
+                    color="primary"
+                    @click="changeModelTshirt"
                   >
-                    Удалить выбранное нанесение
-                    <v-icon class="ml-4">mdi-delete</v-icon>
+                    Изменить модель
+                    <v-icon>mdi-tshirt-v</v-icon>
                   </v-btn>
-                </div>
-
-                <h3 class="text-center mb-0">Нанесения логотипа</h3>
-                <div
-                  style="position: relative; height: 150px; max-height: 150px;"
-                >
-                  <swiper :options="swiperOptions" ref="swiperLogos">
-                    <!-- Слайды логотипов -->
-                    <swiper-slide
-                      @click.native="selLogo(logo)"
-                      v-for="logo in allLogosList"
-                      :key="logo.id"
-                      class="swiper-element"
-                      :class="{
-                        'swiper-active':
-                          currentLogo && logo.id === currentLogo.id
-                      }"
-                      style="
-                      background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
-                    "
-                    >
-                      <img
-                        v-if="logo.custom"
-                        :src="logo.image"
-                        alt=""
-                        style="max-height: 130px; max-width: 82px"
-                      />
-                      <v-img
-                        v-else
-                        contain
-                        :src="img(logo.image)"
-                        max-height="130"
-                      ></v-img>
-                    </swiper-slide>
-                    <div class="swiper-button-prev" slot="button-prev"></div>
-                    <div class="swiper-button-next" slot="button-next"></div>
-
-                    <!-- <swiper-slide
-                    :class="{ 'swiper-slide_active': i == logoProps.i }"
-                    :style="
-                      'background-image: url(' +
-                        logo.Изображение +
-                        '); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
-                    "
-                    @click.native="setLogoImage(logo.Изображение, i)"
-                    v-for="(logo, i) in logos"
-                  >
-                  </swiper-slide>
-
-                  <div class="swiper-button-prev" slot="button-prev"></div>
-                  <div class="swiper-button-next" slot="button-next"></div>
-                  -->
-                  </swiper>
-                </div>
-
-                <div class="mt-3">
+                </v-col>
+                <v-col>
                   <v-btn
+                    class="w100"
+                    tile
+                    color="primary"
+                    @click="changeColorTshirt"
+                  >
+                    Изменить цвет
+                    <v-icon>mdi-palette</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="7">
+                  <h2 v-html="order.titleCanvas" class="text-center mb-0"></h2>
+                  <canvas
+                    height="350"
+                    width="700"
+                    v-bind:id="'orderCanvas_' + order.id"
+                    ref="canvasImg"
+                  >
+                  </canvas>
+                  <div class="mt-4">
+                    <v-row>
+                      <v-col cols="7">
+                        {{ order.model.description }}
+                      </v-col>
+                      <v-col cols="5">
+                        <div
+                          :style="
+                            'font-family:' + fontExample + '; font-size: 3rem'
+                          "
+                        >
+                          0123456789
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="5" class="pt-0">
+                  <div>
+                    <div class="" style="height: 40px">
+                      <v-btn
+                        v-if="showDeleteLogo"
+                        color="error"
+                        class="w100"
+                        @click="deleteSelectedDrawing"
+                      >
+                        Удалить выбранное нанесение
+                        <v-icon class="ml-4">mdi-delete</v-icon>
+                      </v-btn>
+                    </div>
+
+                    <h3 class="text-center mb-0">Нанесения логотипа</h3>
+                    <div
+                      style="position: relative; height: 150px; max-height: 150px;"
+                    >
+                      <swiper :options="swiperOptions" ref="swiperLogos">
+                        <!-- Слайды логотипов -->
+                        <swiper-slide
+                          @click.native="selLogo(logo)"
+                          v-for="logo in allLogosList"
+                          :key="logo.id"
+                          class="swiper-element"
+                          :class="{
+                            'swiper-active':
+                              currentLogo && logo.id === currentLogo.id
+                          }"
+                          style="
+                          background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
+                        "
+                        >
+                          <img
+                            v-if="logo.custom"
+                            :src="logo.image"
+                            alt=""
+                            style="max-height: 130px; max-width: 82px"
+                          />
+                          <v-img
+                            v-else
+                            contain
+                            :src="img(logo.image)"
+                            max-height="130"
+                          ></v-img>
+                        </swiper-slide>
+                        <div class="swiper-button-prev" slot="button-prev"></div>
+                        <div class="swiper-button-next" slot="button-next"></div>
+
+                        <!-- <swiper-slide
+                        :class="{ 'swiper-slide_active': i == logoProps.i }"
+                        :style="
+                          'background-image: url(' +
+                            logo.Изображение +
+                            '); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
+                        "
+                        @click.native="setLogoImage(logo.Изображение, i)"
+                        v-for="(logo, i) in logos"
+                      >
+                      </swiper-slide>
+
+                      <div class="swiper-button-prev" slot="button-prev"></div>
+                      <div class="swiper-button-next" slot="button-next"></div>
+                      -->
+                      </swiper>
+                    </div>
+
+                    <div class="mt-3">
+                      <v-btn
+                        color="primary"
+                        class="w100"
+                        @click="$refs.uploadLogo[0].click()"
+                      >
+                        Загрузить свой логотип
+                        <v-icon class="ml-5">mdi-image</v-icon>
+                      </v-btn>
+                      <input
+                        @change="addCustomLogo($event)"
+                        accept="image/*"
+                        id="uploadLogo"
+                        ref="uploadLogo"
+                        name="uploadLogo"
+                        style="display:none"
+                        type="file"
+                      />
+                    </div>
+                    <v-row>
+                      <v-col cols="12">
+                        <div style="height: 42px">
+                          <v-select
+                            dense
+                            :items="allLogoTypes"
+                            label="Тип логотипа"
+                            item-text="name"
+                            return-object
+                            v-model="currentLogoType"
+                            outlined
+                          >
+                            <template v-slot:item="{ item }">
+                              <v-tooltip top>
+                                <template v-slot:activator="{ on }">
+                                  <div class="w100" v-on="on">{{ item.name }}</div>
+                                </template>
+                                <span class="pt-10 pb-10 px-5">{{
+                                  item.description
+                                }}</span>
+                              </v-tooltip>
+                            </template>
+                          </v-select>
+                        </div>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" class="d-flex flex-flow">
+                        <v-btn
+                          :color="
+                            currentLogoSize && currentLogoSize.id === logoSize.id
+                              ? 'success'
+                              : ''
+                          "
+                          tile
+                          v-for="logoSize in allLogoSizes"
+                          :key="logoSize.id"
+                          style="flex: 1 1 auto;"
+                          @click="currentLogoSize = logoSize"
+                        >
+                          {{ logoSize.name }}
+                        </v-btn>
+                        <v-btn
+                          tile
+                          color="primary"
+                          @click.prevent.stop="addLogo"
+                          style="flex: 0 1 140px;"
+                        >
+                          Добавить
+                          <v-icon class="ml-3">mdi-plus</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                    <div>
+                      <h3 class="text-center mb-2 mt-4">Нанесения номера</h3>
+                      <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                        <div style="flex: 1 1 auto">
+                          <v-text-field
+                            label="Номер"
+                            class="custom-dense mr-3"
+                            dense
+                            outlined
+                            v-model="currentNumberText"
+                          ></v-text-field>
+                        </div>
+                        <div style="flex: 0 1 150px">
+                          <v-select
+                            dense
+                            :items="allFonts"
+                            label="Шрифт"
+                            class="mr-3"
+                            v-model="currentFont"
+                            @change="changeFont($event)"
+                            outlined
+                          ></v-select>
+                        </div>
+                        <div style="position: relative">
+                          <div
+                            :style="
+                              'background-color: ' + currentTextColor.code + ';'
+                            "
+                            :title="currentTextColor.text"
+                            @click="showColorPanel = !showColorPanel"
+                            class="nav-item boxColor boxColorActive boxColor-single"
+                          ></div>
+                          <div class="boxSelectColors" v-show="showColorPanel">
+                            <div
+                              :class="['nav-item boxColor']"
+                              :style="'background-color: ' + textColor.code + ';'"
+                              :title="textColor.text"
+                              @click="selTextColor(textColor)"
+                              v-for="textColor in allTextColors"
+                              v-show="currentTextColor.code !== textColor.code"
+                              :key="textColor.text"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <v-row>
+                      <v-col cols="12" class="d-flex flex-flow">
+                        <v-btn
+                          :color="
+                            currentNumberSize &&
+                            currentNumberSize.id === numberSize.id
+                              ? 'success'
+                              : ''
+                          "
+                          tile
+                          v-for="numberSize in allNumberSizes"
+                          :key="numberSize.id"
+                          style="flex: 1 1 auto;"
+                          @click="currentNumberSize = numberSize"
+                        >
+                          {{ numberSize.name }}
+                        </v-btn>
+                        <v-btn
+                          tile
+                          color="primary"
+                          @click.prevent.stop="addNumber"
+                          style="flex: 0 1 140px;"
+                        >
+                          Добавить
+                          <v-icon class="ml-1">mdi-plus</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                    <div>
+                      <h3 class="text-center mb-2 mt-4">
+                        Нанесение надписи макс. 300 мм
+                      </h3>
+                      <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                        <div style="flex: 1 1 auto">
+                          <v-text-field
+                            label="Фамилия или текс"
+                            class="custom-dense mr-3"
+                            dense
+                            outlined
+                            v-model="currentFioText"
+                          ></v-text-field>
+                        </div>
+                        <div style="flex: 0 1 150px">
+                          <v-select
+                            dense
+                            :items="allFonts"
+                            label="Шрифт"
+                            class="mr-3"
+                            v-model="currentFontFio"
+                            @change="changeFont($event)"
+                            outlined
+                          ></v-select>
+                        </div>
+                        <div style="position: relative">
+                          <div
+                            :style="
+                              'background-color: ' + currentTextColorFio.code + ';'
+                            "
+                            :title="currentTextColorFio.text"
+                            @click="showColorPanelFio = !showColorPanelFio"
+                            class="nav-item boxColor boxColorActive boxColor-single"
+                          ></div>
+                          <div class="boxSelectColors" v-show="showColorPanelFio">
+                            <div
+                              :class="['nav-item boxColor']"
+                              :style="'background-color: ' + textColor.code + ';'"
+                              :title="textColor.text"
+                              @click="selTextColorFio(textColor)"
+                              v-for="textColor in allTextColors"
+                              v-show="currentTextColorFio.code !== textColor.code"
+                              :key="textColor.text"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <v-row>
+                      <v-col cols="12" class="d-flex flex-flow">
+                        <v-btn
+                          :color="
+                            currentTextSize && currentTextSize.id === textSize.id
+                              ? 'success'
+                              : ''
+                          "
+                          tile
+                          v-for="textSize in allTextSizes"
+                          :key="textSize.id"
+                          style="flex: 1 1 auto;"
+                          @click="currentTextSize = textSize"
+                        >
+                          {{ textSize.name }}
+                        </v-btn>
+                        <v-btn
+                          tile
+                          color="primary"
+                          @click.prevent.stop="addString"
+                          style="flex: 0 1 140px;"
+                        >
+                          Добавить
+                          <v-icon class="ml-1">mdi-plus</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <table-size
+                    ref="tableSize"
+                    :sizes="order.orderedSizes"
+                    @changeOrderedSizes="changeOrderedSizes($event)"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    large
+                    @click="openDialogZakazTovar"
                     color="primary"
                     class="w100"
-                    @click="$refs.uploadLogo[0].click()"
+                    >Заказ Товар</v-btn
                   >
-                    Загрузить свой логотип
-                    <v-icon class="ml-5">mdi-image</v-icon>
-                  </v-btn>
-                  <input
-                    @change="addCustomLogo($event)"
-                    accept="image/*"
-                    id="uploadLogo"
-                    ref="uploadLogo"
-                    name="uploadLogo"
-                    style="display:none"
-                    type="file"
-                  />
-                </div>
-                <v-row>
-                  <v-col cols="12">
-                    <div style="height: 42px">
-                      <v-select
-                        dense
-                        :items="allLogoTypes"
-                        label="Тип логотипа"
-                        item-text="name"
-                        return-object
-                        v-model="currentLogoType"
-                        outlined
-                      >
-                        <template v-slot:item="{ item }">
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <div class="w100" v-on="on">{{ item.name }}</div>
-                            </template>
-                            <span class="pt-10 pb-10 px-5">{{
-                              item.description
-                            }}</span>
-                          </v-tooltip>
-                        </template>
-                      </v-select>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" class="d-flex flex-flow">
-                    <v-btn
-                      :color="
-                        currentLogoSize && currentLogoSize.id === logoSize.id
-                          ? 'success'
-                          : ''
-                      "
-                      tile
-                      v-for="logoSize in allLogoSizes"
-                      :key="logoSize.id"
-                      style="flex: 1 1 auto;"
-                      @click="currentLogoSize = logoSize"
-                    >
-                      {{ logoSize.name }}
-                    </v-btn>
-                    <v-btn
-                      tile
-                      color="primary"
-                      @click.prevent.stop="addLogo"
-                      style="flex: 0 1 140px;"
-                    >
-                      Добавить
-                      <v-icon class="ml-3">mdi-plus</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <div>
-                  <h3 class="text-center mb-2 mt-4">Нанесения номера</h3>
-                  <div class="d-flex flex-row flex-nowrap" style="height: 55px">
-                    <div style="flex: 1 1 auto">
-                      <v-text-field
-                        label="Номер"
-                        class="custom-dense mr-3"
-                        dense
-                        outlined
-                        v-model="currentNumberText"
-                      ></v-text-field>
-                    </div>
-                    <div style="flex: 0 1 150px">
-                      <v-select
-                        dense
-                        :items="allFonts"
-                        label="Шрифт"
-                        class="mr-3"
-                        v-model="currentFont"
-                        @change="changeFont($event)"
-                        outlined
-                      ></v-select>
-                    </div>
-                    <div style="position: relative">
-                      <div
-                        :style="
-                          'background-color: ' + currentTextColor.code + ';'
-                        "
-                        :title="currentTextColor.text"
-                        @click="showColorPanel = !showColorPanel"
-                        class="nav-item boxColor boxColorActive boxColor-single"
-                      ></div>
-                      <div class="boxSelectColors" v-show="showColorPanel">
-                        <div
-                          :class="['nav-item boxColor']"
-                          :style="'background-color: ' + textColor.code + ';'"
-                          :title="textColor.text"
-                          @click="selTextColor(textColor)"
-                          v-for="textColor in allTextColors"
-                          v-show="currentTextColor.code !== textColor.code"
-                          :key="textColor.text"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <v-row>
-                  <v-col cols="12" class="d-flex flex-flow">
-                    <v-btn
-                      :color="
-                        currentNumberSize &&
-                        currentNumberSize.id === numberSize.id
-                          ? 'success'
-                          : ''
-                      "
-                      tile
-                      v-for="numberSize in allNumberSizes"
-                      :key="numberSize.id"
-                      style="flex: 1 1 auto;"
-                      @click="currentNumberSize = numberSize"
-                    >
-                      {{ numberSize.name }}
-                    </v-btn>
-                    <v-btn
-                      tile
-                      color="primary"
-                      @click.prevent.stop="addNumber"
-                      style="flex: 0 1 140px;"
-                    >
-                      Добавить
-                      <v-icon class="ml-1">mdi-plus</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <div>
-                  <h3 class="text-center mb-2 mt-4">
-                    Нанесение надписи макс. 300 мм
-                  </h3>
-                  <div class="d-flex flex-row flex-nowrap" style="height: 55px">
-                    <div style="flex: 1 1 auto">
-                      <v-text-field
-                        label="Фамилия или текс"
-                        class="custom-dense mr-3"
-                        dense
-                        outlined
-                        v-model="currentFioText"
-                      ></v-text-field>
-                    </div>
-                    <div style="flex: 0 1 150px">
-                      <v-select
-                        dense
-                        :items="allFonts"
-                        label="Шрифт"
-                        class="mr-3"
-                        v-model="currentFontFio"
-                        @change="changeFont($event)"
-                        outlined
-                      ></v-select>
-                    </div>
-                    <div style="position: relative">
-                      <div
-                        :style="
-                          'background-color: ' + currentTextColorFio.code + ';'
-                        "
-                        :title="currentTextColorFio.text"
-                        @click="showColorPanelFio = !showColorPanelFio"
-                        class="nav-item boxColor boxColorActive boxColor-single"
-                      ></div>
-                      <div class="boxSelectColors" v-show="showColorPanelFio">
-                        <div
-                          :class="['nav-item boxColor']"
-                          :style="'background-color: ' + textColor.code + ';'"
-                          :title="textColor.text"
-                          @click="selTextColorFio(textColor)"
-                          v-for="textColor in allTextColors"
-                          v-show="currentTextColorFio.code !== textColor.code"
-                          :key="textColor.text"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <v-row>
-                  <v-col cols="12" class="d-flex flex-flow">
-                    <v-btn
-                      :color="
-                        currentTextSize && currentTextSize.id === textSize.id
-                          ? 'success'
-                          : ''
-                      "
-                      tile
-                      v-for="textSize in allTextSizes"
-                      :key="textSize.id"
-                      style="flex: 1 1 auto;"
-                      @click="currentTextSize = textSize"
-                    >
-                      {{ textSize.name }}
-                    </v-btn>
-                    <v-btn
-                      tile
-                      color="primary"
-                      @click.prevent.stop="addString"
-                      style="flex: 0 1 140px;"
-                    >
-                      Добавить
-                      <v-icon class="ml-1">mdi-plus</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <table-size
-                ref="tableSize"
-                :sizes="order.orderedSizes"
-                @changeOrderedSizes="changeOrderedSizes($event)"
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-btn
-                large
-                @click="openDialogZakazTovar"
-                color="primary"
-                class="w100"
-                >Заказ Товар</v-btn
-              >
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-btn large @click="openDialogLogos" color="primary" class="w100"
-                >Заказ Нанесение</v-btn
-              >
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-btn
-                large
-                @click="openDialogNomerFio"
-                color="primary"
-                class="w100"
-                >Тиблица РАЗМЕР-НОМЕР-ФАМИЛИЯ</v-btn
-              >
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-btn
-                large
-                @click="openDialogZakazTovar"
-                color="success"
-                class="w100"
-                >Заказ Товар</v-btn
-              >
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn large @click="openDialogLogos" color="primary" class="w100"
+                    >Заказ Нанесение</v-btn
+                  >
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    large
+                    @click="openDialogNomerFio"
+                    color="primary"
+                    class="w100"
+                    >Тиблица РАЗМЕР-НОМЕР-ФАМИЛИЯ</v-btn
+                  >
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    large
+                    @click="openDialogZakazTovar"
+                    color="success"
+                    class="w100"
+                    >Заказ Товар</v-btn
+                  >
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-col>

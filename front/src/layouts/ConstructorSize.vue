@@ -80,6 +80,7 @@ export default {
       if (array) {
         array.forEach(x => {
           let obj = {}
+          obj.id = x.id
           obj.size = x.size
           obj.price = x.price
           obj.count = x.count

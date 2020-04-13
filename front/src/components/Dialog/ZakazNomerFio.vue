@@ -3,7 +3,7 @@
     <v-card-title>
       Таблица РАЗМЕР-НОМЕР-ФАМИЛИЯ
       <v-spacer></v-spacer>
-      <v-btn color="success" class="mr-25 px-10" large @click="$emit('close')">
+      <v-btn color="success" class="mr-25 px-10" large @click="close">
         <v-icon>mdi-check</v-icon>
         Готово
       </v-btn>
@@ -91,32 +91,84 @@ export default {
     show: false
   }),
   methods: {
+    close() {
+      this.orders.forEach(order => {
+        const find = this.data.find(x => x.id === order.id)
+        if (find) {
+          order.orderedFio = find.sizes
+        }
+      })
+      this.$emit('close')
+    },
     mapData() {
       if (this.orders) {
         this.orders.forEach(order => {
           let sizes = []
-          if (order.orderedSizes) {
-            const filter = order.orderedSizes.filter(x => x.total > 0)
-            filter.forEach(size => {
-              let sizeRows = []
-              let sizeName = size.size
-              for (let i = 1; i <= size.total; i++) {
-                sizeRows.push({
-                  fio: '',
-                  number: ''
+
+          if (order.orderedFio && order.orderedFio.length > 0) {
+            if (order.orderedSizes) {
+              let filter = order.orderedSizes.filter(x => x.total > 0)
+              if (filter.length > 0) {
+                filter.forEach(size => {
+                  let find = order.orderedFio.find(x => x.sizeId === size.id)
+                  if (find) {
+                    if (find.rows.length > size.total)
+                      find.rows.splice(size.total, find.rows.length)
+                    if (find.rows.length < size.total) {
+                      const steps = size.total - find.rows.length
+                      for (let i = 1; i <= steps; i++) {
+                        find.rows.push({ fio: '', number: '' })
+                      }
+                    }
+                  } else {
+                    let rows = []
+                    for (let i = 1; i <= size.total; i++) {
+                      rows.push({ fio: '', number: '' })
+                    }
+                    order.orderedFio.push({
+                      sizeId: size.id,
+                      size: size.size,
+                      rows: rows
+                    })
+                  }
                 })
+                let bufer = order.orderedFio
+                bufer.forEach(x => {
+                  const find = filter.find(f => f.id === x.sizeId)
+                  if (!find) {
+                    order.orderedFio.splice(order.orderedFio.indexOf(x), 1)
+                  }
+                })
+                sizes = order.orderedFio
               }
-              sizes.push({
-                size: sizeName,
-                rows: sizeRows
+            }
+          } else {
+            if (order.orderedSizes) {
+              const filter = order.orderedSizes.filter(x => x.total > 0)
+              filter.forEach(size => {
+                let sizeRows = []
+                let sizeName = size.size
+                for (let i = 1; i <= size.total; i++) {
+                  sizeRows.push({
+                    fio: '',
+                    number: ''
+                  })
+                }
+                sizes.push({
+                  sizeId: size.id,
+                  size: sizeName,
+                  rows: sizeRows
+                })
               })
-            })
+            }
           }
+
           this.data.push({
             id: order.id,
             name: order.titleTab,
             sizes: sizes
           })
+          // order.orderedFio = sizes
         })
       }
       this.show = true

@@ -20,6 +20,9 @@
         <v-tab v-for="order in orders" :key="order.id">
           {{ order.titleTab }}
         </v-tab>
+        <v-tab>
+          ИТОГО
+        </v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -48,63 +51,30 @@
               </tbody>
             </template>
           </v-simple-table>
-
-          <!-- <v-card flat>
-            <v-simple-table>
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="" style="width: 200px">Размер</th>
-                    <th class="">Номер</th>
-                    <th class="">
-                      <span style="left: 75px; position: relative"
-                        >Фамилия</span
-                      >
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(row, index) in order.sizes" :key="index">
-                    <td colspan="3" class="pa-0">
-                      <v-simple-table>
-                        <tbody>
-                          <tr v-for="(subRow, index) in row.rows" :key="index">
-                            <td
-                              v-if="index === 0"
-                              :rowspan="row.rows.length"
-                              style="width: 150px; border-right: 1px solid rgba(0, 0, 0, 0.12)"
-                            >
-                              {{ row.size }}
-                            </td>
-                            <td class="">
-                              <div style="height: 32px">
-                                <v-text-field
-                                  class="input-fio"
-                                  height="32"
-                                  solo
-                                  v-model="subRow.number"
-                                ></v-text-field>
-                              </div>
-                            </td>
-                            <td>
-                              <div style="height: 32px">
-                                <v-text-field
-                                  class="input-fio"
-                                  height="32"
-                                  solo
-                                  v-model="subRow.fio"
-                                ></v-text-field>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </v-simple-table>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-card> -->
+        </v-tab-item>
+        <v-tab-item>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="">Нанесение</th>
+                  <th class="">Кол-во</th>
+                  <th class="">Сумма (руб.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, index) in rowsTotal()" :key="index">
+                  <td>{{ row.name }}</td>
+                  <td>{{ row.count }}</td>
+                  <td>{{ row.sum }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-right">ИТОГО:</td>
+                  <td>{{ sumTotal }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
@@ -119,16 +89,61 @@ export default {
   data: () => ({
     tab: 0,
     data: [],
-    show: false
+    show: false,
+    sumTotal: 0
   }),
   methods: {
+    // sumTotal() {},
     sumByTab(data) {
-      console.log(data)
       let sum = 0
       data.forEach(x => {
         sum += x.count * x.price
       })
       return sum
+    },
+    rowsTotal() {
+      let result = []
+      let sumTotal = 0
+      if (this.orders) {
+        let mergedLogos = []
+        this.orders.forEach(order => {
+          let totalSizes = 0
+          if (order.orderedSizes) {
+            order.orderedSizes.forEach(size => {
+              if (size.total) totalSizes += size.total
+            })
+          }
+
+          if (order.orderedLogos) {
+            let logos = order.orderedLogos
+            logos.forEach(logo => {
+              let sum = 0
+              let find = result.find(
+                x =>
+                  x.logoTypeId === logo.logoTypeId &&
+                  x.logoSizeId === logo.logoSizeId
+              )
+              if (!find) {
+                sum = totalSizes * logo.logoType.price
+                result.push({
+                  name: logo.logoType.name + ' ' + logo.logoSize.name,
+                  count: totalSizes,
+                  sum: sum,
+                  logoTypeId: logo.logoTypeId,
+                  logoSizeId: logo.logoSizeId
+                })
+              } else {
+                sum = totalSizes * logo.logoType.price
+                find.count += totalSizes
+                find.sum += sum
+              }
+              sumTotal += sum
+            })
+          }
+        })
+      }
+      this.sumTotal = sumTotal
+      return result
     },
     rows(data) {
       let result = []
