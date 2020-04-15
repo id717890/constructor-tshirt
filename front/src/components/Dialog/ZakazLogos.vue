@@ -140,6 +140,33 @@ export default {
               sumTotal += sum
             })
           }
+          if (order.orderedTexts) {
+            let texts = order.orderedTexts
+            texts.forEach(text => {
+              let sum = 0
+              let find = result.find(
+                x => x.type === text.type && x.textSizeId === text.textSizeId
+              )
+              if (!find) {
+                sum = totalSizes * text.textSize.price
+                result.push({
+                  name:
+                    (text.type === 'text' ? 'Надпись' : 'Номер') +
+                    ' ' +
+                    text.textSize.name,
+                  count: totalSizes,
+                  sum: sum,
+                  type: text.type,
+                  textSizeId: text.textSizeId
+                })
+              } else {
+                sum = totalSizes * text.textSize.price
+                find.count += totalSizes
+                find.sum += sum
+              }
+              sumTotal += sum
+            })
+          }
         })
       }
       this.sumTotal = sumTotal
@@ -164,39 +191,66 @@ export default {
             })
           })
         }
+        if (data.orderedTexts) {
+          const texts = data.orderedTexts
+          const types = [
+            ...new Set(
+              texts.map(
+                x =>
+                  (x.type === 'text' ? 'Надпись' : 'Номер') +
+                  ' ' +
+                  x.textSize.name
+              )
+            )
+          ]
+          types.forEach(type => {
+            const find = texts.filter(
+              x =>
+                (x.type === 'text' ? 'Надпись' : 'Номер') +
+                  ' ' +
+                  x.textSize.name ===
+                type
+            )
+            result.push({
+              logoType: type,
+              count: find.length,
+              price: find[0].textSize.price
+            })
+          })
+        }
       }
       return result
-    },
-    mapData() {
-      if (this.orders) {
-        this.orders.forEach(order => {
-          let sizes = []
-          if (order.orderedSizes) {
-            const filter = order.orderedSizes.filter(x => x.total > 0)
-            filter.forEach(size => {
-              let sizeRows = []
-              let sizeName = size.size
-              for (let i = 1; i <= size.total; i++) {
-                sizeRows.push({
-                  fio: '',
-                  number: ''
-                })
-              }
-              sizes.push({
-                size: sizeName,
-                rows: sizeRows
-              })
-            })
-          }
-          this.data.push({
-            id: order.id,
-            name: order.titleTab,
-            sizes: sizes
-          })
-        })
-      }
-      this.show = true
     }
+    // mapData() {
+    //   if (this.orders) {
+    //     this.orders.forEach(order => {
+    //       let sizes = []
+    //       if (order.orderedSizes) {
+    //         const filter = order.orderedSizes.filter(x => x.total > 0)
+    //         filter.forEach(size => {
+    //           let sizeRows = []
+    //           let sizeName = size.size
+    //           for (let i = 1; i <= size.total; i++) {
+    //             sizeRows.push({
+    //               fio: '',
+    //               number: ''
+    //             })
+    //           }
+    //           sizes.push({
+    //             size: sizeName,
+    //             rows: sizeRows
+    //           })
+    //         })
+    //       }
+    //       this.data.push({
+    //         id: order.id,
+    //         name: order.titleTab,
+    //         sizes: sizes
+    //       })
+    //     })
+    //   }
+    //   this.show = true
+    // }
   },
   created() {
     // console.log('CREATED FIO-NUMBER')

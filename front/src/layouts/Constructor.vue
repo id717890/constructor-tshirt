@@ -677,6 +677,29 @@ export default {
       'getAllNumberSizes',
       'getAllTextSizes'
     ]),
+    delTextFromOrder(textId) {
+      let order = this.getOrder()
+      if (order && order.orderedTexts) {
+        const find = order.orderedTexts.find(
+          x => Number(x.id) === Number(textId)
+        )
+        if (find) {
+          const pos = order.orderedTexts.indexOf(find)
+          order.orderedTexts.splice(pos, 1)
+        }
+      }
+    },
+    addTextToOrder(textSize, type, text, textId) {
+      let order = this.getOrder()
+      if (!order.orderedTexts) order.orderedTexts = []
+      order.orderedTexts.push({
+        id: textId,
+        type: type,
+        text: text,
+        textSize: textSize,
+        textSizeId: textSize.id
+      })
+    },
     delLogoFromOrder(logoId) {
       let order = this.getOrder()
       if (order && order.orderedLogos) {
@@ -817,6 +840,7 @@ export default {
           Object.keys(canvas.texts).forEach(key => {
             if (canvas.texts[key] === selectedDrawing) {
               canvas.removeText(key)
+              this.delTextFromOrder(key)
             }
           })
           // for (textName in canvases[appData.selectedOrder].texts) {
@@ -892,6 +916,12 @@ export default {
       // )
       // console.log(stringId)
 
+      this.addTextToOrder(
+        this.currentTextSize,
+        'text',
+        this.currentFioText,
+        stringId
+      )
       // добавляем строку на холст
       canvas.addText(stringId, this.currentFioText, {
         originX: 'center',
@@ -924,6 +954,12 @@ export default {
       let canvas = this.order.canvas
       const numberId = this.guid()
 
+      this.addTextToOrder(
+        this.currentNumberSize,
+        'number',
+        this.currentNumberText,
+        numberId
+      )
       // добавляем номер на холст
       canvas.addText(numberId, this.currentNumberText, {
         originX: 'center',
@@ -994,7 +1030,9 @@ export default {
     },
     selType(type) {
       this.currentType = type
+      this.currentModel = null
       this.showPanelModels = true
+      this.showPanelColors = false
     },
     selModel(model) {
       this.currentModel = model
@@ -1096,7 +1134,6 @@ export default {
         isDone: false,
         orderedSizes: color.sizes,
         orderedLogos: [],
-        orderedNumbers: [],
         orderedTexts: []
       }
       this.orders.push(newOrder)
