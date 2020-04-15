@@ -74,7 +74,7 @@ export default class Canvas {
         }
       },
       {
-        crossOrigin: ''
+        crossOrigin: 'anonymous'
       }
     )
     // console.log('Добавлено изображение ' + imageName)

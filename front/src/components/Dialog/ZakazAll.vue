@@ -208,24 +208,81 @@ export default {
     this.prepareZakazTovar()
     this.prepareZakazFio()
     this.prepareZakazLogos()
-    this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
+  },
+  mounted() {
+    setTimeout(() => {
+      this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
+    }, 2000)
   },
   methods: {
     sendForm() {
-      let fd = new FormData()
-      const config = {
-        'content-type': 'multipart/form-data',
-        responseType: 'blob'
+      let info = ''
+      if (this.typeCustomer === 'fizik') {
+        info =
+          'Физ. лицо: ' +
+          this.fizik.lastName +
+          ' ' +
+          this.fizik.firstName +
+          ' ' +
+          this.fizik.middleName +
+          '<br/>'
+        info += 'Телефон: ' + this.fizik.phone + '<br/>'
+        info +=
+          'Договор купли-продажи №' +
+          this.fizik.number +
+          ' от ' +
+          this.fizik.date +
+          '<br/>'
+        info +=
+          'Договор оказания услуг №' +
+          this.fizik.number +
+          ' от ' +
+          this.fizik.date +
+          '<br/>'
+        info += 'Сумма договора: ' + this.fizik.price + ' руб.<br/>'
+        if (this.fizik.email) info += 'E-mail: ' + this.fizik.email + '<br/>'
       }
-      context.post('api/callback/create', fd, config).then(response => {
-        // const url = window.URL.createObjectURL(new Blob([response.data]))
-        // const link = document.createElement('a')
-        // link.href = url
-        // link.setAttribute('download', 'file.pdf')
-        // document.body.appendChild(link)
-        // link.click()
-        FileSaver.saveAs(new Blob([response.data]))
+
+      if (this.typeCustomer === 'yurik') {
+        info = 'Юридическое лицо: <br/>' + this.yurik.field1 + '<br/>'
+        info += 'Телефон: ' + this.yurik.phone + '<br/>'
+        if (this.yurik.email) info += 'E-mail: ' + this.yurik.email + '<br/>'
+        if (this.yurik.field2) info += this.yurik.field2 + '<br/>'
+        if (this.yurik.field3) info += this.yurik.field3 + '<br/>'
+        info +=
+          'Договор купли-продажи №' +
+          this.yurik.number +
+          ' от ' +
+          this.yurik.date +
+          '<br/>'
+        info +=
+          'Договор оказания услуг №' +
+          this.yurik.number +
+          ' от ' +
+          this.yurik.date +
+          '<br/>'
+        info += 'Сумма договора: ' + this.yurik.price + ' руб.<br/>'
+      }
+
+      let fd = new FormData()
+      fd.append('info', info)
+      fd.append('zakazTovar', JSON.stringify(this.zakazTovar))
+      fd.append('zakazTovarSum', this.zakazTovarSum)
+
+      this.orders.forEach((order, index) => {
+        const img = document.getElementById('orderCanvas_' + order.id)
+        console.log(img)
+        img.toBlob(data => {
+          fd.append('images[]', data, order.id)
+        })
       })
+      // fd.append("zakazTovar", JSON.stringify(this.tableSizes));
+      const config = {
+        'content-type': 'multipart/form-data'
+      }
+      setTimeout(() => {
+        context.post('api/callback/mail', fd, config)
+      }, 2000)
     },
     prepareZakazLogos() {
       let result = []
@@ -323,7 +380,8 @@ export default {
               if (size.total > 0)
                 this.zakazTovar.push({
                   name: order.titleTab,
-                  ...size
+                  ...size,
+                  sum: size.price * size.total
                 })
             })
           }

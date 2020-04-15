@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 class ZakazExport implements FromView
 {
+
     /**
     * @return \Illuminate\Support\Collection
     */
