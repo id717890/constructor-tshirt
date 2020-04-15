@@ -13,7 +13,6 @@
         :headers="headers"
         :items="tableItems"
         class="elevation-1"
-        hide-default-footer
         hide
       >
         <template v-slot:item.act="{ item }">

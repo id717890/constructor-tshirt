@@ -59,7 +59,8 @@
                   :key="model.id"
                   class="swiper-element"
                   :class="{
-                    'swiper-active': currentModel && model.id === currentModel.id
+                    'swiper-active':
+                      currentModel && model.id === currentModel.id
                   }"
                   style="
                   justify-content: center;
@@ -90,7 +91,8 @@
                   :key="color.id"
                   class="swiper-element"
                   :class="{
-                    'swiper-active': currentColor && color.id === currentColor.id
+                    'swiper-active':
+                      currentColor && color.id === currentColor.id
                   }"
                   style="background-position: center; max-width: 260px; background-size: contain; background-repeat: no-repeat; cursor: pointer;"
                 >
@@ -206,8 +208,14 @@
                             max-height="130"
                           ></v-img>
                         </swiper-slide>
-                        <div class="swiper-button-prev" slot="button-prev"></div>
-                        <div class="swiper-button-next" slot="button-next"></div>
+                        <div
+                          class="swiper-button-prev"
+                          slot="button-prev"
+                        ></div>
+                        <div
+                          class="swiper-button-next"
+                          slot="button-next"
+                        ></div>
 
                         <!-- <swiper-slide
                         :class="{ 'swiper-slide_active': i == logoProps.i }"
@@ -251,7 +259,7 @@
                         <div style="height: 42px">
                           <v-select
                             dense
-                            :items="allLogoTypes"
+                            :items="logoTypesBySize"
                             label="Тип логотипа"
                             item-text="name"
                             return-object
@@ -261,7 +269,9 @@
                             <template v-slot:item="{ item }">
                               <v-tooltip top>
                                 <template v-slot:activator="{ on }">
-                                  <div class="w100" v-on="on">{{ item.name }}</div>
+                                  <div class="w100" v-on="on">
+                                    {{ item.name }}
+                                  </div>
                                 </template>
                                 <span class="pt-10 pb-10 px-5">{{
                                   item.description
@@ -276,7 +286,8 @@
                       <v-col cols="12" class="d-flex flex-flow">
                         <v-btn
                           :color="
-                            currentLogoSize && currentLogoSize.id === logoSize.id
+                            currentLogoSize &&
+                            currentLogoSize.id === logoSize.id
                               ? 'success'
                               : ''
                           "
@@ -301,7 +312,10 @@
                     </v-row>
                     <div>
                       <h3 class="text-center mb-2 mt-4">Нанесения номера</h3>
-                      <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                      <div
+                        class="d-flex flex-row flex-nowrap"
+                        style="height: 55px"
+                      >
                         <div style="flex: 1 1 auto">
                           <v-text-field
                             label="Номер"
@@ -334,7 +348,9 @@
                           <div class="boxSelectColors" v-show="showColorPanel">
                             <div
                               :class="['nav-item boxColor']"
-                              :style="'background-color: ' + textColor.code + ';'"
+                              :style="
+                                'background-color: ' + textColor.code + ';'
+                              "
                               :title="textColor.text"
                               @click="selTextColor(textColor)"
                               v-for="textColor in allTextColors"
@@ -377,7 +393,10 @@
                       <h3 class="text-center mb-2 mt-4">
                         Нанесение надписи макс. 300 мм
                       </h3>
-                      <div class="d-flex flex-row flex-nowrap" style="height: 55px">
+                      <div
+                        class="d-flex flex-row flex-nowrap"
+                        style="height: 55px"
+                      >
                         <div style="flex: 1 1 auto">
                           <v-text-field
                             label="Фамилия или текс"
@@ -401,20 +420,29 @@
                         <div style="position: relative">
                           <div
                             :style="
-                              'background-color: ' + currentTextColorFio.code + ';'
+                              'background-color: ' +
+                                currentTextColorFio.code +
+                                ';'
                             "
                             :title="currentTextColorFio.text"
                             @click="showColorPanelFio = !showColorPanelFio"
                             class="nav-item boxColor boxColorActive boxColor-single"
                           ></div>
-                          <div class="boxSelectColors" v-show="showColorPanelFio">
+                          <div
+                            class="boxSelectColors"
+                            v-show="showColorPanelFio"
+                          >
                             <div
                               :class="['nav-item boxColor']"
-                              :style="'background-color: ' + textColor.code + ';'"
+                              :style="
+                                'background-color: ' + textColor.code + ';'
+                              "
                               :title="textColor.text"
                               @click="selTextColorFio(textColor)"
                               v-for="textColor in allTextColors"
-                              v-show="currentTextColorFio.code !== textColor.code"
+                              v-show="
+                                currentTextColorFio.code !== textColor.code
+                              "
                               :key="textColor.text"
                             ></div>
                           </div>
@@ -425,7 +453,8 @@
                       <v-col cols="12" class="d-flex flex-flow">
                         <v-btn
                           :color="
-                            currentTextSize && currentTextSize.id === textSize.id
+                            currentTextSize &&
+                            currentTextSize.id === textSize.id
                               ? 'success'
                               : ''
                           "
@@ -471,7 +500,11 @@
                   >
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-btn large @click="openDialogLogos" color="primary" class="w100"
+                  <v-btn
+                    large
+                    @click="openDialogLogos"
+                    color="primary"
+                    class="w100"
                     >Заказ Нанесение</v-btn
                   >
                 </v-col>
@@ -600,6 +633,20 @@ export default {
       allTextSizes: state => state.textSize.allTextSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn
     }),
+    logoTypesBySize() {
+      if (this.currentLogoSize) {
+        return this.allLogoTypes.filter(
+          x => x.logo_size_id === this.currentLogoSize.id
+        )
+      }
+      if (this.allLogoTypes && this.allLogoTypes.length > 0) {
+        const findFirstLogoSizeId = this.allLogoTypes[0]
+        return this.allLogoTypes.filter(
+          x => x.logo_size_id === findFirstLogoSizeId.logo_size_id
+        )
+      }
+      return []
+    },
     allLogosList() {
       return [...this.allLogos, ...this.allCustomLogos]
     },
@@ -1114,6 +1161,11 @@ export default {
     }
   },
   watch: {
+    currentLogoSize(value) {
+      if (this.logoTypesBySize && this.logoTypesBySize.length > 0) {
+        this.currentLogoType = this.logoTypesBySize[0]
+      } else this.currentLogoType = null
+    },
     allLogoTypes(value) {
       if (value && value.length > 0) this.currentLogoType = value[0]
     },

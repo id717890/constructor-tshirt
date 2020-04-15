@@ -86,5 +86,56 @@ class ColorSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+
+        DB::table('colors')->insert([
+            'id'=>8,
+            'name' => 'Белый',
+            'model_id' => 3,
+            'article'=>'900240.203',
+            'image_front' => '58425abdea3a36b0b0df76e719078a64.jpg',
+            'image_back' => '58425abdea3a36b0b0df76e719078a64.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>9,
+            'name' => 'Розовый',
+            'model_id' => 3,
+            'article'=>'900240.510',
+            'image_front' => 'f58dd55a4b8fb5b6b1cecf9f8c79799a.jpg',
+            'image_back' => 'f58dd55a4b8fb5b6b1cecf9f8c79799a.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>10,
+            'name' => 'Желтый',
+            'model_id' => 3,
+            'article'=>'900240.901',
+            'image_front' => '62881c3ea4dea2a9aa0126870b014f32.jpg',
+            'image_back' => '62881c3ea4dea2a9aa0126870b014f32.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>11,
+            'name' => 'Фиолетовый',
+            'model_id' => 3,
+            'article'=>'900240.700',
+            'image_front' => '881425e4ecfeb41b944e7aa0880efa6b.jpg',
+            'image_back' => '881425e4ecfeb41b944e7aa0880efa6b.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('colors')->insert([
+            'id'=>12,
+            'name' => 'Черный',
+            'model_id' => 3,
+            'article'=>'900240.332',
+            'image_front' => 'e1b8a60d889836d1af091a238607ce0b.jpg',
+            'image_back' => 'e1b8a60d889836d1af091a238607ce0b.jpg',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 }

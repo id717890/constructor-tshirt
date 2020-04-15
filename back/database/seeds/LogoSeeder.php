@@ -35,5 +35,33 @@ class LogoSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+        DB::table('logos')->insert([
+            'id'=>4,
+            'name' => 'Логотип №4',
+            'image' => '1360425919Lokomotiv_Moscow-logo.png',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('logos')->insert([
+            'id'=>5,
+            'name' => 'Логотип №5',
+            'image' => 'real-madrid-logo-png-4.png',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('logos')->insert([
+            'id'=>6,
+            'name' => 'Логотип №6',
+            'image' => '583b5f6c1c3f1158a7ecbe54.png',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('logos')->insert([
+            'id'=>7,
+            'name' => 'Логотип №7',
+            'image' => 'manchester_united_PNG23.png',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 }

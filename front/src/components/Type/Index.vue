@@ -9,13 +9,7 @@
       </h2>
     </v-col>
     <v-col cols="12">
-      <v-data-table
-        :headers="headers"
-        :items="types"
-        class="elevation-1"
-        hide-default-footer
-        hide
-      >
+      <v-data-table :headers="headers" :items="types" class="elevation-1" hide>
         <template v-slot:item.act="{ item }">
           <v-btn
             fab
