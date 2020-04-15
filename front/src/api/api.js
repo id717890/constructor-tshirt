@@ -20,6 +20,16 @@ export default {
         return error
       })
   },
+  post: (url, data, config) => {
+    return Vue.$http
+      .post(url, data, config)
+      .then(x => {
+        return x.data
+      })
+      .catch(error => {
+        return error
+      })
+  },
   get: url => {
     return Vue.$http
       .get(url)

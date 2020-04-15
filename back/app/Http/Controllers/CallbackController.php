@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ZakazExport;
 use App\Models\Callback;
 use Egulias\EmailValidator\Exception\ExpectingCTEXT;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Mockery\CountValidator\Exception;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CallbackController extends Controller
 {
@@ -29,8 +31,8 @@ class CallbackController extends Controller
             // if (!is_null(getenv('EMAIL1')) && getenv('EMAIL1') !== '') array_push($email, getenv('EMAIL1'));
             // if (!is_null(getenv('EMAIL2')) && getenv('EMAIL2') !== '') array_push($email, getenv('EMAIL2'));
 //            array_push($email, 'jus_za@mail.ru');
-            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
-//            array_push($email, 'jusupovz@gmail.com');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
+            array_push($email, 'jusupovz@gmail.com');
 //            array_push($email, 'jusupovz@gmail.com', 'jus_za@mail.ru');
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
@@ -46,11 +48,11 @@ class CallbackController extends Controller
             // return response()->json(getenv('FROM_SEO'), 200);
 
             Mail::send('email.callback', [
-                'zakazTovar' => $zakazTovar,
-                'zakazNanesenie' => $zakazNanesenie,
-                'zakazNumberName' => $zakazNumberName,
-                'zakazNanesenieEach' => $zakazNanesenieEach,
-                'info' => $info
+//                'zakazTovar' => $zakazTovar,
+//                'zakazNanesenie' => $zakazNanesenie,
+//                'zakazNumberName' => $zakazNumberName,
+//                'zakazNanesenieEach' => $zakazNanesenieEach,
+//                'info' => $info
 //                'docBuy' => $docBuy
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
@@ -66,6 +68,12 @@ class CallbackController extends Controller
                             );
                         }
                     }
+                    $mail->attach(
+                        Excel::download(
+                            new ZakazExport(),
+                            'report.xlsx'
+                        )->getFile(), ['as' => 'report.xlsx']
+                    );
                 });
 
             return response()->json(200);

@@ -15,6 +15,15 @@
           >
             <v-icon>mdi-format-align-justify</v-icon>
           </v-btn>
+          <v-btn
+            style="position: fixed; left: 50px; top: 125px"
+            text
+            icon
+            large
+            @click="openDialogZakazAll"
+          >
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
           <!-- Вкладки заказов -->
           <v-row v-if="orders && orders.length > 0">
             <v-col>
@@ -520,10 +529,10 @@
                 <v-col cols="12" md="6">
                   <v-btn
                     large
-                    @click="openDialogZakazTovar"
+                    @click="openDialogZakazAll"
                     color="success"
                     class="w100"
-                    >Заказ Товар</v-btn
+                    >Оформить заказ</v-btn
                   >
                 </v-col>
               </v-row>
@@ -544,6 +553,7 @@ import TableSize from './ConstructorSize'
 import DialogZakazTovar from '../components/Dialog/ZakazTovar'
 import DialogZakazNomerFio from '../components/Dialog/ZakazNomerFio'
 import DialogZakazLogos from '../components/Dialog/ZakazLogos'
+import DialogZakazAll from '../components/Dialog/ZakazAll'
 export default {
   components: {
     TableSize
@@ -723,6 +733,19 @@ export default {
         logoTypeId: logoType.id,
         logoSizeId: logoSize.id
       })
+    },
+    openDialogZakazAll() {
+      this.$modal.show(
+        DialogZakazAll,
+        { orders: this.orders },
+        {
+          pivotY: 0.1,
+          width: '90%',
+          height: 'auto',
+          ...config.modalSettings,
+          scrollable: true
+        }
+      )
     },
     openDialogLogos() {
       this.$modal.show(
