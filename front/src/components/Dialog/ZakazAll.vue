@@ -175,6 +175,7 @@ export default {
     zakazNumberName: [],
     zakazLogos: [],
     zakazLogosSum: 0,
+    zakazLogosEach: [],
     fizik: {
       number: 1,
       date: 2,
@@ -207,6 +208,7 @@ export default {
   created() {
     this.prepareZakazTovar()
     this.prepareZakazFio()
+    this.prepareZakazLogosEach()
     this.prepareZakazLogos()
   },
   mounted() {
@@ -269,7 +271,8 @@ export default {
       fd.append('zakazTovar', JSON.stringify(this.zakazTovar))
       fd.append('zakazTovarSum', this.zakazTovarSum)
       fd.append('zakazLogos', JSON.stringify(this.zakazLogos))
-      fd.append('zakazLogosSum', this.zakazTovarSum)
+      fd.append('zakazLogosSum', this.zakazLogosSum)
+      fd.append('zakazLogosEach', JSON.stringify(this.zakazLogosEach))
 
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
@@ -285,6 +288,78 @@ export default {
       setTimeout(() => {
         context.post('api/callback/mail', fd, config)
       }, 2000)
+    },
+    prepareZakazLogosEach() {
+      let result = []
+      if (this.orders) {
+        this.orders.forEach(order => {
+          let totalSumByOrder = 0
+          let rows = []
+          if (order.orderedLogos) {
+            const logos = order.orderedLogos
+            const types = [
+              ...new Set(
+                logos.map(x => x.logoType.name + ' ' + x.logoSize.name)
+              )
+            ]
+            types.forEach(type => {
+              const find = logos.filter(
+                x => x.logoType.name + ' ' + x.logoSize.name === type
+              )
+              let price = find[0].logoType.price
+              let count = find.length
+              let sum = price * count
+              totalSumByOrder += sum
+              rows.push({
+                logoType: type,
+                count: count,
+                price: price,
+                sum: sum
+              })
+            })
+          }
+          if (order.orderedTexts) {
+            const texts = order.orderedTexts
+            const types = [
+              ...new Set(
+                texts.map(
+                  x =>
+                    (x.type === 'text' ? 'Надпись' : 'Номер') +
+                    ' ' +
+                    x.textSize.name
+                )
+              )
+            ]
+            types.forEach(type => {
+              const find = texts.filter(
+                x =>
+                  (x.type === 'text' ? 'Надпись' : 'Номер') +
+                    ' ' +
+                    x.textSize.name ===
+                  type
+              )
+              let price = find[0].textSize.price
+              let count = find.length
+              let sum = price * count
+              totalSumByOrder += sum
+              rows.push({
+                logoType: type,
+                count: count,
+                price: price,
+                sum: sum
+              })
+            })
+          }
+
+          result.push({
+            id: order.id,
+            name: order.titleTab,
+            rows: rows,
+            sum: totalSumByOrder
+          })
+        })
+      }
+      this.zakazLogosEach = result
     },
     prepareZakazLogos() {
       let result = []

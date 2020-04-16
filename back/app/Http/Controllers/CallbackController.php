@@ -22,6 +22,7 @@ class CallbackController extends Controller
             $zakazTovar = json_decode(Input::get('zakazTovar'), true);
             $zakazTovarSum = Input::get('zakazTovarSum');
             $zakazLogos = json_decode(Input::get('zakazLogos'), true);
+            $zakazLogosEach = json_decode(Input::get('zakazLogosEach'), true);
             $zakazLogosSum = Input::get('zakazLogosSum');
 
 
@@ -47,7 +48,8 @@ class CallbackController extends Controller
                 'zakazTovar' => $zakazTovar,
                 'zakazTovarSum' => $zakazTovarSum,
                 'zakazLogos' =>$zakazLogos,
-                'zakazLogosSum' => $zakazTovarSum
+                'zakazLogosEach' =>$zakazLogosEach,
+                'zakazLogosSum' => $zakazLogosSum
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);
