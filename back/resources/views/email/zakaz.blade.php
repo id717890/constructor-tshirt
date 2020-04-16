@@ -338,11 +338,36 @@
             </tr>
             </tbody>
         </table>
-
-
-
     @endif
 
+    @if(isset($zakazNumberName))
+        <h1>РЗМЕР-НОМЕР-ФАМИЛИЯ</h1>
+        <table class="table table-hover table-bordered"
+               style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6"
+                >
+            <thead>
+            <tr>
+                <th style="border: 1px solid #dee2e6">Модель</th>
+                <th style="border: 1px solid #dee2e6">Размер</th>
+                <th style="border: 1px solid #dee2e6">Номер</th>
+                <th style="border: 1px solid #dee2e6">ФИО</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($zakazNumberName as $row)
+                <tr>
+                    <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
+                    <td style="border: 1px solid #dee2e6">{{$row['size']}}</td>
+                    <td style="border: 1px solid #dee2e6">{{$row['number']}}</td>
+                    <td style="border: 1px solid #dee2e6">{{$row['fio']}}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
 </body>
 </html>

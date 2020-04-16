@@ -273,6 +273,7 @@ export default {
       fd.append('zakazLogos', JSON.stringify(this.zakazLogos))
       fd.append('zakazLogosSum', this.zakazLogosSum)
       fd.append('zakazLogosEach', JSON.stringify(this.zakazLogosEach))
+      fd.append('zakazNumberName', JSON.stringify(this.zakazNumberName))
 
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
