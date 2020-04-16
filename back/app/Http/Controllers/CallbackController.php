@@ -21,9 +21,11 @@ class CallbackController extends Controller
             $info = Input::get('info');
             $zakazTovar = json_decode(Input::get('zakazTovar'), true);
             $zakazTovarSum = Input::get('zakazTovarSum');
+            $zakazLogos = json_decode(Input::get('zakazLogos'), true);
+            $zakazLogosSum = Input::get('zakazLogosSum');
 
 
-//             return response()->json($info, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+//             return response()->json($zakazLogos, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
 
 
 //            $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
@@ -41,13 +43,11 @@ class CallbackController extends Controller
             // return response()->json(getenv('FROM_SEO'), 200);
 
             Mail::send('email.zakaz', [
+                'info' => $info,
                 'zakazTovar' => $zakazTovar,
                 'zakazTovarSum' => $zakazTovarSum,
-//                'zakazNanesenie' => $zakazNanesenie,
-//                'zakazNumberName' => $zakazNumberName,
-//                'zakazNanesenieEach' => $zakazNanesenieEach,
-                'info' => $info
-//                'docBuy' => $docBuy
+                'zakazLogos' =>$zakazLogos,
+                'zakazLogosSum' => $zakazTovarSum
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);

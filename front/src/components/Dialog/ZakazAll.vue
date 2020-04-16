@@ -268,10 +268,12 @@ export default {
       fd.append('info', info)
       fd.append('zakazTovar', JSON.stringify(this.zakazTovar))
       fd.append('zakazTovarSum', this.zakazTovarSum)
+      fd.append('zakazLogos', JSON.stringify(this.zakazLogos))
+      fd.append('zakazLogosSum', this.zakazTovarSum)
 
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
-        console.log(img)
+        // console.log(img)
         img.toBlob(data => {
           fd.append('images[]', data, order.id)
         })

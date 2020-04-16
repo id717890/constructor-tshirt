@@ -262,7 +262,7 @@
                 <td style="border: 1px solid #dee2e6">{{$row['size']}}</td>
                 <td style="border: 1px solid #dee2e6">{{$row['inMoscow']}}</td>
                 <td style="border: 1px solid #dee2e6">{{$row['inSpain']}}</td>
-                <td style="border: 1px solid #dee2e6">{{$row['count']}}</td>
+                <td style="border: 1px solid #dee2e6">{{$row['total']}}</td>
                 <td style="border: 1px solid #dee2e6">{{$row['price']}}</td>
                 <td style="border: 1px solid #dee2e6">{{$row['sum']}}</td>
             </tr>
@@ -273,6 +273,40 @@
         </tr>
         </tbody>
     </table>
+
+    @if(isset($zakazLogos))
+        <h1>Заказ нанесение ИТОГО</h1>
+        <table class="table table-hover table-bordered"
+               style="width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border: 1px solid #dee2e6"
+                >
+            <thead>
+            <tr>
+                <th style="border: 1px solid #dee2e6">Нанесение</th>
+                <th style="border: 1px solid #dee2e6">Кол-во</th>
+                <th style="border: 1px solid #dee2e6">Сумма (руб.)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($zakazLogos as $row)
+                <tr>
+                    <td style="border: 1px solid #dee2e6">{{$row['name']}}</td>
+                    <td style="border: 1px solid #dee2e6">{{$row['count']}}</td>
+                    <td style="border: 1px solid #dee2e6">{{$row['sum']}}</td>
+                </tr>
+            @endforeach
+            <tr>
+                <td colspan="2" style="border: 1px solid #dee2e6">Итого:</td>
+                <td style="border: 1px solid #dee2e6">{{$zakazLogosSum}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+    @endif
 
 </div>
 </body>
