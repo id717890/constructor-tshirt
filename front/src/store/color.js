@@ -8,6 +8,12 @@ const state = {
 
 // actions
 const actions = {
+  async updateColorPromise({ dispatch }, payload) {
+    return await context.post('api/colors/update/' + payload.id, payload)
+  },
+  async createColorPromise({ commit, dispatch }, payload) {
+    return await context.post('api/colors', payload)
+  },
   async updateColor({ dispatch }, payload) {
     await context
       .post('api/colors/update/' + payload.id, payload)
@@ -31,6 +37,9 @@ const actions = {
       dispatch('getAllColors')
     })
   },
+  async deleteColorPromise({ commit, dispatch }, payload) {
+    return await context.post('api/colors/delete/' + payload.id)
+  },
   async getAllColors({ commit }, payload) {
     context.get('api/colors').then(x => {
       commit(types.GET_ALL_COLORS, x)
@@ -47,6 +56,11 @@ const mutations = {
 
 // getters
 const getters = {
+  getColorosByModelId: state => id => {
+    if (state.allColors && state.allColors.length > 0)
+      return state.allColors.filter(x => Number(x.model_id) === Number(id))
+    return []
+  },
   getColorById: state => id => {
     return state.allColors.find(x => Number(x.id) === Number(id))
   }

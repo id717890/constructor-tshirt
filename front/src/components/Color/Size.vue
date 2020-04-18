@@ -45,18 +45,14 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12" class="d-flex">
-          <v-btn color="secondary" large to="/lk/colors" class="mr-6">
+          <v-btn
+            color="secondary"
+            large
+            :to="'/lk/model/' + model_id"
+            class="mr-6"
+          >
             <v-icon class="mr-2">mdi-arrow-left</v-icon>Назад
           </v-btn>
-          <!-- <v-btn
-            color="primary"
-            large
-            :loading="loading"
-            @click.prevent="save"
-            :disabled="!form.valid"
-          >
-            <v-icon class="mr-2">mdi-content-save</v-icon>Сохранить
-          </v-btn> -->
         </v-col>
       </v-row>
     </v-container>
@@ -71,7 +67,7 @@ import SizeTable from './SizeTable'
 
 export default {
   mixins: [loading],
-  props: ['id'],
+  props: ['model_id', 'id'],
   components: {
     SizeTable
   },

@@ -15,20 +15,14 @@
             item-text="name"
             v-model="form.type"
           ></v-select>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col lg="6" md="8" sm="12" cols="12">
+
           <v-text-field
             label="Наименование"
             v-model="form.name"
             required
             :rules="textField"
           ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col lg="6" md="8" sm="12" cols="12">
+
           <v-text-field
             label="Описание"
             v-model="form.description"
@@ -36,9 +30,7 @@
             :rules="textField"
           ></v-text-field>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col lg="6" md="8" sm="12" cols="12">
+        <v-col lg="6" md="4" sm="12" cols="12" class="pl-6">
           <v-btn @click="$refs.file.click()" dark class="mb-5">
             <v-icon>mdi-image</v-icon>
             Загрузить изображение</v-btn
@@ -58,6 +50,15 @@
               style="max-height: 300px; border-radius: 10px"
             />
           </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col md="8" sm="12" cols="12">
+          <color-table
+            v-if="model && colors"
+            :rows="colors"
+            :model_id="model.id"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -87,9 +88,13 @@
 import loading from '../../mixins/loading'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import config from '../../init/config'
+import ColorTable from './ColorTable'
 
 export default {
   mixins: [loading],
+  components: {
+    ColorTable
+  },
   props: ['id'],
   data: () => ({
     textField: [v => !!v || 'Обязательное поле'],
@@ -101,28 +106,13 @@ export default {
     },
     preview: null
   }),
-  beforeMount() {
-    // if (this.model) {
-    //   this.form.name = this.model.name
-    //   this.form.description = this.model.description
-    //   this.form.type = this.model.type
-    //   this.preview = this.model.image
-    // } else {
-    //   setTimeout(() => {
-    //     if (this.model) {
-    //       this.form.name = this.model.name
-    //       this.form.description = this.model.description
-    //       this.form.type = this.model.type
-    //       this.preview = this.model.image
-    //     }
-    //   }, 1800)
-    // }
-  },
-  created() {},
-  async mounted() {
+  async created() {
     await this.getAllTypes()
     await this.getAllModels()
+    await this.getAllColors()
     this.setLoad(false)
+  },
+  mounted() {
     setTimeout(() => {
       this.form.type = this.types[0]
       if (this.model) {
@@ -134,12 +124,15 @@ export default {
     }, 800)
   },
   computed: {
-    ...mapGetters(['getModelById']),
+    ...mapGetters(['getModelById', 'getColorosByModelId']),
     ...mapState({
       types: state => state.type.allTypes
     }),
     model() {
       return this.getModelById(this.id)
+    },
+    colors() {
+      return this.getColorosByModelId(this.id)
     }
   },
   methods: {
@@ -147,7 +140,8 @@ export default {
       'updateModel',
       'getAllTypes',
       'getAllModels',
-      'uploadImage'
+      'uploadImage',
+      'getAllColors'
     ]),
     img(url) {
       return config.apiAddress + 'api/image/' + url

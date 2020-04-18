@@ -27,14 +27,14 @@
             <v-list-item-title>Модели</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/lk/colors">
+        <!-- <v-list-item link to="/lk/colors">
           <v-list-item-action>
             <v-icon>mdi-palette</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Цвета</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/logos">
           <v-list-item-action>

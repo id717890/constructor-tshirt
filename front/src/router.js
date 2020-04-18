@@ -10,7 +10,7 @@ export default new Router({
     {
       path: '/',
       name: 'Constructor',
-      redirect: '/lk/',
+      // redirect: '/lk/',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -87,21 +87,27 @@ export default new Router({
           props: true,
           component: () => import('./components/Logo/Edit.vue')
         },
+        // ПЕРЕНЕСЕНО В МОДЕЛИ
+        // {
+        //   path: 'colors',
+        //   component: () => import('./components/Color/Index.vue')
+        // },
+        // {
+        //   path: 'color/create',
+        //   component: () => import('./components/Color/Create.vue')
+        // },
+        // {
+        //   path: 'color/:id',
+        //   props: true,
+        //   component: () => import('./components/Color/Edit.vue')
+        // },
+        // {
+        //   path: 'color/size/:id',
+        //   props: true,
+        //   component: () => import('./components/Color/Size.vue')
+        // },
         {
-          path: 'colors',
-          component: () => import('./components/Color/Index.vue')
-        },
-        {
-          path: 'color/create',
-          component: () => import('./components/Color/Create.vue')
-        },
-        {
-          path: 'color/:id',
-          props: true,
-          component: () => import('./components/Color/Edit.vue')
-        },
-        {
-          path: 'color/size/:id',
+          path: 'model/:model_id/color/size/:id',
           props: true,
           component: () => import('./components/Color/Size.vue')
         },
