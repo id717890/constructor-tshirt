@@ -8,6 +8,15 @@ const state = {
 
 // actions
 const actions = {
+  async updateTextSizePromise({ dispatch }, payload) {
+    return await context.post('api/text_sizes/update/' + payload.id, payload)
+  },
+  async createTextSizePromise({ commit, dispatch }, payload) {
+    return await context.post('api/text_sizes', payload)
+  },
+  async deleteTextSizePromise({ commit, dispatch }, payload) {
+    return await context.post('api/text_sizes/delete/' + payload.id)
+  },
   async updateTextSize({ dispatch }, payload) {
     await context
       .post('api/text_sizes/update/' + payload.id, payload)

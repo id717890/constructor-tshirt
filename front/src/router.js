@@ -26,28 +26,30 @@ export default new Router({
           path: 'number_sizes',
           component: () => import('./components/NumberSize/Index.vue')
         },
-        {
-          path: 'number_size/create',
-          component: () => import('./components/NumberSize/Create.vue')
-        },
-        {
-          path: 'number_size/:id',
-          props: true,
-          component: () => import('./components/NumberSize/Edit.vue')
-        },
+        // ПЕРЕНЕСЕНО В ГЛАВНУЮ ТАБЛИЦУ
+        // {
+        //   path: 'number_size/create',
+        //   component: () => import('./components/NumberSize/Create.vue')
+        // },
+        // {
+        //   path: 'number_size/:id',
+        //   props: true,
+        //   component: () => import('./components/NumberSize/Edit.vue')
+        // },
         {
           path: 'text_sizes',
           component: () => import('./components/TextSize/Index.vue')
         },
-        {
-          path: 'text_size/create',
-          component: () => import('./components/TextSize/Create.vue')
-        },
-        {
-          path: 'text_size/:id',
-          props: true,
-          component: () => import('./components/TextSize/Edit.vue')
-        },
+        // ПЕРЕНЕСЕНО В ГЛАВНУЮ ТАБЛИЦУ
+        // {
+        //   path: 'text_size/create',
+        //   component: () => import('./components/TextSize/Create.vue')
+        // },
+        // {
+        //   path: 'text_size/:id',
+        //   props: true,
+        //   component: () => import('./components/TextSize/Edit.vue')
+        // },
         {
           path: 'logo_sizes',
           component: () => import('./components/LogoSize/Index.vue')
@@ -61,19 +63,20 @@ export default new Router({
           props: true,
           component: () => import('./components/LogoSize/Edit.vue')
         },
-        {
-          path: 'logo_types',
-          component: () => import('./components/LogoType/Index.vue')
-        },
-        {
-          path: 'logo_type/create',
-          component: () => import('./components/LogoType/Create.vue')
-        },
-        {
-          path: 'logo_type/:id',
-          props: true,
-          component: () => import('./components/LogoType/Edit.vue')
-        },
+        // ПЕРЕНЕСЕНО В РАЗМЕРЫ ЛОГО
+        // {
+        //   path: 'logo_types',
+        //   component: () => import('./components/LogoType/Index.vue')
+        // },
+        // {
+        //   path: 'logo_type/create',
+        //   component: () => import('./components/LogoType/Create.vue')
+        // },
+        // {
+        //   path: 'logo_type/:id',
+        //   props: true,
+        //   component: () => import('./components/LogoType/Edit.vue')
+        // },
         {
           path: 'logos',
           component: () => import('./components/Logo/Index.vue')

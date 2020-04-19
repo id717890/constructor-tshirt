@@ -14,6 +14,9 @@ const actions = {
   async createColorPromise({ commit, dispatch }, payload) {
     return await context.post('api/colors', payload)
   },
+  async deleteColorPromise({ commit, dispatch }, payload) {
+    return await context.post('api/colors/delete/' + payload.id)
+  },
   async updateColor({ dispatch }, payload) {
     await context
       .post('api/colors/update/' + payload.id, payload)
@@ -36,9 +39,6 @@ const actions = {
     context.post('api/colors/delete/' + payload.id).then(x => {
       dispatch('getAllColors')
     })
-  },
-  async deleteColorPromise({ commit, dispatch }, payload) {
-    return await context.post('api/colors/delete/' + payload.id)
   },
   async getAllColors({ commit }, payload) {
     context.get('api/colors').then(x => {

@@ -8,6 +8,15 @@ const state = {
 
 // actions
 const actions = {
+  async updateTypePromise({ dispatch }, payload) {
+    return await context.post('api/logo_types/update/' + payload.id, payload)
+  },
+  async createTypePromise({ commit, dispatch }, payload) {
+    return await context.post('api/logo_types', payload)
+  },
+  async deleteTypePromise({ commit, dispatch }, payload) {
+    return await context.post('api/logo_types/delete/' + payload.id)
+  },
   async updateLogoType({ dispatch }, payload) {
     await context
       .post('api/logo_types/update/' + payload.id, payload)
@@ -47,6 +56,13 @@ const mutations = {
 
 // getters
 const getters = {
+  getTypesBySizeId: state => id => {
+    if (state.allLogoTypes && state.allLogoTypes.length > 0)
+      return state.allLogoTypes.filter(
+        x => Number(x.logo_size_id) === Number(id)
+      )
+    return []
+  },
   getLogoTypeById: state => id => {
     return state.allLogoTypes.find(x => Number(x.id) === Number(id))
   }

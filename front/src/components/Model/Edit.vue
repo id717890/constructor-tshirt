@@ -54,6 +54,7 @@
       </v-row>
       <v-row>
         <v-col md="8" sm="12" cols="12">
+          <h2>Цвета</h2>
           <color-table
             v-if="model && colors"
             :rows="colors"
@@ -63,6 +64,10 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12" class="d-flex">
+          <v-btn class="mr-6" color="secondary" large to="/lk/models">
+            <v-icon class="mr-2">mdi-arrow-left</v-icon>
+            Отмена
+          </v-btn>
           <v-btn
             color="primary"
             large
@@ -72,11 +77,6 @@
           >
             <v-icon class="mr-2">mdi-content-save</v-icon>
             Сохранить
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" large to="/lk/models">
-            <v-icon class="mr-2">mdi-arrow-left</v-icon>
-            Отмена
           </v-btn>
         </v-col>
       </v-row>

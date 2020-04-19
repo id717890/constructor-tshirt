@@ -10,7 +10,7 @@ class LogoType extends Model
 
     protected $table = 'logo_types';
 
-    protected $fillable = array('logo_size_id', 'name', 'price');
+    protected $fillable = array('logo_size_id', 'name', 'price', 'description');
 
     protected $hidden = array('created_at','updated_at');
 }

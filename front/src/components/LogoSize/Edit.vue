@@ -28,7 +28,21 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col md="10" sm="12" cols="12">
+          <h2>Типы логотипов</h2>
+          <type-table
+            v-if="logoSize && logoTypes"
+            :rows="logoTypes"
+            :logo_size_id="logoSize.id"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col lg="6" md="8" sm="12" cols="12" class="d-flex">
+          <v-btn class="mr-6" color="secondary" large to="/lk/logo_sizes">
+            <v-icon class="mr-2">mdi-arrow-left</v-icon>
+            Отмена
+          </v-btn>
           <v-btn
             color="primary"
             large
@@ -38,11 +52,6 @@
           >
             <v-icon class="mr-2">mdi-content-save</v-icon>
             Сохранить
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" large to="/lk/logo_sizes">
-            <v-icon class="mr-2">mdi-arrow-left</v-icon>
-            Отмена
           </v-btn>
         </v-col>
       </v-row>
@@ -54,10 +63,14 @@
 import loading from '../../mixins/loading'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import config from '../../init/config'
+import TypeTable from './TypeTable'
 
 export default {
   mixins: [loading],
   props: ['id'],
+  components: {
+    TypeTable
+  },
   data: () => ({
     textField: [v => !!v || 'Обязательное поле'],
     form: {
@@ -66,7 +79,9 @@ export default {
       size: 0
     }
   }),
-  created() {},
+  async created() {
+    await this.getAllLogoTypes()
+  },
   async mounted() {
     await this.getAllLogoSizes()
     this.setLoad(false)
@@ -78,13 +93,16 @@ export default {
     }, 800)
   },
   computed: {
-    ...mapGetters(['getLogoSizeById']),
+    ...mapGetters(['getLogoSizeById', 'getTypesBySizeId']),
     logoSize() {
       return this.getLogoSizeById(this.id)
+    },
+    logoTypes() {
+      return this.getTypesBySizeId(this.id)
     }
   },
   methods: {
-    ...mapActions(['updateLogoSize', 'getAllLogoSizes']),
+    ...mapActions(['updateLogoSize', 'getAllLogoSizes', 'getAllLogoTypes']),
     save() {
       this.setLoad(true)
       if (this.$refs.form.validate()) {
