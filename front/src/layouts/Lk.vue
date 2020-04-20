@@ -5,7 +5,7 @@
       <v-list dense>
         <v-list-item link to="/">
           <v-list-item-action>
-            <v-icon>mdi-check</v-icon>
+            <v-icon>mdi-cogs</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Конструктор</v-list-item-title>

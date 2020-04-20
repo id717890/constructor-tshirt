@@ -15,15 +15,7 @@
           >
             <v-icon>mdi-format-align-justify</v-icon>
           </v-btn>
-          <v-btn
-            style="position: fixed; left: 50px; top: 125px"
-            text
-            icon
-            large
-            @click="openDialogZakazAll"
-          >
-            <v-icon>mdi-home</v-icon>
-          </v-btn>
+
           <!-- Вкладки заказов -->
           <v-row v-if="orders && orders.length > 0">
             <v-col>
@@ -145,13 +137,20 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="7">
+                <v-col cols="7" style="position: relative">
+                  <v-btn
+                    @click="openDialogCopy"
+                    style="position: absolute; top: 20px; left: 30px"
+                  >
+                    <v-icon></v-icon>
+                    Copy
+                  </v-btn>
                   <h2 v-html="order.titleCanvas" class="text-center mb-0"></h2>
                   <canvas
                     height="350"
                     width="700"
                     v-bind:id="'orderCanvas_' + order.id"
-                    ref="canvasImg"
+                    :ref="'canvasImg_' + order.id"
                   >
                   </canvas>
                   <div class="mt-4">
@@ -554,6 +553,7 @@ import DialogZakazTovar from '../components/Dialog/ZakazTovar'
 import DialogZakazNomerFio from '../components/Dialog/ZakazNomerFio'
 import DialogZakazLogos from '../components/Dialog/ZakazLogos'
 import DialogZakazAll from '../components/Dialog/ZakazAll'
+import DialogCopy from '../components/Dialog/CopyDialog'
 export default {
   components: {
     TableSize
@@ -641,7 +641,8 @@ export default {
       allLogoTypes: state => state.logoType.allLogoTypes,
       allNumberSizes: state => state.numberSize.allNumberSizes,
       allTextSizes: state => state.textSize.allTextSizes,
-      showDeleteLogo: state => state.canvas.showDeleteBtn
+      showDeleteLogo: state => state.canvas.showDeleteBtn,
+      copyDialogResult: state => state.dialog.copyDialogResult
     }),
     logoTypesBySize() {
       if (this.currentLogoSize) {
@@ -685,8 +686,93 @@ export default {
       'getAllLogoSizes',
       'getAllLogoTypes',
       'getAllNumberSizes',
-      'getAllTextSizes'
+      'getAllTextSizes',
+      'resetCopyDialogResult'
     ]),
+    openDialogCopy() {
+      this.$modal.show(
+        DialogCopy,
+        { orders: this.orders },
+        {
+          ...config.modalSettings,
+          clickToClose: true
+        },
+        {
+          closed: this.selectedOrderForCopy
+        }
+      )
+    },
+    selectedOrderForCopy() {
+      if (this.copyDialogResult) {
+        let orderId = this.copyDialogResult
+        let order = this.getOrder()
+        let canvas = order.canvas
+        let targetOrder = this.orders.find(
+          x => Number(x.id) === Number(orderId)
+        )
+        if (targetOrder) {
+          Object.keys(targetOrder.canvas.images).forEach(objKey => {
+            if (objKey !== 'front' && objKey !== 'back') {
+              let obj = targetOrder.canvas.images[objKey]
+              obj.clone(x => {
+                x.set({
+                  left: x.left,
+                  top: x.top,
+                  evented: true,
+                  centeredScaling: true,
+                  padding: 10,
+                  transparentCorners: false,
+                  borderColor: '#000000',
+                  cornerColor: '#000000',
+                  cornerStrokeColor: '#000000'
+                })
+                x.setControlVisible('ml', false)
+                x.setControlVisible('mr', false)
+                x.setControlVisible('mt', false)
+                x.setControlVisible('mb', false)
+                x.setControlVisible('mtr', false)
+                order.canvas.ctx.add(x)
+                order.canvas.images[this.guid()] = x
+              })
+            }
+          })
+
+          Object.keys(targetOrder.canvas.texts).forEach(objKey => {
+            let obj = targetOrder.canvas.texts[objKey]
+            obj.clone(x => {
+              x.set({
+                left: x.left,
+                top: x.top,
+                evented: true,
+                centeredScaling: true,
+                padding: 10,
+                transparentCorners: false,
+                borderColor: '#000000',
+                cornerColor: '#000000',
+                cornerStrokeColor: '#000000'
+              })
+              x.setControlVisible('ml', false)
+              x.setControlVisible('mr', false)
+              x.setControlVisible('mt', false)
+              x.setControlVisible('mb', false)
+              x.setControlVisible('mtr', false)
+              order.canvas.ctx.add(x)
+              order.canvas.texts[this.guid()] = x
+            })
+          })
+
+          order.orderedLogos = [
+            ...order.orderedLogos,
+            ...targetOrder.orderedLogos
+          ]
+          order.orderedTexts = [
+            ...order.orderedTexts,
+            ...targetOrder.orderedTexts
+          ]
+        }
+        this.resetCopyDialogResult()
+      }
+    },
     delTextFromOrder(textId) {
       let order = this.getOrder()
       if (order && order.orderedTexts) {

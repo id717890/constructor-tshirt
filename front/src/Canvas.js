@@ -43,6 +43,7 @@ export default class Canvas {
     imageUrl,
     setFunction,
     context = null,
+    size = 300,
     callback = function() {}
   ) {
     // сохраняем текущий контекст this
@@ -51,7 +52,7 @@ export default class Canvas {
       imageUrl,
       function(img) {
         try {
-          setFunction(img, context)
+          setFunction(img, context, size)
         } finally {
           // устанавливаем текущее изображение активным объектом FabricJS
           that.ctx.setActiveObject(img)
@@ -74,7 +75,7 @@ export default class Canvas {
         }
       },
       {
-        crossOrigin: 'anonymous'
+        crossOrigin: ''
       }
     )
     // console.log('Добавлено изображение ' + imageName)

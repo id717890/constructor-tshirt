@@ -4,7 +4,8 @@ const state = {
   defaultDialog: false,
   congratulationDialog: false,
   messages: [],
-  confirmDialogResult: false
+  confirmDialogResult: false,
+  copyDialogResult: null
 }
 
 // getters
@@ -17,27 +18,15 @@ const actions = {
   acceptConfirmDialog({ commit }) {
     commit(types.SET_RESULT_CONFIRM_DIALOG, true)
   },
+  setCopyDialogResult({ commit }, payload) {
+    commit(types.SET_RESULT_COPY_DIALOG, payload)
+  },
   resetConfirmDialogResult({ commit }) {
     commit(types.SET_RESULT_CONFIRM_DIALOG, false)
   },
-  // callConfirmDialog ({commit}, payload) {
-  //   return new Promise((resolve, reject) => {
-  //     commit(types.SET_QUESTION_FOR_CONFIRM_DIALOG, payload)
-  //     commit(types.SHOW_CONFIRM_DIALOG, true)
-
-  //     context.signUp(payload.email, payload.password, payload.passwordConfirm, payload.firstName, payload.lastName).then((x) => {
-  //       if (x.status === 200) {
-  //         dispatch('setMessages', ['Accont create. Please, confirm your email address.'])
-  //         resolve()
-  //       } else {
-  //         dispatch('setErrors', x.response.data)
-  //         reject(x.response.data)
-  //       }
-  //     }).catch(x => {
-  //       reject(x.response.data)
-  //     })
-  //   })
-  // },
+  resetCopyDialogResult({ commit }) {
+    commit(types.SET_RESULT_COPY_DIALOG, null)
+  },
   setMessageDialog({ commit }, payload) {
     commit(types.SET_MESSAGE_DIALOG, payload)
   },
@@ -51,6 +40,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  [types.SET_RESULT_COPY_DIALOG](state, payload) {
+    state.copyDialogResult = payload
+  },
   [types.SET_RESULT_CONFIRM_DIALOG](state, payload) {
     state.confirmDialogResult = payload
   },
