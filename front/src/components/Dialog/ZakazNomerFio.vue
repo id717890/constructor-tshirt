@@ -52,6 +52,7 @@
                                   height="32"
                                   solo
                                   v-model="subRow.number"
+                                  @input="toUpperNum($event, subRow)"
                                 ></v-text-field>
                               </div>
                             </td>
@@ -62,6 +63,7 @@
                                   height="32"
                                   solo
                                   v-model="subRow.fio"
+                                  @input="toUpperFio($event, subRow)"
                                 ></v-text-field>
                               </div>
                             </td>
@@ -99,6 +101,12 @@ export default {
         }
       })
       this.$emit('close')
+    },
+    toUpperNum(e, item) {
+      item.number = e.toUpperCase()
+    },
+    toUpperFio(e, item) {
+      item.fio = e.toUpperCase()
     },
     mapData() {
       if (this.orders) {
