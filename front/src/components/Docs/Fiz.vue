@@ -810,7 +810,8 @@ export default {
       showContractNanesenie: false
     }
   }),
-  created() {
+  created() {},
+  mounted() {
     const date = new Date()
     const contractNumber =
       date.getFullYear().toString() +

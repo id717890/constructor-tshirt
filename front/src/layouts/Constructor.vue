@@ -30,7 +30,7 @@
                     >mdi-close</v-icon
                   >
                 </v-tab>
-                <v-tab @click="newOrder">NEW</v-tab>
+                <v-tab @click="newOrder">Добавить артикул</v-tab>
               </v-tabs>
             </v-col>
           </v-row>

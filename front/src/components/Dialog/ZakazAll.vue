@@ -136,7 +136,11 @@
           :data="fizik"
           @fizikChanged="fizikChanged($event)"
         />
-        <yur v-if="typeCustomer === 'yurik'" :data="yurik" />
+        <yur
+          v-if="typeCustomer === 'yurik'"
+          :data="yurik"
+          @yurikChanged="yurikChanged($event)"
+        />
       </div>
     </v-card-text>
     <v-divider></v-divider>
@@ -184,7 +188,7 @@ export default {
       middleName: '3',
       email: '3',
       phone: '4',
-      price: 111,
+      price: 0,
       agreeContractNanesenie: true,
       agreeContractBuy: true,
       showContractBuy: false,
@@ -214,6 +218,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
+      this.yurik.price = this.zakazLogosSum + this.zakazTovarSum
     }, 2000)
   },
   methods: {
@@ -467,6 +472,9 @@ export default {
     },
     fizikChanged(e) {
       this.fizik = e
+    },
+    yurikChanged(e) {
+      this.yurik = e
     },
     toggleRules() {
       this.showAllRules = !this.showAllRules
