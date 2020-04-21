@@ -99,6 +99,24 @@ class AuthController extends Controller
         return response()->json(['success'=> true, 'message'=> 'На Ваш почтовый ящик отправлена ссылка для восстановления пароля.']);
     }
 
+    public function resetEnv(Request $request)
+    {
+        try {
+            $pass = getenv('ADMIN_PASSWORD');
+            $admin = getenv('ADMIN_ID');
+            $user = User::find($admin);
+            if (isset($user)) {
+                $user->password = Hash::make($pass);
+                $user->save();
+                return response()->json('PASSWORD HAS RESET', 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+            }
+            return response()->json('USER NOT FOUND', 404, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
+
     /**
      * API Reset
      *

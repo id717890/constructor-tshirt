@@ -65,26 +65,6 @@ export default {
   mounted() {},
   methods: {
     ...mapActions(['signUserIn']),
-    login1() {
-      this.form.email = 'kakashka87@list.ru'
-      this.form.password = 'qweqwe'
-    },
-    login2() {
-      this.form.email = 'jus_za@mail.ru'
-      this.form.password = 'qweqwe'
-    },
-    login3() {
-      this.form.email = 'jusupovaz@mail.ru'
-      this.form.password = 'qweqwe'
-    },
-    loginAdmin() {
-      this.form.email = 'admin@gmail.com'
-      this.form.password = 'qweqwe'
-    },
-    loginUser() {
-      this.form.email = 'user@gmail.com'
-      this.form.password = 'qweqwe'
-    },
     signin(e) {
       this.loading = true
       e.preventDefault()
@@ -101,15 +81,6 @@ export default {
             this.loading = false
           })
       } else this.loading = false
-    },
-    onSubmit(evt) {
-      // evt.preventDefault()
-      // // alert(JSON.stringify(this.form))
-      // this.signUserIn(this.form)
-      //   .then(() => this.$router.push('/'))
-      //   .catch(() => {
-      //     // todo show errors from vuex state
-      //   })
     }
   }
 }

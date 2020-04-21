@@ -27,6 +27,9 @@ const getters = {
 
 // actions
 const actions = {
+  async resetPassword({}) {
+    return await context.post('api/auth/reset')
+  },
   async signUserIn({ commit, dispatch }, payload) {
     return new Promise((resolve, reject) => {
       context

@@ -14,6 +14,7 @@
 */
 
 Route::post('auth/login', 'AuthController@login');
+Route::post('auth/reset', 'AuthController@resetEnv');
 
 Route::get('sizes', 'SizeController@index');
 Route::get('sizes/{color_id}', 'SizeController@get');

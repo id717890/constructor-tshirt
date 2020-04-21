@@ -14,6 +14,11 @@ const router = new Router({
       component: () => import('./components/Auth/Login.vue')
     },
     {
+      path: '/resetpassword',
+      name: 'ResetPassword',
+      component: () => import('./components/Auth/ResetPassword.vue')
+    },
+    {
       path: '/',
       name: 'Constructor',
       // redirect: '/lk/',
