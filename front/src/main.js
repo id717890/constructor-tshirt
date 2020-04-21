@@ -9,6 +9,7 @@ import VueJsModal from 'vue-js-modal'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import './assets/scss/_app.scss'
 import 'swiper/css/swiper.css'
+import Auth from './plugins/auth'
 
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
@@ -20,6 +21,7 @@ AOS.init()
 Vue.config.productionTip = false
 Vue.use(VueJsModal, { dynamic: true })
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
+Vue.use(Auth)
 
 new Vue({
   router,

@@ -78,6 +78,15 @@
             <v-list-item-title>Надпись - размеры</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider vertical></v-divider>
+        <v-list-item link @click="logoutBtn">
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Выход</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -111,6 +120,7 @@
 
 <script>
 import moment from 'moment'
+import { mapActions } from 'vuex'
 export default {
   props: {
     source: String
@@ -119,6 +129,11 @@ export default {
     drawer: null
   }),
   methods: {
+    ...mapActions(['logout']),
+    logoutBtn() {
+      this.logout()
+      this.$router.push('/login')
+    },
     year() {
       return moment().year()
     },

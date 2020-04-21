@@ -28,3 +28,21 @@ export const SET_MESSAGE_DIALOG = 'SET_MESSAGE_DIALOG'
 
 /* Busy element */
 export const SET_LOADING = 'SET_LOADING'
+
+/* Auth */
+export const SET_ADMIN_ROLE = 'SET_ADMIN_ROLE'
+export const RESET_PAGE_OF_USERS = 'RESET_PAGE_OF_USERS'
+export const INCREASE_PAGE_OF_USERS = 'INCREASE_PAGE_OF_USERS'
+export const RECIEVE_NEXT_PART_OF_USERS = 'RECIEVE_NEXT_PART_OF_USERS'
+export const RECIEVE_ALL_USERS = 'RECIEVE_ALL_USERS'
+export const RECIEVE_USER_SETTINGS = 'RECIEVE_USER_SETTINGS'
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES'
+export const CLEAR_ERRORS = 'CLEAR_ERRORS'
+export const SET_MESSAGES = 'SET_MESSAGES'
+export const SET_ERRORS = 'SET_ERRORS'
+export const SET_USER = 'SET_USER'
+export const SIGN_UP = 'SIGN_UP'
+export const SIGN_IN = 'SIGN_IN'
+export const SET_TOKEN = 'SET_TOKEN'
+export const SET_NAME = 'SET_NAME'
+export const SET_ROLE = 'SET_ROLE'

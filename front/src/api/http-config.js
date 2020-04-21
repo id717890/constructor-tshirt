@@ -1,4 +1,4 @@
-// import Vue from 'vue'
+import Vue from 'vue'
 import axios from 'axios'
 import config from '../init/config'
 // import store from '../store'
@@ -14,7 +14,7 @@ const Axios = axios.create({
 })
 
 Axios.interceptors.request.use(config => {
-  // config.headers.Authorization = 'Bearer ' + Vue.auth.getToken()
+  config.headers.Authorization = 'Bearer ' + Vue.auth.getToken()
   return config
 })
 

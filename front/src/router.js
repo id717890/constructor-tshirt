@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import authGuard from './plugins/auth-guard'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('./components/Auth/Login.vue')
+    },
     {
       path: '/',
       name: 'Constructor',
@@ -20,11 +26,13 @@ export default new Router({
     {
       path: '/lk',
       name: 'LK',
+      beforeEnter: authGuard,
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
           path: 'number_sizes',
+          beforeEnter: authGuard,
           component: () => import('./components/NumberSize/Index.vue')
         },
         // ПЕРЕНЕСЕНО В ГЛАВНУЮ ТАБЛИЦУ
@@ -39,6 +47,7 @@ export default new Router({
         // },
         {
           path: 'text_sizes',
+          beforeEnter: authGuard,
           component: () => import('./components/TextSize/Index.vue')
         },
         // ПЕРЕНЕСЕНО В ГЛАВНУЮ ТАБЛИЦУ
@@ -53,14 +62,17 @@ export default new Router({
         // },
         {
           path: 'logo_sizes',
+          beforeEnter: authGuard,
           component: () => import('./components/LogoSize/Index.vue')
         },
         {
           path: 'logo_size/create',
+          beforeEnter: authGuard,
           component: () => import('./components/LogoSize/Create.vue')
         },
         {
           path: 'logo_size/:id',
+          beforeEnter: authGuard,
           props: true,
           component: () => import('./components/LogoSize/Edit.vue')
         },
@@ -80,14 +92,17 @@ export default new Router({
         // },
         {
           path: 'logos',
+          beforeEnter: authGuard,
           component: () => import('./components/Logo/Index.vue')
         },
         {
           path: 'logo/create',
+          beforeEnter: authGuard,
           component: () => import('./components/Logo/Create.vue')
         },
         {
           path: 'logo/:id',
+          beforeEnter: authGuard,
           props: true,
           component: () => import('./components/Logo/Edit.vue')
         },
@@ -112,36 +127,56 @@ export default new Router({
         // },
         {
           path: 'model/:model_id/color/size/:id',
+          beforeEnter: authGuard,
           props: true,
           component: () => import('./components/Color/Size.vue')
         },
         {
           path: 'models',
+          beforeEnter: authGuard,
           component: () => import('./components/Model/Index.vue')
         },
         {
           path: 'model/create',
+          beforeEnter: authGuard,
           component: () => import('./components/Model/Create.vue')
         },
         {
           path: 'model/:id',
           props: true,
+          beforeEnter: authGuard,
           component: () => import('./components/Model/Edit.vue')
         },
         {
           path: 'types',
+          beforeEnter: authGuard,
           component: () => import('./components/Type/Index.vue')
         },
         {
           path: 'type/create',
+          beforeEnter: authGuard,
           component: () => import('./components/Type/Create.vue')
         },
         {
           path: 'type/:id',
           props: true,
+          beforeEnter: authGuard,
           component: () => import('./components/Type/Edit.vue')
         }
       ]
     }
   ]
 })
+
+// router.beforeEach((to, from, next) => {
+//   let credetnrials = Vue.auth.getCredentials()
+//   if (credetnrials !== null && credetnrials !== undefined) {
+//     if (to.matched.some(x => x.meta.protected)) {
+//       next('/lk')
+//     } else next()
+//   } else {
+//     next()
+//   }
+// })
+
+export default router

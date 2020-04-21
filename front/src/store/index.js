@@ -15,6 +15,7 @@ import numberSize from './numberSize'
 import textSize from './textSize'
 import canvas from './canvas'
 import size from './size'
+import auth from './auth'
 
 Vue.use(Vuex)
 
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     numberSize,
     textSize,
     canvas,
-    size
+    size,
+    auth
   }
 })
