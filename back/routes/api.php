@@ -13,6 +13,8 @@
 |
 */
 
+Route::post('import/sizes', 'ExportController@importSizes');
+Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
