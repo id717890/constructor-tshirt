@@ -483,6 +483,15 @@
                           Добавить
                           <v-icon class="ml-1">mdi-plus</v-icon>
                         </v-btn>
+                        <v-btn
+                          tile
+                          color="primary"
+                          @click.prevent.stop="addStringCurved"
+                          style="flex: 0 1 140px;"
+                        >
+                          Кривой текст
+                          <v-icon class="ml-1">mdi-plus</v-icon>
+                        </v-btn>
                       </v-col>
                     </v-row>
                   </div>
@@ -739,6 +748,8 @@ export default {
 
           Object.keys(targetOrder.canvas.texts).forEach(objKey => {
             let obj = targetOrder.canvas.texts[objKey]
+            console.log(-1)
+            console.log(obj.clone())
             obj.clone(x => {
               x.set({
                 left: x.left,
@@ -751,13 +762,16 @@ export default {
                 cornerColor: '#000000',
                 cornerStrokeColor: '#000000'
               })
+              console.log(2)
               x.setControlVisible('ml', false)
               x.setControlVisible('mr', false)
               x.setControlVisible('mt', false)
               x.setControlVisible('mb', false)
               x.setControlVisible('mtr', false)
+              console.log(3)
               order.canvas.ctx.add(x)
               order.canvas.texts[this.guid()] = x
+              console.log(4)
             })
           })
 
@@ -944,7 +958,10 @@ export default {
           // }
         }
         // если выбрали текст
-        else if (selectedDrawing.type == 'text') {
+        else if (
+          selectedDrawing.type == 'text' ||
+          selectedDrawing.type == 'textcurved'
+        ) {
           console.log(' - Выбрали текст')
           Object.keys(canvas.texts).forEach(key => {
             if (canvas.texts[key] === selectedDrawing) {
@@ -1009,6 +1026,46 @@ export default {
       return null
     },
     // добавление строки
+    addStringCurved() {
+      // если строки нет, выходим из функции
+      if (!this.currentTextSize || !this.currentFioText) return
+
+      let canvas = this.order.canvas
+      const stringId = this.guid()
+      this.addTextToOrder(
+        this.currentTextSize,
+        'text',
+        this.currentFioText,
+        stringId
+      )
+      // добавляем строку на холст
+      canvas.addTextCurved(stringId, this.currentFioText, {
+        diametr: 250,
+        kerning: 0,
+        flipped: 0,
+        originX: 'center',
+        originY: 'center',
+        left: canvas.ctx.width * 0.5,
+        top: canvas.ctx.height * 0.5,
+        fontFamily: this.currentFontFio,
+        fontSize: this.currentTextSize.size * 0.35,
+        fill: this.currentTextColorFio.code,
+        centeredScaling: true,
+        padding: 10,
+        transparentCorners: false,
+        borderColor: '#000000',
+        cornerColor: '#000000',
+        cornerStrokeColor: '#000000'
+
+        // diameter: +250,
+        // fontSize: 100,
+        // fontFamily: 'Nike',
+        // kerning: 0,
+        // flipped: false,
+        // left: 50,
+        // top: 50
+      })
+    },
     addString() {
       // если строки нет, выходим из функции
       if (!this.currentTextSize || !this.currentFioText) return
