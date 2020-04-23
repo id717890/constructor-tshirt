@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>Выберите заказ для копирования</v-card-title>
     <v-divider />
-    <v-card-text v-if="orders">
+    <v-card-text v-if="orders" class="pt-8">
       <div
         v-for="order in orders"
         :key="order.id"

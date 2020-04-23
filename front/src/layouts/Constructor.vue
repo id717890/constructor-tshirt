@@ -489,14 +489,21 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" class="pt-0">
-                        Кривизна
+                        <div
+                          style="margin-bottom: -10px"
+                          class="d-flex flex-row flex-nowrap align-end justify-space-between"
+                        >
+                          <span style="font-size: 0.8rem">Кривая</span>
+                          <span>Кривизна надписи</span>
+                          <span style="font-size: 0.8rem">Прямая</span>
+                        </div>
                         <v-slider
                           v-model="diameter"
                           class="range-diameter"
                           min="1"
                           step="1"
                           color="red"
-                          max="7"
+                          max="8"
                         >
                         </v-slider>
                       </v-col>
@@ -594,7 +601,7 @@ export default {
     showPanelTypes: false,
     showPanelModels: false,
     showPanelColors: false,
-    diameter: 300,
+    diameter: 1,
     currentType: null,
     currentModel: null,
     currentColor: null,
@@ -607,7 +614,7 @@ export default {
     fontExample: 'Nike',
     currentTextColor: { text: 'Черный', code: '#000000' },
     currentTextSize: null,
-    currentFioText: 'Юсупов',
+    currentFioText: '',
     currentFontFio: 'Nike',
     currentTextColorFio: { text: 'Черный', code: '#000000' },
     allFonts: ['Nike', 'Adidas', 'Alternativ', 'Atletico', 'Real'],
@@ -653,7 +660,13 @@ export default {
     await this.getAllTextSizes()
   },
   mounted() {
-    this.showPanelTypes = true
+    if (this.allTypes && this.allTypes.length > 0) this.showPanelTypes = true
+    else {
+      setTimeout(() => {
+        this.getAllTypes()
+        this.showPanelTypes = true
+      }, 800)
+    }
   },
   destroyed() {
     // window.removeEventListener('scroll', this.scroll)
@@ -689,7 +702,7 @@ export default {
       return [...this.allLogos, ...this.allCustomLogos]
     },
     modelsByType() {
-      if (this.currentType && this.currentType.id)
+      if (this.currentType && this.currentType.id && this.allModels)
         return this.allModels.filter(x => x.type_id === this.currentType.id)
       return []
     },
