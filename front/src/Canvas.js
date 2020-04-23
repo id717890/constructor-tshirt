@@ -5,7 +5,7 @@ fabric.Object.prototype.objectCaching = false
 
 fabric.TextCurved = fabric.util.createClass(fabric.Object, {
   type: 'textcurved',
-  diameter: 250,
+  diameter: 300,
   kerning: 0,
   text: '',
   flipped: false,
@@ -30,9 +30,36 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
   strokeWidth: 0,
 
   initialize: function(text, options) {
+    // console.log(' INTI')
+    // console.log(text)
+    // console.log(options)
     options || (options = {})
-    this.text = text
-
+    if (typeof text === 'string') {
+      this.text = text
+    } else if (typeof text === 'object') {
+      if (text.diameter) this.diameter = text.diameter
+      if (text.text) this.text = text.text
+      if (text.width) this.width = text.width
+      if (text.height) this.height = text.height
+      if (text.left) this.left = text.left - text.width / 2
+      if (text.top) this.top = text.top - text.height / 2
+      if (text.fill) this.fill = text.fill
+      if (text.fontFamily) this.fontFamily = text.fontFamily
+      if (text.fontSize) this.fontSize = text.fontSize
+      if (text.padding) this.padding = text.padding
+      if (text.fontWeight) this.fontWeight = text.fontWeight
+      if (text.fontStyle) this.fontStyle = text.fontStyle
+      if (text.strokeStyle) this.strokeStyle = text.strokeStyle
+      if (text.strokeWidth) this.strokeWidth = text.strokeWidth
+      if (text.centeredScaling) this.centeredScaling = text.centeredScaling
+      if (text.transparentCorners)
+        this.transparentCorners = text.transparentCorners
+      if (text.borderColor) this.borderColor = text.borderColor
+      if (text.cornerColor) this.cornerColor = text.cornerColor
+      if (text.evented) this.evented = text.evented
+    }
+    // console.log('AFTER INTI')
+    // console.log(this)
     this.callSuper('initialize', options)
     this.set('lockUniScaling', false)
 
@@ -64,9 +91,13 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
         return a - b
       }
 
+    // console.log('IMAGE DATA')
+    // console.log(imageData)
+
     for (var y = 0; y < h; y++) {
       for (var x = 0; x < w; x++) {
         if (imageData.data[(y * w + x) * 4 + 3] > 0) {
+          // console.log('PUSH PIX')
           pix.x.push(x)
           pix.y.push(y)
         }
@@ -78,15 +109,24 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
 
     w = pix.x[n] - pix.x[0]
     h = pix.y[n] - pix.y[0]
-    var cut = ctx.getImageData(pix.x[0], pix.y[0], w, h)
-
-    canvas.width = w
-    canvas.height = h
-    ctx.putImageData(cut, 0, 0)
+    // console.log('getImageData')
+    // console.log(pix)
+    // console.log(pix.x[0])
+    // console.log(pix.y[0])
+    // console.log(w)
+    // console.log(h)
+    if (pix && pix.x && pix.y) {
+      var cut = ctx.getImageData(pix.x[0], pix.y[0], w, h)
+      canvas.width = w
+      canvas.height = h
+      ctx.putImageData(cut, 0, 0)
+    }
   },
 
   // Source: http://jsfiddle.net/rbdszxjv/
   getCircularText: function() {
+    // console.log('getCircularText')
+    // console.log(this.text)
     var text = this.text,
       diameter = this.diameter,
       flipped = this.flipped,
@@ -124,10 +164,15 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
 
     // Reverse letters for center inward.
     if (inwardFacing) {
-      text = text
-        .split('')
-        .reverse()
-        .join('')
+      // console.log('inwardFacing')
+      // console.log(inwardFacing)
+      // console.log(text)
+      try {
+        text = text
+          .split('')
+          .reverse()
+          .join('')
+      } catch {}
     }
 
     // Setup letters and positioning
@@ -183,6 +228,10 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
   },
 
   _set: function(key, value) {
+    // console.log('SET')
+    // console.log(key)
+    // console.log(value)
+
     switch (key) {
       case 'scaleX':
         this.fontSize *= value
@@ -209,6 +258,8 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
   },
 
   _render: function(ctx) {
+    // console.log('RENDER')
+
     var canvas = this.getCircularText()
     this._trimCanvas(canvas)
 
@@ -248,9 +299,6 @@ fabric.TextCurved = fabric.util.createClass(fabric.Object, {
 })
 
 fabric.TextCurved.fromObject = function(object, callback, forceAsync) {
-  console.log('12345')
-  console.log(object)
-  console.log(callback)
   return fabric.Object._fromObject(
     'TextCurved',
     object,

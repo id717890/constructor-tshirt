@@ -139,11 +139,13 @@
               <v-row>
                 <v-col cols="7" style="position: relative">
                   <v-btn
+                    text
+                    fab
+                    title="Копировать нанесения"
                     @click="openDialogCopy"
                     style="position: absolute; top: 20px; left: 30px"
                   >
-                    <v-icon></v-icon>
-                    Copy
+                    <v-icon>mdi-content-copy</v-icon>
                   </v-btn>
                   <h2 v-html="order.titleCanvas" class="text-center mb-0"></h2>
                   <canvas
@@ -474,7 +476,7 @@
                         >
                           {{ textSize.name }}
                         </v-btn>
-                        <v-btn
+                        <!-- <v-btn
                           tile
                           color="primary"
                           @click.prevent.stop="addString"
@@ -482,14 +484,30 @@
                         >
                           Добавить
                           <v-icon class="ml-1">mdi-plus</v-icon>
-                        </v-btn>
+                        </v-btn> -->
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" class="pt-0">
+                        Кривизна
+                        <v-slider
+                          v-model="diameter"
+                          class="range-diameter"
+                          min="1"
+                          step="1"
+                          color="red"
+                          max="7"
+                        >
+                        </v-slider>
+                      </v-col>
+                      <v-col cols="12">
                         <v-btn
                           tile
                           color="primary"
                           @click.prevent.stop="addStringCurved"
-                          style="flex: 0 1 140px;"
+                          class="w100"
                         >
-                          Кривой текст
+                          Добавить
                           <v-icon class="ml-1">mdi-plus</v-icon>
                         </v-btn>
                       </v-col>
@@ -576,7 +594,7 @@ export default {
     showPanelTypes: false,
     showPanelModels: false,
     showPanelColors: false,
-
+    diameter: 300,
     currentType: null,
     currentModel: null,
     currentColor: null,
@@ -589,7 +607,7 @@ export default {
     fontExample: 'Nike',
     currentTextColor: { text: 'Черный', code: '#000000' },
     currentTextSize: null,
-    currentFioText: null,
+    currentFioText: 'Юсупов',
     currentFontFio: 'Nike',
     currentTextColorFio: { text: 'Черный', code: '#000000' },
     allFonts: ['Nike', 'Adidas', 'Alternativ', 'Atletico', 'Real'],
@@ -742,37 +760,67 @@ export default {
                 x.setControlVisible('mtr', false)
                 order.canvas.ctx.add(x)
                 order.canvas.images[this.guid()] = x
+                // order.canvas.ctx.sendToFront(x)
               })
             }
           })
 
           Object.keys(targetOrder.canvas.texts).forEach(objKey => {
             let obj = targetOrder.canvas.texts[objKey]
-            console.log(-1)
-            console.log(obj.clone())
-            obj.clone(x => {
-              x.set({
-                left: x.left,
-                top: x.top,
-                evented: true,
-                centeredScaling: true,
-                padding: 10,
-                transparentCorners: false,
-                borderColor: '#000000',
-                cornerColor: '#000000',
-                cornerStrokeColor: '#000000'
+            if (obj.type !== 'textcurved') {
+              obj.clone(x => {
+                x.set({
+                  left: x.left,
+                  top: x.top,
+                  evented: true,
+                  centeredScaling: true,
+                  padding: 10,
+                  transparentCorners: false,
+                  borderColor: '#000000',
+                  cornerColor: '#000000',
+                  cornerStrokeColor: '#000000'
+                })
+                x.setControlVisible('ml', false)
+                x.setControlVisible('mr', false)
+                x.setControlVisible('mt', false)
+                x.setControlVisible('mb', false)
+                x.setControlVisible('mtr', false)
+                order.canvas.ctx.add(x)
+                order.canvas.texts[this.guid()] = x
               })
-              console.log(2)
-              x.setControlVisible('ml', false)
-              x.setControlVisible('mr', false)
-              x.setControlVisible('mt', false)
-              x.setControlVisible('mb', false)
-              x.setControlVisible('mtr', false)
-              console.log(3)
-              order.canvas.ctx.add(x)
-              order.canvas.texts[this.guid()] = x
-              console.log(4)
-            })
+            } else {
+              // console.log(obj)
+              // console.log('CLONED')
+              // let cop = obj.clone()
+              // order.canvas.ctx.add(obj)
+              // order.canvas.texts[this.guid()] = obj
+
+              obj.clone(x => {
+                // console.log(1)
+                x.set({
+                  flipped: false,
+                  diameter: x.diameter,
+                  fontFamily: x.fontFamily,
+                  left: x.left,
+                  top: x.top,
+                  evented: true,
+                  centeredScaling: true,
+                  padding: 10,
+                  transparentCorners: false,
+                  borderColor: '#000000',
+                  cornerColor: '#000000',
+                  cornerStrokeColor: '#000000'
+                })
+                x.setControlVisible('ml', false)
+                x.setControlVisible('mr', false)
+                x.setControlVisible('mt', false)
+                x.setControlVisible('mb', false)
+                x.setControlVisible('mtr', false)
+                order.canvas.ctx.add(x)
+                order.canvas.texts[this.guid()] = x
+                order.canvas.ctx.bringForward(x)
+              })
+            }
           })
 
           order.orderedLogos = [
@@ -1038,17 +1086,16 @@ export default {
         this.currentFioText,
         stringId
       )
-      // добавляем строку на холст
-      canvas.addTextCurved(stringId, this.currentFioText, {
-        diametr: 250,
+
+      let options = {
+        diameter: this.diameter * 300,
         kerning: 0,
-        flipped: 0,
+        flipped: false,
         originX: 'center',
         originY: 'center',
         left: canvas.ctx.width * 0.5,
         top: canvas.ctx.height * 0.5,
         fontFamily: this.currentFontFio,
-        fontSize: this.currentTextSize.size * 0.35,
         fill: this.currentTextColorFio.code,
         centeredScaling: true,
         padding: 10,
@@ -1056,15 +1103,17 @@ export default {
         borderColor: '#000000',
         cornerColor: '#000000',
         cornerStrokeColor: '#000000'
+      }
 
-        // diameter: +250,
-        // fontSize: 100,
-        // fontFamily: 'Nike',
-        // kerning: 0,
-        // flipped: false,
-        // left: 50,
-        // top: 50
-      })
+      if (this.currentTextSize.size <= 100)
+        options.fontSize = this.currentTextSize.size * 0.35
+      if (this.currentTextSize.size > 100 && this.currentTextSize.size <= 200)
+        options.fontSize = this.currentTextSize.size * 0.3
+      if (this.currentTextSize.size > 200)
+        options.fontSize = this.currentTextSize.size * 0.21
+
+      // добавляем строку на холст
+      canvas.addTextCurved(stringId, this.currentFioText, options)
     },
     addString() {
       // если строки нет, выходим из функции
