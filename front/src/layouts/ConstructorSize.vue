@@ -79,15 +79,17 @@ export default {
     copyArray(array) {
       if (array) {
         array.forEach(x => {
-          let obj = {}
-          obj.id = x.id
-          obj.size = x.size
-          obj.price = x.price
-          obj.count = x.count
-          obj.inMoscow = 0
-          obj.inSpain = 0
-          obj.total = 0
-          this.data.push(obj)
+          if (x.count && x.count > 0) {
+            let obj = {}
+            obj.id = x.id
+            obj.size = x.size
+            obj.price = x.price
+            obj.count = x.count
+            obj.inMoscow = 0
+            obj.inSpain = 0
+            obj.total = 0
+            this.data.push(obj)
+          }
         })
       }
     },
