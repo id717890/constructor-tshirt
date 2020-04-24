@@ -132,14 +132,16 @@
         </div>
 
         <fiz
-          v-if="typeCustomer === 'fizik'"
+          v-if="typeCustomer === 'fizik' && showDocs === true"
           :data="fizik"
           @fizikChanged="fizikChanged($event)"
+          ref="fizikDocs"
         />
         <yur
-          v-if="typeCustomer === 'yurik'"
+          v-if="typeCustomer === 'yurik' && showDocs === true"
           :data="yurik"
           @yurikChanged="yurikChanged($event)"
+          ref="yurikDocs"
         />
       </div>
     </v-card-text>
@@ -171,6 +173,7 @@ export default {
     Yur
   },
   data: () => ({
+    showDocs: false,
     showAllRules: false,
     agreeRules: true,
     typeCustomer: 'fizik',
@@ -189,8 +192,8 @@ export default {
       email: '3',
       phone: '4',
       price: 0,
-      agreeContractNanesenie: true,
-      agreeContractBuy: true,
+      agreeContractNanesenie: false,
+      agreeContractBuy: false,
       showContractBuy: false,
       showContractNanesenie: false
     },
@@ -214,12 +217,15 @@ export default {
     this.prepareZakazFio()
     this.prepareZakazLogosEach()
     this.prepareZakazLogos()
+    this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
+    this.yurik.price = this.zakazLogosSum + this.zakazTovarSum
+    this.showDocs = true
   },
   mounted() {
-    setTimeout(() => {
-      this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
-      this.yurik.price = this.zakazLogosSum + this.zakazTovarSum
-    }, 2000)
+    // setTimeout(() => {
+    //   console.log('f - ' + this.fizik.price)
+    //   console.log('y - ' + this.yurik.price)
+    // }, 2000)
   },
   methods: {
     sendForm() {
@@ -293,6 +299,7 @@ export default {
       }
       setTimeout(() => {
         context.post('api/callback/mail', fd, config)
+        this.$emit('close')
       }, 2000)
     },
     prepareZakazLogosEach() {
@@ -459,13 +466,14 @@ export default {
         this.orders.forEach(order => {
           if (order.orderedSizes) {
             order.orderedSizes.forEach(size => {
-              this.zakazTovarSum += size.price * size.total
-              if (size.total > 0)
+              if (size.total && size.total > 0) {
+                this.zakazTovarSum += size.price * size.total
                 this.zakazTovar.push({
                   name: order.titleTab,
                   ...size,
                   sum: size.price * size.total
                 })
+              }
             })
           }
         })

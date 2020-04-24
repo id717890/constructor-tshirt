@@ -16,7 +16,8 @@ use Maatwebsite\Excel\Facades\Excel;
 class CallbackController extends Controller
 {
 
-    public function sendMail (Request $request) {
+    public function sendMail(Request $request)
+    {
         try {
             $info = Input::get('info');
             $zakazTovar = json_decode(Input::get('zakazTovar'), true);
@@ -39,7 +40,10 @@ class CallbackController extends Controller
             $images = $request->file('images');
             $subject = "Уведомление о заказе";
             $email = [];
-            array_push($email, 'jusupovz@gmail.com');
+//            array_push($email, 'jusupovz@gmail.com');
+            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
+
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
             // return response()->json(getenv('FROM_SEO'), 200);
@@ -48,10 +52,10 @@ class CallbackController extends Controller
                 'info' => $info,
                 'zakazTovar' => $zakazTovar,
                 'zakazTovarSum' => $zakazTovarSum,
-                'zakazLogos' =>$zakazLogos,
-                'zakazLogosEach' =>$zakazLogosEach,
+                'zakazLogos' => $zakazLogos,
+                'zakazLogosEach' => $zakazLogosEach,
                 'zakazLogosSum' => $zakazLogosSum,
-                'zakazNumberName'=>$zakazNumberName
+                'zakazNumberName' => $zakazNumberName
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);
@@ -61,7 +65,7 @@ class CallbackController extends Controller
                     if (count($images) > 0) {
                         foreach ($images as $file) {
                             $mail->attach($file, array(
-                                    'as' => $file->getClientOriginalName().'.jpg', // If you want you can chnage original name to custom name
+                                    'as' => $file->getClientOriginalName() . '.jpg', // If you want you can chnage original name to custom name
                                     'mime' => $file->getMimeType())
                             );
                         }
@@ -125,17 +129,17 @@ class CallbackController extends Controller
                     if (count($images) > 0) {
                         foreach ($images as $file) {
                             $mail->attach($file, array(
-                                    'as' => $file->getClientOriginalName().'.jpg', // If you want you can chnage original name to custom name
+                                    'as' => $file->getClientOriginalName() . '.jpg', // If you want you can chnage original name to custom name
                                     'mime' => $file->getMimeType())
                             );
                         }
                     }
-                    $mail->attach(
-                        Excel::download(
-                            new ContractFizik1('1','2','3', '4'),
-                            'report.xlsx'
-                        )->getFile(), ['as' => 'report.xlsx']
-                    );
+//                    $mail->attach(
+//                        Excel::download(
+//                            new ContractFizik1('1','2','3', '4'),
+//                            'report.xlsx'
+//                        )->getFile(), ['as' => 'report.xlsx']
+//                    );
                 });
 
             return response()->json(200);

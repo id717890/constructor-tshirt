@@ -812,19 +812,25 @@ export default {
   }),
   created() {},
   mounted() {
-    const date = new Date()
-    const contractNumber =
-      date.getFullYear().toString() +
-      (date.getMonth() + 1).toString() +
-      date.getDate() +
-      date.getHours() +
-      date.getMinutes() +
-      date.getSeconds()
-    this.fizik.number = contractNumber
-    this.fizik.date = date.toLocaleDateString()
-    this.fizik.price = this.data.price
+    this.prepareComponent()
+  },
+  beforeUpdate() {
+    this.prepareComponent()
   },
   methods: {
+    prepareComponent() {
+      const date = new Date()
+      const contractNumber =
+        date.getFullYear().toString() +
+        (date.getMonth() + 1).toString() +
+        date.getDate() +
+        date.getHours() +
+        date.getMinutes() +
+        date.getSeconds()
+      this.fizik.number = contractNumber
+      this.fizik.date = date.toLocaleDateString()
+      this.fizik.price = this.data.price
+    },
     changeField() {
       this.$emit('fizikChanged', this.fizik)
     },

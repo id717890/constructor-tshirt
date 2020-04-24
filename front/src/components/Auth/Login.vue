@@ -51,8 +51,8 @@ export default {
       loading: false,
       form: {
         valid: true,
-        email: 'info@joma-club.ru',
-        password: 'qweqwe'
+        email: '',
+        password: ''
       },
       emailRules: [
         v => !!v || 'E-mail required',

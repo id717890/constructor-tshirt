@@ -1312,6 +1312,7 @@ export default {
             })
           },
           this,
+          300,
           function(img) {
             img.sendToBack()
           }
@@ -1330,6 +1331,7 @@ export default {
             })
           },
           this,
+          300,
           function(img) {
             img.sendToBack()
           }
