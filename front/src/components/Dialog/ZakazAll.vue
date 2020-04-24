@@ -175,8 +175,8 @@ export default {
   data: () => ({
     showDocs: false,
     showAllRules: false,
-    agreeRules: true,
-    typeCustomer: 'fizik',
+    agreeRules: false,
+    typeCustomer: '',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],

@@ -496,7 +496,7 @@
                           class="d-flex flex-row flex-nowrap align-end justify-space-between"
                         >
                           <span style="font-size: 0.8rem">Кривая</span>
-                          <span>Кривизна надписи</span>
+                          <span>Кривизна надписи ({{ diameter }} ед.)</span>
                           <span style="font-size: 0.8rem">Прямая</span>
                         </div>
                         <v-slider
@@ -603,7 +603,7 @@ export default {
     showPanelTypes: false,
     showPanelModels: false,
     showPanelColors: false,
-    diameter: 1,
+    diameter: 8,
     currentType: null,
     currentModel: null,
     currentColor: null,
