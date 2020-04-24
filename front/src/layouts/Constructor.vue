@@ -329,6 +329,7 @@
                         <div style="flex: 1 1 auto">
                           <v-text-field
                             label="Номер"
+                            type="number"
                             class="custom-dense mr-3"
                             dense
                             outlined
@@ -342,7 +343,7 @@
                             label="Шрифт"
                             class="mr-3"
                             v-model="currentFont"
-                            @change="changeFont($event)"
+                            @change="changeFont($event, 'number')"
                             outlined
                           ></v-select>
                         </div>
@@ -414,6 +415,7 @@
                             dense
                             outlined
                             v-model="currentFioText"
+                            @input="changeFioText"
                           ></v-text-field>
                         </div>
                         <div style="flex: 0 1 150px">
@@ -423,7 +425,7 @@
                             label="Шрифт"
                             class="mr-3"
                             v-model="currentFontFio"
-                            @change="changeFont($event)"
+                            @change="changeFont($event, 'text')"
                             outlined
                           ></v-select>
                         </div>
@@ -729,6 +731,9 @@ export default {
       'getAllTextSizes',
       'resetCopyDialogResult'
     ]),
+    changeFioText(e) {
+      this.currentFioText = e.toUpperCase()
+    },
     openDialogCopy() {
       this.$modal.show(
         DialogCopy,
@@ -956,8 +961,9 @@ export default {
       this.isChangeColor = true
       this.showPanelColors = true
     },
-    changeFont(event) {
+    changeFont(event, type) {
       this.fontExample = event
+      this.changeActiveObject(type)
     },
     addCustomLogo(event) {
       var input = event.target
@@ -986,10 +992,31 @@ export default {
     selTextColorFio(textColor) {
       this.currentTextColorFio = textColor
       this.showColorPanelFio = false
+      this.changeActiveObject('text')
     },
     selTextColor(textColor) {
       this.currentTextColor = textColor
       this.showColorPanel = false
+      this.changeActiveObject('number')
+    },
+    changeActiveObject(changedField) {
+      const order = this.getOrder()
+      let selectedObj = order.canvas.ctx.getActiveObject()
+      if (selectedObj && this.currentTextColor) {
+        switch (changedField) {
+          case 'text': {
+            selectedObj.set('fill', this.currentTextColorFio.code)
+            selectedObj.set('fontFamily', this.currentFontFio)
+            break
+          }
+          case 'number': {
+            selectedObj.set('fill', this.currentTextColor.code)
+            selectedObj.set('fontFamily', this.currentFont)
+            break
+          }
+        }
+      }
+      order.canvas.ctx.renderAll()
     },
     // функция удаления выбранного нанесения
     deleteSelectedDrawing() {

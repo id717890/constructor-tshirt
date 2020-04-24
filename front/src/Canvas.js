@@ -385,7 +385,7 @@ export default class Canvas {
         }
       },
       {
-        crossOrigin: 'anonymous'
+        crossOrigin: ''
       }
     )
     // console.log('Добавлено изображение ' + imageName)
