@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import * as types from './mutation-types'
-import callback from './callback'
 import type from './type'
 import model from './model'
 import color from './color'
@@ -26,7 +25,6 @@ export default new Vuex.Store({
     }
   ],
   modules: {
-    callback,
     type,
     model,
     color,

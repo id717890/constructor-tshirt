@@ -3,7 +3,7 @@
     :headers="headers"
     :items="data"
     class="elevation-1"
-    hide-default-footer
+    :options="pagination"
     hide
   >
     <template v-slot:item.image_front="{ item }">
@@ -164,6 +164,12 @@ export default {
   props: ['rows', 'model_id'],
   data: () => ({
     data: [],
+    footerOption: {
+      itemsPerPageText: 'Кол-во строк на странице'
+    },
+    pagination: {
+      itemsPerPage: -1
+    },
     removedItem: null,
     textField: [v => !!v || 'Обязательное поле'],
     form: {

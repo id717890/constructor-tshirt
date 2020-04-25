@@ -4,6 +4,7 @@
     :items="data"
     class="elevation-1"
     hide-default-footer
+    :options="pagination"
     hide
   >
     <template v-slot:header.act="{ item }">
@@ -110,6 +111,9 @@ import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
   props: ['rows', 'color_id'],
   data: () => ({
+    pagination: {
+      itemsPerPage: -1
+    },
     data: [],
     removedItem: null,
     textField: [v => !!v || 'Обязательное поле'],

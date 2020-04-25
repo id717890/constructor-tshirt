@@ -368,6 +368,14 @@
             </tbody>
         </table>
     @endif
+
+    <br>
+    <br>
+    {{--Договор купли-продажи ФИЗИК--}}
+    @if($typeCustomer == 'fizik')
+        @include('fizik_doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])
+        {{--        @include('doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])--}}
+    @endif
 </div>
 </body>
 </html>

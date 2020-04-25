@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Input;
 
 class ColorController extends Controller
 {
-    private $sizes = ['6XS-5XS', '4XS-3XS', '2XS', 'XS', 'S', 'M', 'L', 'XL', '2ХL-3ХL'];
+    private $sizes = ['6XS', '5XS', '6XS-5XS', '4XS', '3XS', '4XS-3XS', '2XS', 'XS', 'S', 'M', 'L', 'XL', '2ХL', '3ХL', '2ХL-3ХL'];
 
     public function index()
     {
