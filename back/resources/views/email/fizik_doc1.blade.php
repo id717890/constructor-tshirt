@@ -565,7 +565,7 @@
                         <div class="col-sm-12 col-md-6 d-flex flex-column"
                              style="display: flex; flex-flow: column; flex-basis: 50%; height: 100%">
                             <div class="d-flex flex-colum flex-grow-1" style="flex-grow: 2">
-                                {!! $buyer !!}
+                                {!! $info !!}
                             </div>
                         </div>
                     </td>

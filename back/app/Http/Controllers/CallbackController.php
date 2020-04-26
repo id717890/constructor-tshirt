@@ -19,37 +19,42 @@ class CallbackController extends Controller
     public function sendMail(Request $request)
     {
         try {
+
+            $typeCustomer = Input::get('typeCustomer');
+            $price = Input::get('price');
+            $fio = Input::get('fio');
+            $date = Input::get('date');
+            $number = Input::get('number');
             $info = Input::get('info');
+            $field1 = Input::get('field1');
+            $field2 = Input::get('field2');
+            $field3 = Input::get('field3');
             $zakazTovar = json_decode(Input::get('zakazTovar'), true);
             $zakazTovarSum = Input::get('zakazTovarSum');
             $zakazLogos = json_decode(Input::get('zakazLogos'), true);
             $zakazLogosEach = json_decode(Input::get('zakazLogosEach'), true);
             $zakazLogosSum = Input::get('zakazLogosSum');
             $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
-
-
-//             return response()->json($zakazLogos, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
-
-
-//            $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
-//            $zakazNanesenie = json_decode(Input::get('zakazNanesenie'), true);
-//            $zakazNanesenieEach = json_decode(Input::get('zakazNanesenieEach'), true);
-//            $docBuy = Input::get('docBuy');
-//            $docNanesenie = json_decode(Input::get('docNanesenie'), true);
-//            $info = json_decode(Input::get('info'), true);
+//             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
             $images = $request->file('images');
             $subject = "Уведомление о заказе";
             $email = [];
+            array_push($email, 'jus_za@mail.ru');
 //            array_push($email, 'jusupovz@gmail.com');
-            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
 //            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
-
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
-            // return response()->json(getenv('FROM_SEO'), 200);
-
             Mail::send('email.zakaz', [
+                'typeCustomer'=>$typeCustomer,
+                'fio'=>$fio,
                 'info' => $info,
+                'date' => $date,
+                'number' => $number,
+                'price' => $price,
+                'field1' => $field1,
+                'field2' => $field2,
+                'field3' => $field3,
                 'zakazTovar' => $zakazTovar,
                 'zakazTovarSum' => $zakazTovarSum,
                 'zakazLogos' => $zakazLogos,

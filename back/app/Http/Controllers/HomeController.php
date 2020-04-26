@@ -35,7 +35,7 @@ class HomeController extends Controller
             ->with('number', 12345)
             ->with('date', '20.04.2020')
             ->with('fio', 'Иванов')
-            ->with('buyer', 'Еуыефыв фы вфы вфы вф ы в')
+            ->with('info', 'Еуыефыв фы вфы вфы вф ы в')
             ;
     }
 

@@ -175,8 +175,8 @@ export default {
   data: () => ({
     showDocs: false,
     showAllRules: false,
-    agreeRules: false,
-    typeCustomer: '',
+    agreeRules: true,
+    typeCustomer: 'fizik',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -192,8 +192,8 @@ export default {
       email: '3',
       phone: '4',
       price: 0,
-      agreeContractNanesenie: false,
-      agreeContractBuy: false,
+      agreeContractNanesenie: true,
+      agreeContractBuy: true,
       showContractBuy: false,
       showContractNanesenie: false
     },
@@ -229,8 +229,20 @@ export default {
   },
   methods: {
     sendForm() {
+      let fd = new FormData()
       let info = ''
       if (this.typeCustomer === 'fizik') {
+        fd.append('date', this.fizik.date)
+        fd.append('number', this.fizik.number)
+        fd.append('price', this.fizik.price)
+        fd.append(
+          'fio',
+          this.fizik.lastName +
+            ' ' +
+            this.fizik.firstName +
+            ' ' +
+            this.fizik.middleName
+        )
         info =
           'Физ. лицо: ' +
           this.fizik.lastName +
@@ -257,6 +269,12 @@ export default {
       }
 
       if (this.typeCustomer === 'yurik') {
+        fd.append('date', this.yurik.date)
+        fd.append('number', this.yurik.number)
+        fd.append('price', this.yurik.price)
+        fd.append('field1', this.yurik.field1)
+        fd.append('field2', this.yurik.field2)
+        fd.append('field3', this.yurik.field3)
         info = 'Юридическое лицо: <br/>' + this.yurik.field1 + '<br/>'
         info += 'Телефон: ' + this.yurik.phone + '<br/>'
         if (this.yurik.email) info += 'E-mail: ' + this.yurik.email + '<br/>'
@@ -277,8 +295,9 @@ export default {
         info += 'Сумма договора: ' + this.yurik.price + ' руб.<br/>'
       }
 
-      let fd = new FormData()
       fd.append('info', info)
+      fd.append('price', this.zakazTovarSum + this.zakazLogosSum)
+      fd.append('typeCustomer', this.typeCustomer)
       fd.append('zakazTovar', JSON.stringify(this.zakazTovar))
       fd.append('zakazTovarSum', this.zakazTovarSum)
       fd.append('zakazLogos', JSON.stringify(this.zakazLogos))
@@ -299,7 +318,7 @@ export default {
       }
       setTimeout(() => {
         context.post('api/callback/mail', fd, config)
-        this.$emit('close')
+        // this.$emit('close')
       }, 2000)
     },
     prepareZakazLogosEach() {
@@ -506,6 +525,7 @@ export default {
   },
   computed: {
     allowSendFormFizik() {
+      return false
       if (this.typeCustomer === 'fizik')
         return (
           this.fizik.agreeContractBuy === false ||

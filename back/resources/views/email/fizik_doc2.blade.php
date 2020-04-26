@@ -337,33 +337,26 @@
     <h5 style="font-size: 1.1rem" class="text-center">13. ЮРИДИЧЕСКИЕ АДРЕСА, ПЛАТЕЖНЫЕ
         РЕКВИЗИТЫ И ПОДПИСИ СТОРОН</h5>
 
-    <div class="row"  style="display: flex; flex-flow: row nowrap;  margin-bottom: 50px;">
+    <div class="row" style="display: flex; flex-flow: row nowrap;  margin-bottom: 50px;">
         <table style="width: 100%; table-layout: fixed;">
             <tbody>
             <tr>
+                <td><h5>«ЗАКАЗЧИК»</h5></td>
+                <td><h5>"ИСПОЛНИТЕЛЬ"</h5></td>
+            </tr>
+            <tr>
                 <td style="height: 100%">
-                    <div class="col-sm-12 col-md-6" style="display: flex; flex-flow: column; flex-basis: 50%; height: 100%">
-                        <h5>«ЗАКАЗЧИК»</h5>
-
-                        <div style="flex-grow: 2">
-                            {!! $buyer !!}
-                        </div>
-                        <div class="d-flex flex-row flex-nowrap" style="padding: 0 25px 0 5px; display: flex; flex-flow: row nowrap;">
-                            <div class="flex-grow-1"
-                                 style="border-bottom: 1px solid black; height: 25px; flex-basis: 50% ">
-                                <span style="position: relative; bottom: -30px;">Подписать</span>
-                            </div>
-                            <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
-                                /
-                            </div>
+                    <div class="col-sm-12 col-md-6 d-flex flex-column"
+                         style="display: flex; flex-flow: column; flex-basis: 50%; height: 100%">
+                        <div class="d-flex flex-colum flex-grow-1" style="flex-grow: 2">
+                            {!! $info !!}
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between">
-                        <div>
-                            <h5>"ИСПОЛНИТЕЛЬ"</h5>
-
+                    <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between"
+                         style="display: flex; flex-flow: column; flex-basis: 50%;">
+                        <div style="margin-bottom: 30px">
                             <br>
                             ИП Кляус Наталья Сергеевна
                             <br>
@@ -384,22 +377,24 @@
                             К/с 30101810400000000225
                             <br>
                             БИК: 044525225
-
                         </div>
-                        <br>
-                        <br>
-                        Индивидуальный предприниматель
-                        <br>
-                        <br>
-
-                        <div class="d-flex flex-row flex-nowrap" style="display: flex; flex-flow: row nowrap;">
-                            <div class="flex-grow-1"
-                                 style="border-bottom: 1px solid black; height: 25px; flex-basis: 50%">
-                                <span style="position: relative; bottom: -30px;">м.п.</span></div>
-                            <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
-                                /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус
-                            </div>
-                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="display: inline-block; border-bottom: 1px solid black; height: 25px; width: 50% ">
+                        <span style="position: relative; bottom: -30px;">Подписать</span>
+                    </div>
+                    <div style="display: inline-block; border-bottom: 1px solid black; height: 25px; width: 45%">
+                        /
+                    </div>
+                </td>
+                <td>
+                    <div style="display: inline-block; border-bottom: 1px solid black; height: 25px; width: 50%">
+                        <span style="position: relative; bottom: -30px;">м.п.</span></div>
+                    <div style="display: inline-block; border-bottom: 1px solid black; height: 25px; width: 45%;">
+                        /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус
                     </div>
                 </td>
             </tr>

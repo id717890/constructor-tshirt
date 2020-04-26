@@ -373,8 +373,13 @@
     <br>
     {{--Договор купли-продажи ФИЗИК--}}
     @if($typeCustomer == 'fizik')
-        @include('fizik_doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])
-        {{--        @include('doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])--}}
+        @include('email.fizik_doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])
+        @include('email.fizik_doc2',['date'=>$date, 'number'=>$number, 'fio'=>$fio, 'price' => $price])
+    @endif
+
+    @if($typeCustomer == 'yurik')
+        @include('email.yurik_doc1',['date'=>$date, 'number'=>$number, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3])
+        @include('email.yurik_doc2',['date'=>$date, 'number'=>$number, 'fio'=>$fio, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3, 'price' => $price])
     @endif
 </div>
 </body>
