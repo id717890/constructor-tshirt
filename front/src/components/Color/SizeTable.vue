@@ -12,6 +12,25 @@
         Добавить<v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
+    <template v-slot:header.price="{ header }">
+      <div class="d-flex flex-row flex-nowrap align-center">
+        <v-text-field
+          type="number"
+          v-model="priceAll"
+          label="Цена для всех"
+        ></v-text-field>
+        <v-btn
+          color="success"
+          title="Сохранить цену для всех"
+          x-small
+          fab
+          text
+          @click="savePriceForAll"
+        >
+          <v-icon>mdi-check</v-icon>
+        </v-btn>
+      </div>
+    </template>
     <template v-slot:item.size="{ item }">
       <div v-if="item.edit === true">
         <v-text-field
@@ -111,6 +130,7 @@ import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
   props: ['rows', 'color_id'],
   data: () => ({
+    priceAll: '',
     pagination: {
       itemsPerPage: -1
     },
@@ -124,7 +144,7 @@ export default {
     },
     headers: [
       { text: 'Размер', value: 'size' },
-      { text: 'Цена (руб)', value: 'price' },
+      { text: 'Цена (руб)', value: 'price', sortable: false },
       { text: 'На складе (шт.)', value: 'count' },
       { text: '', value: '', value: 'act', width: '150', sortable: false }
     ]
@@ -142,11 +162,23 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getSizes',
       'createSize',
       'deleteSize',
       'updateSize',
+      'updatePriceForAllSizes',
       'resetConfirmDialogResult'
     ]),
+    savePriceForAll() {
+      if (this.priceAll) {
+        this.updatePriceForAllSizes({
+          id: this.color_id,
+          price: this.priceAll
+        }).then(() => {
+          this.priceAll = ''
+        })
+      }
+    },
     save(item) {
       if (item.size && item.price && item.count) {
         if (item.id === 0) {

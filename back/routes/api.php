@@ -39,6 +39,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('sizes', 'SizeController@create');
     Route::post('sizes/delete/{id}', 'SizeController@delete');
     Route::post('sizes/update/{id}', 'SizeController@update');
+    Route::post('sizes/updateprices/{id}', 'SizeController@updateprices');
 
     Route::post('number_sizes', 'NumberSizeController@create');
     Route::post('number_sizes/delete/{id}', 'NumberSizeController@delete');

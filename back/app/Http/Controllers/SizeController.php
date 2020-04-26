@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -25,6 +26,24 @@ class SizeController extends Controller
         try {
             $model = Size::create(Input::all());
             return response()->json($model, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
+    public function updateprices(Request $request, $id)
+    {
+        try {
+            $price = Input::get('price');
+            $find = Color::find($id);
+            if ($price === null) return response()->json(['success' => false, 'error' => 'Price not found'], 400);
+            if ($find === null) return response()->json(['success' => false, 'error' => 'Color not found'], 400);
+            $allSizes = Size::where('color_id', $id)->get();
+            foreach($allSizes as $size) {
+                $size->price = intval($price);
+                $size->save();
+            }
+            return response()->json($allSizes, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
         }

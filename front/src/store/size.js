@@ -9,6 +9,18 @@ const state = {
 
 // actions
 const actions = {
+  async updatePriceForAllSizes({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      context
+        .post('api/sizes/updateprices/' + payload.id, payload)
+        .then(x => {
+          commit(types.MASS_UPDAT_PRICES_OF_SIZES, x)
+          resolve()
+        })
+        .catch(x => reject(x))
+    })
+    return
+  },
   async updateSize({ dispatch }, payload) {
     return await context.post('api/sizes/update/' + payload.id, payload)
   },
@@ -32,6 +44,14 @@ const actions = {
 
 // mutations
 const mutations = {
+  [types.MASS_UPDAT_PRICES_OF_SIZES](state, payload) {
+    payload.forEach(size => {
+      let find = state.sizesOfColor.find(x => Number(x.id) === Number(size.id))
+      if (find) {
+        find.price = size.price
+      }
+    })
+  },
   [types.GET_ALL_SIZES](state, payload) {
     state.allSizes = payload
   },
