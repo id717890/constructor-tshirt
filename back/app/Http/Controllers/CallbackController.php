@@ -39,9 +39,9 @@ class CallbackController extends Controller
             $images = $request->file('images');
             $subject = "Уведомление о заказе";
             $email = [];
-            array_push($email, 'jus_za@mail.ru');
+//            array_push($email, 'jus_za@mail.ru');
 //            array_push($email, 'jusupovz@gmail.com');
-//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
 //            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';

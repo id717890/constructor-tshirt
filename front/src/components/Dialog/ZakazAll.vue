@@ -175,8 +175,8 @@ export default {
   data: () => ({
     showDocs: false,
     showAllRules: false,
-    agreeRules: true,
-    typeCustomer: 'fizik',
+    agreeRules: false,
+    typeCustomer: '',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -186,11 +186,11 @@ export default {
     fizik: {
       number: 1,
       date: 2,
-      firstName: 'qwe',
-      lastName: '2',
-      middleName: '3',
-      email: '3',
-      phone: '4',
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      email: '',
+      phone: '',
       price: 0,
       agreeContractNanesenie: true,
       agreeContractBuy: true,
@@ -221,12 +221,7 @@ export default {
     this.yurik.price = this.zakazLogosSum + this.zakazTovarSum
     this.showDocs = true
   },
-  mounted() {
-    // setTimeout(() => {
-    //   console.log('f - ' + this.fizik.price)
-    //   console.log('y - ' + this.yurik.price)
-    // }, 2000)
-  },
+  mounted() {},
   methods: {
     sendForm() {
       let fd = new FormData()
@@ -318,7 +313,7 @@ export default {
       }
       setTimeout(() => {
         context.post('api/callback/mail', fd, config)
-        // this.$emit('close')
+        this.$emit('close')
       }, 2000)
     },
     prepareZakazLogosEach() {
@@ -525,7 +520,6 @@ export default {
   },
   computed: {
     allowSendFormFizik() {
-      return false
       if (this.typeCustomer === 'fizik')
         return (
           this.fizik.agreeContractBuy === false ||
