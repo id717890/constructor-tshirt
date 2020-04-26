@@ -38,4 +38,15 @@ class HomeController extends Controller
             ->with('buyer', 'Еуыефыв фы вфы вфы вф ы в')
             ;
     }
+
+    public function doc2()
+    {
+        return view('email.fizik_doc2')
+            ->with('number', 12345)
+            ->with('date', '20.04.2020')
+            ->with('fio', 'Иванов')
+            ->with('buyer', 'Еуыефыв фы вфы вфы вф ы в')
+            ->with('price', 999)
+            ;
+    }
 }
