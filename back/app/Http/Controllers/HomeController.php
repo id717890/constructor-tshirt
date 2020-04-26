@@ -27,4 +27,15 @@ class HomeController extends Controller
         ];
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
+
+
+    public function doc1()
+    {
+        return view('email.fizik_doc1')
+            ->with('number', 12345)
+            ->with('date', '20.04.2020')
+            ->with('fio', 'Иванов')
+            ->with('buyer', 'Еуыефыв фы вфы вфы вф ы в')
+            ;
+    }
 }
