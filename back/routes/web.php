@@ -14,6 +14,8 @@
 Route::get('/', 'HomeController@index');
 Route::get('/doc1', 'HomeController@doc1');
 Route::get('/doc2', 'HomeController@doc2');
+Route::get('/doc3', 'HomeController@doc3');
+Route::get('/doc4', 'HomeController@doc4');
 //Route::get('/', function() {
 //    return "Cache is cleared";
 //});

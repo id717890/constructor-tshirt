@@ -49,4 +49,29 @@ class HomeController extends Controller
             ->with('price', 999)
             ;
     }
+
+    public function doc3()
+    {
+        return view('email.yurik_doc1')
+            ->with('number', 12345)
+            ->with('date', '20.04.2020')
+            ->with('field1', 'Иванов')
+            ->with('field2', 'FIELD 2')
+            ->with('field3', 'FIELD 3')
+            ->with('info', 'Еуыефыв фы вфы вфы вф ы в')
+            ;
+    }
+
+    public function doc4()
+    {
+        return view('email.yurik_doc2')
+            ->with('number', 12345)
+            ->with('date', '20.04.2020')
+            ->with('field1', 'Иванов')
+            ->with('field2', 'FIELD 2')
+            ->with('field3', 'FIELD 3')
+            ->with('info', 'Еуыефыв фы вфы вфы вф ы в')
+            ->with('price', 999)
+            ;
+    }
 }
