@@ -410,7 +410,7 @@
                       >
                         <div style="flex: 1 1 auto">
                           <v-text-field
-                            label="Фамилия или текс"
+                            label="Фамилия или текст"
                             class="custom-dense mr-3"
                             dense
                             outlined
@@ -865,7 +865,7 @@ export default {
         }
       }
     },
-    addTextToOrder(textSize, type, text, textId) {
+    addTextToOrder(textSize, type, text, textId, curved) {
       let order = this.getOrder()
       if (!order.orderedTexts) order.orderedTexts = []
       order.orderedTexts.push({
@@ -873,7 +873,8 @@ export default {
         type: type,
         text: text,
         textSize: textSize,
-        textSizeId: textSize.id
+        textSizeId: textSize.id,
+        curved: curved
       })
     },
     delLogoFromOrder(logoId) {
@@ -1120,11 +1121,13 @@ export default {
 
       let canvas = this.order.canvas
       const stringId = this.guid()
+      let curved = this.diameter === 8 ? '(прямая)' : '(кривая)'
       this.addTextToOrder(
         this.currentTextSize,
         'text',
         this.currentFioText,
-        stringId
+        stringId,
+        curved
       )
 
       let options = {
@@ -1170,12 +1173,13 @@ export default {
       //   appData.stringProps.color
       // )
       // console.log(stringId)
-
+      let curved = this.diameter === 8 ? '(прямая надпись)' : '(кривая надпись)'
       this.addTextToOrder(
         this.currentTextSize,
         'text',
         this.currentFioText,
-        stringId
+        stringId,
+        curved
       )
       // добавляем строку на холст
       canvas.addText(stringId, this.currentFioText, {
@@ -1213,7 +1217,8 @@ export default {
         this.currentNumberSize,
         'number',
         this.currentNumberText,
-        numberId
+        numberId,
+        ''
       )
       // добавляем номер на холст
       canvas.addText(numberId, this.currentNumberText, {

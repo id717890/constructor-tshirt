@@ -145,7 +145,10 @@ export default {
             texts.forEach(text => {
               let sum = 0
               let find = result.find(
-                x => x.type === text.type && x.textSizeId === text.textSizeId
+                x =>
+                  x.type === text.type &&
+                  x.textSizeId === text.textSizeId &&
+                  x.curved === text.curved
               )
               if (!find) {
                 sum = totalSizes * text.textSize.price
@@ -153,7 +156,9 @@ export default {
                   name:
                     (text.type === 'text' ? 'Надпись' : 'Номер') +
                     ' ' +
-                    text.textSize.name,
+                    text.textSize.name +
+                    ' ' +
+                    text.curved,
                   count: totalSizes,
                   sum: sum,
                   type: text.type,
@@ -199,7 +204,9 @@ export default {
                 x =>
                   (x.type === 'text' ? 'Надпись' : 'Номер') +
                   ' ' +
-                  x.textSize.name
+                  x.textSize.name +
+                  ' ' +
+                  x.curved
               )
             )
           ]
@@ -208,7 +215,9 @@ export default {
               x =>
                 (x.type === 'text' ? 'Надпись' : 'Номер') +
                   ' ' +
-                  x.textSize.name ===
+                  x.textSize.name +
+                  ' ' +
+                  x.curved ===
                 type
             )
             result.push({
