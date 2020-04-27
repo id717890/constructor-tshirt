@@ -9,6 +9,57 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/',
+      name: 'Home',
+      components: {
+        default: () => import('./layouts/Guest.vue')
+      },
+      children: [
+        {
+          path: '/',
+          name: 'Home',
+          components: {
+            guest: () => import('./views/Home.vue')
+          }
+        },
+        {
+          path: '/about',
+          name: 'About',
+          components: {
+            guest: () => import('./views/About.vue')
+          }
+        },
+        {
+          path: '/photos',
+          name: 'Photos',
+          components: {
+            guest: () => import('./views/Photogallery.vue')
+          }
+        },
+        {
+          path: '/videos',
+          name: 'Videos',
+          components: {
+            guest: () => import('./views/Videogallery.vue')
+          }
+        },
+        {
+          path: '/feedbacks',
+          name: 'Feedbacks',
+          components: {
+            guest: () => import('./views/Feedback.vue')
+          }
+        },
+        {
+          path: '/faq',
+          name: 'FAQ',
+          components: {
+            guest: () => import('./views/Faq.vue')
+          }
+        }
+      ]
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('./components/Auth/Login.vue')
@@ -19,7 +70,7 @@ const router = new Router({
       component: () => import('./components/Auth/ResetPassword.vue')
     },
     {
-      path: '/',
+      path: '/constructor',
       name: 'Constructor',
       // redirect: '/lk/',
       // route level code-splitting

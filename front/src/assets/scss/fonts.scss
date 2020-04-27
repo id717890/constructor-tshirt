@@ -32,3 +32,31 @@
   font-style: normal;
   font-weight: normal;
 }
+
+@font-face {
+  font-family: "PTSans";
+  src: url("~@/assets/fonts/PT_Sans-Web/PT_Sans-Web-Regular_0.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "PTSans";
+  src: url("~@/assets/fonts/PT_Sans-Web/PT_Sans-Web-Italic_0.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "PTSans";
+  src: url("~@/assets/fonts/PT_Sans-Web/PT_Sans-Web-Bold_0.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "PTSans";
+  src: url("~@/assets/fonts/PT_Sans-Web/PT_Sans-Web-BoldItalic_0.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 700;
+}
