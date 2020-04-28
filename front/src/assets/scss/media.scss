@@ -1,53 +1,33 @@
 @media (min-width: 0)
 {
-  .about-photo {
-    max-width: 360px;
-  }
-
-  .f1 {
-    font: normal normal normal 45px/1.4em 'arial black', arial-w01-black, arial-w02-black, 'arial-w10 black', sans-serif;
-  }
-  
-  .f2 {
-    font: normal normal normal 20px/1.4em 'open sans', sans-serif;
+  .canvas-container {
+    height: 190px !important
   }
 }
 
 @media (min-width: 600px)
 {
-  .about-photo {
-    max-width: 440px;
-  }
-
-  .f1 {
-    font: normal normal normal 65px/1.4em 'arial black', arial-w01-black, arial-w02-black, 'arial-w10 black', sans-serif;
-  }
-  
-  .f2 {
-    font: normal normal normal 22px/1.4em 'open sans', sans-serif;
+  .canvas-container {
+    height: 240px !important
   }
 }
 
 @media (min-width: 960px)
 {
-  .about-photo {
-    max-width: 550px;
-  }
-
-  .f1 {
-    font: normal normal normal 75px/1.4em 'arial black', arial-w01-black, arial-w02-black, 'arial-w10 black', sans-serif;
-  }
-  
-  .f2 {
-    font: normal normal normal 26px/1.4em 'open sans', sans-serif;
+  .canvas-container {
+    height: 290px !important
   }
 }
 
 @media (min-width: 1264px) {
-  
+  .canvas-container {
+    height: 350px !important
+  }
 }
 
 @media (min-width: 1904px)
 {
-  
+  .canvas-container {
+    height: 360px !important
+  }
 }

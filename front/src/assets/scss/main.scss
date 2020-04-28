@@ -196,3 +196,13 @@ $size: 55px !important;
 .range-diameter .v-input__control {
   height: 10px;
 }
+
+.canvas-container {
+  width: 100% !important;
+  height: 350px;
+}
+
+.canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
