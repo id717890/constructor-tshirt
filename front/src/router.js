@@ -15,7 +15,7 @@ const router = new Router({
       children: [
         {
           path: '/',
-          redirect: '/constructor',
+          // redirect: '/constructor',
           name: 'Home',
           components: {
             guest: () => import('./views/Home.vue')
@@ -85,6 +85,22 @@ const router = new Router({
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
+        {
+          path: 'discounts',
+          beforeEnter: authGuard,
+          component: () => import('./components/Discount/Index.vue')
+        },
+        {
+          path: 'discount/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Discount/Create.vue')
+        },
+        {
+          path: 'discount/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Discount/Edit.vue')
+        },
         {
           path: 'number_sizes',
           beforeEnter: authGuard,

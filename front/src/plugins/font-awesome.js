@@ -1,6 +1,22 @@
 // import fontawesome from '@fortawesome/fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {} from '@fortawesome/free-solid-svg-icons'
+import {
+  faItalic,
+  faBold,
+  faImage,
+  faRedo,
+  faUndo,
+  faCode,
+  faUnderline,
+  faQuoteRight,
+  faQuoteLeft,
+  faGripLines,
+  faListOl,
+  faListUl,
+  faParagraph,
+  faStrikethrough,
+  faLink
+} from '@fortawesome/free-solid-svg-icons'
 
 import {
   faVk,
@@ -17,5 +33,24 @@ import {
 //   autoAddCss: false,
 // };
 
-library.add(faVk, faFacebookF, faTwitter)
+library.add(
+  faVk,
+  faFacebookF,
+  faTwitter,
+  faItalic,
+  faBold,
+  faImage,
+  faRedo,
+  faUndo,
+  faCode,
+  faUnderline,
+  faQuoteRight,
+  faQuoteLeft,
+  faGripLines,
+  faListOl,
+  faListUl,
+  faParagraph,
+  faStrikethrough,
+  faLink
+)
 // library.add(fas)

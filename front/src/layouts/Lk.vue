@@ -79,6 +79,15 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider vertical></v-divider>
+        <v-list-item link to="/lk/discounts">
+          <v-list-item-action>
+            <v-icon>mdi-sale</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Акции</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider vertical></v-divider>
         <v-list-item link @click="logoutBtn">
           <v-list-item-action>
             <v-icon>mdi-logout</v-icon>

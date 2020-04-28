@@ -1,3 +1,4 @@
+@import '_var.scss';
 @import 'clear.scss';
 @import 'fonts.scss';
 // @import 'style.scss';
@@ -7,4 +8,11 @@
 @import 'main.scss';
 @import 'zakaz.scss';
 @import 'header.scss';
+@import 'editor.scss';
 // @import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap');
+
+
+
+@import "tiptap/editor";
+@import "./tiptap/menubar";
+@import "./tiptap/menububble";
