@@ -15,14 +15,40 @@
               </div>
             </v-col>
             <v-col cols="6" class="d-flex flex-row flex-nowrap">
-              <v-btn class="btn-social">vk</v-btn>
-              <v-btn class="btn-social">f</v-btn>
-              <v-btn class="btn-social">t</v-btn>
-              <v-btn class="pdf-catalog">
+              <v-btn
+                class="btn-social mr-1 pa-0"
+                dark
+                color="#4a76a8"
+                width="45"
+                height="45"
+                :elevation="1"
+                ><i class="fab fa-vk"></i
+              ></v-btn>
+              <v-btn
+                width="45"
+                height="45"
+                class="btn-social mr-1"
+                dark
+                color="#3b5998"
+                :elevation="1"
+              >
+                <fai :icon="['fab', 'facebook-f']" />
+              </v-btn>
+              <v-btn
+                width="45"
+                height="45"
+                class="btn-social mr-1"
+                dark
+                color="#00aeed"
+                :elevation="1"
+              >
+                <fai :icon="['fab', 'twitter']" />
+              </v-btn>
+              <v-btn height="45" class="pdf-catalog btn-j mr-1" dark>
                 <v-icon>mdi-download</v-icon>
                 Скачать каталог в PDF
               </v-btn>
-              <v-btn class="btn-social" color="warning" outlined
+              <v-btn height="45" class="btn-social" color="warning" outlined
                 >Оставить заявку</v-btn
               >
             </v-col>

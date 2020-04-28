@@ -558,7 +558,7 @@
                     @click="openDialogNomerFio"
                     color="primary"
                     class="w100"
-                    >Тиблица РАЗМЕР-НОМЕР-ФАМИЛИЯ</v-btn
+                    >ТЗ Нанесение</v-btn
                   >
                 </v-col>
                 <v-col cols="12" md="6">

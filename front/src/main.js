@@ -10,6 +10,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import './assets/scss/_app.scss'
 import 'swiper/css/swiper.css'
 import Auth from './plugins/auth'
+import './plugins/font-awesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
@@ -22,6 +24,8 @@ Vue.config.productionTip = false
 Vue.use(VueJsModal, { dynamic: true })
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
 Vue.use(Auth)
+
+Vue.component('fai', FontAwesomeIcon)
 
 new Vue({
   router,

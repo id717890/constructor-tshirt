@@ -41,13 +41,14 @@
   text-transform: none;
   font-size: 18px !important;
   background-color: rgb( 245, 169, 60 )!important;
-  height: 48px!important;
 }
 
 .btn-social {
-  height: 48px!important;
+  min-width: 0px !important;
+  // height: 45px!important;
+  // width: 45px!important;
+  // padding: 0 !important;
 }
-
 
 .t2 {
   font-size: 16px;
@@ -55,12 +56,3 @@
   color: rgb( 85, 85, 85 );
 }
 
-.Прямоугольник_2_копия_5 {
-  background-color: rgb( 255, 255, 255 );
-  position: absolute;
-  left: 390px;
-  top: 538px;
-  width: 569px;
-  height: 412px;
-  z-index: 112;
-}

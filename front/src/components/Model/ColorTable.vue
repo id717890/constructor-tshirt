@@ -66,17 +66,17 @@
       </v-btn>
     </template>
 
-    <template v-slot:item.name="{ item }">
+    <!-- <template v-slot:item.name="{ item }">
       <div v-if="item.edit === true">
         <v-text-field
           label="Цвет"
-          v-model="item.name"
+          v-model="item.article"
           required
           :rules="textField"
         ></v-text-field>
       </div>
       <div v-else>{{ item.name }}</div>
-    </template>
+    </template> -->
     <template v-slot:item.article="{ item }">
       <div v-if="item.edit === true">
         <v-text-field
@@ -178,7 +178,7 @@ export default {
       count: 0
     },
     headers: [
-      { text: 'Цвет', value: 'name' },
+      // { text: 'Цвет', value: 'name' },
       { text: 'Артикул', value: 'article' },
       {
         text: 'Вид спереди',
@@ -223,6 +223,7 @@ export default {
       return config.apiAddress + 'api/image/' + url
     },
     save(item) {
+      item.name = item.article
       if (item.name && item.article && item.image_front && item.image_back) {
         if (item.id === 0) {
           this.createColorPromise(item).then(x => {

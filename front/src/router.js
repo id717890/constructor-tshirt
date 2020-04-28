@@ -10,13 +10,12 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      components: {
-        default: () => import('./layouts/Guest.vue')
-      },
+      name: 'Root',
+      component: () => import('./layouts/Guest.vue'),
       children: [
         {
           path: '/',
+          redirect: '/constructor',
           name: 'Home',
           components: {
             guest: () => import('./views/Home.vue')
