@@ -22,6 +22,13 @@ const router = new Router({
           }
         },
         {
+          path: '/discount',
+          name: 'Discount',
+          components: {
+            guest: () => import('./components/Discount/IndexGuest.vue')
+          }
+        },
+        {
           path: '/about',
           name: 'About',
           components: {
@@ -55,6 +62,13 @@ const router = new Router({
           components: {
             guest: () => import('./views/Faq.vue')
           }
+        },
+        {
+          path: '/constructor',
+          name: 'Constructor',
+          components: {
+            guest: () => import('./layouts/Constructor.vue')
+          }
         }
       ]
     },
@@ -67,16 +81,6 @@ const router = new Router({
       path: '/resetpassword',
       name: 'ResetPassword',
       component: () => import('./components/Auth/ResetPassword.vue')
-    },
-    {
-      path: '/constructor',
-      name: 'Constructor',
-      // redirect: '/lk/',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // component: () => import('./layouts/ConstructorEmpty.vue')
-      component: () => import('./layouts/Constructor.vue')
     },
     {
       path: '/lk',

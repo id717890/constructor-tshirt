@@ -1,5 +1,5 @@
 <template>
-  <span>FAQ</span>
+  <div style="min-height: 1000px">FAQ</div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <span>Photos</span>
+  <div style="min-height: 1000px">Photos</div>
 </template>
 
 <script>

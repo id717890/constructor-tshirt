@@ -1,5 +1,5 @@
 <template>
-  <span>Feedbacks</span>
+  <div style="min-height: 1000px">Feedbacks</div>
 </template>
 
 <script>

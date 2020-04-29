@@ -29,7 +29,7 @@
 }
 
 .menu .item:hover {
-  background-color: rgb( 24, 42, 104, 0.83 );
+  background-color: rgb( 24, 42, 104, 0.8 );
 }
 
 .menu .item:last-child {
@@ -54,5 +54,34 @@
   font-size: 16px;
   font-family: "PTSans";
   color: rgb( 85, 85, 85 );
+}
+
+.phone {
+  font-size: 24px;
+  font-family: "PTSans";
+  color: rgb( 51, 51, 51 );
+  font-weight: bold;
+  text-align: center;
+}
+
+.header {
+  background-color: rgb( 243, 243, 244 );
+}
+
+.logo {
+  width: 100%;
+}
+
+.footer {
+  background-color: rgba( 65, 65, 65, 1 ) !important;
+    // height: 221px;
+}
+
+.footer-link {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-family: "PTSans";
+  color: rgb( 205, 205, 205 ) !important;
+  text-decoration: underline;
 }
 

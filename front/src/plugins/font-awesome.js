@@ -21,7 +21,8 @@ import {
 import {
   faVk,
   faFacebookF,
-  faTwitter
+  faTwitter,
+  faYoutube
 } from '@fortawesome/free-brands-svg-icons'
 
 // import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -51,6 +52,7 @@ library.add(
   faListUl,
   faParagraph,
   faStrikethrough,
-  faLink
+  faLink,
+  faYoutube
 )
 // library.add(fas)
