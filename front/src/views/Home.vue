@@ -58,11 +58,50 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col md="6" cols="12">2 </v-col>
+            <v-col md="6" cols="12">
+              <div class="h100 d-flex flex-column justify-space-between">
+                <v-btn color="#465586" class="w100" outlined>
+                  <v-icon class="mr-4">mdi-lead-pencil</v-icon>
+                  Стань нашим корреспондентом</v-btn
+                >
+                <div class="news-item" v-for="i in 3" :key="i">
+                  <div class="date">
+                    <div class="day">{{ i * 3 }}</div>
+                    <div class="month">04.20</div>
+                  </div>
+                  <div>
+                    <div class="title">
+                      Lorem ipsum dolor sit amet
+                    </div>
+                    <div class="text">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do Lorem ipsum dolor sit amet, consectetur adipiscing
+                      elit, sed do Lorem ipsum dolor sit amet, consectetur
+                      adipiscing elit, sed do Lorem ipsum dolor sit amet,
+                      consectetur adipiscing elit, sed doLorem ipsum dolor sit
+                      amet, consectetur adipiscing elit, sed do Lorem ipsum
+                      dolor sit amet, consectetur adipiscing elit, sed doLorem
+                      ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do
+                    </div>
+                  </div>
+                </div>
+                <v-btn color="#f5a93c" class="w100" outlined>
+                  <v-icon class="mr-4">mdi-newspaper</v-icon>
+                  Все новости
+                </v-btn>
+              </div>
+            </v-col>
           </v-row>
           <v-row>
             <v-col md="6" cols="12" class="pt-1">
-              <v-carousel height="390" hide-delimiters>
+              <v-carousel
+                height="390"
+                hide-delimiters
+                :interval="7000"
+                :cycle="true"
+              >
                 <v-carousel-item
                   v-for="(discount, index) in discounts"
                   :key="index"

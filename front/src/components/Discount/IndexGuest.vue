@@ -9,7 +9,13 @@
           <div class="t6">{{ row.title }}</div>
           <div v-html="row.text"></div>
           <div>
-            <v-btn color="#279e03" large outlined>Использовать</v-btn>
+            <v-btn
+              color="#279e03"
+              large
+              outlined
+              @click.prevent="useDiscount(row)"
+              >Использовать</v-btn
+            >
           </div>
         </v-col>
       </v-row>
@@ -20,8 +26,24 @@
 <script>
 import { mapState } from 'vuex'
 import imageMix from '../../mixins/image'
+import config from '../../init/config'
+import UseDiscountDialog from '../Dialog/UseDiscount'
+
 export default {
   mixins: [imageMix],
+  methods: {
+    useDiscount(discount) {
+      this.$modal.show(
+        UseDiscountDialog,
+        { discount: discount },
+        {
+          ...config.modalSettings,
+          width: 590,
+          clickToClose: true
+        }
+      )
+    }
+  },
   computed: {
     ...mapState({
       discounts: state => state.discount.allDiscounts

@@ -1,8 +1,6 @@
 <template>
   <v-app id="app" dark style="background: white">
     <v-container fluid>
-      <modals-container />
-
       <v-row>
         <v-col cols="12" md="10" offset-md="1">
           <v-btn

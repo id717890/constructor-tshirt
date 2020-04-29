@@ -1,6 +1,9 @@
 <template>
   <section>
-    <router-view />
+    <modals-container />
+    <transition name="router-fade" mode="out-in">
+      <router-view />
+    </transition>
   </section>
 </template>
 

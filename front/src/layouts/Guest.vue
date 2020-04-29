@@ -1,7 +1,6 @@
 <template>
   <v-app id="app" dark style="background: white">
     <v-container fluid class="pa-0">
-      <modals-container />
       <v-row no-gutters class="header">
         <v-col md="8" offset-md="2" sm="12" cols="12">
           <v-row>
@@ -69,13 +68,16 @@
             v-for="(item, index) in menu"
             :key="index"
             class="d-flex flex-column item"
+            :class="{ active: isActive(item.url) }"
           >
             <v-icon dark>{{ item.icon }}</v-icon>
             <span class="text-center">{{ item.title }}</span>
           </router-link>
         </v-col>
       </v-row>
-      <router-view name="guest"></router-view>
+      <transition name="router-fade" mode="out-in">
+        <router-view name="guest"></router-view>
+      </transition>
       <v-row class="footer">
         <v-col md="8" offset-md="2" sm="12" cols="12">
           <v-row>
@@ -83,14 +85,13 @@
               <img class="" src="~@/assets/img/logo2.png" alt="" />
             </v-col>
             <v-col cols="3" class="d-flex flex-column">
-              <router-link class="footer-link" to="/">Главная</router-link>
-              <router-link class="footer-link" to="/">О компании</router-link>
-              <router-link class="footer-link" to="/">Фотогалерея</router-link>
-              <router-link class="footer-link" to="/">Видеогалерея</router-link>
-              <router-link class="footer-link" to="/"
-                >Отзывы и предложения</router-link
+              <router-link
+                v-for="(item, index) in menu"
+                :key="index"
+                class="footer-link"
+                :to="item.url"
+                >{{ item.title }}</router-link
               >
-              <router-link class="footer-link" to="/">Вопрос-ответ</router-link>
             </v-col>
             <v-col cols="3">
               <div class="t4">
@@ -156,7 +157,12 @@ export default {
       },
       { icon: 'mdi-help-circle', title: 'Вопрос-ответ', url: '/faq' }
     ]
-  })
+  }),
+  methods: {
+    isActive(path) {
+      return path === this.$route.path
+    }
+  }
 }
 </script>
 

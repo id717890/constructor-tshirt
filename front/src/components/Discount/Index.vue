@@ -65,7 +65,7 @@ export default {
     removedItem: null,
     headers: [
       { text: 'Заголовок', value: 'title' },
-      { text: 'Заголовок', value: 'image', sortable: false, width: '150' },
+      { text: 'Изображение', value: 'image', sortable: false, width: '150' },
       { text: '', value: '', value: 'act', width: '120', sortable: false }
     ]
   }),

@@ -14,7 +14,7 @@ const router = new Router({
       component: () => import('./layouts/Guest.vue'),
       children: [
         {
-          path: '/',
+          path: '',
           // redirect: '/constructor',
           name: 'Home',
           components: {
