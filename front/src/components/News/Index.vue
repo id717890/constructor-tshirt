@@ -2,8 +2,8 @@
   <v-row>
     <v-col cols="12">
       <h2>
-        Акции
-        <v-btn fab small to="/lk/discount/create">
+        Новости
+        <v-btn fab small to="/lk/news/create">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
         <v-btn
@@ -53,7 +53,7 @@
             small
             title="Редакитровать"
             color="primary"
-            :to="'/lk/discount/' + item.id"
+            :to="'/lk/news/' + item.id"
           >
             <v-icon>mdi-pen</v-icon>
           </v-btn>
@@ -87,7 +87,7 @@
             small
             title="Редакитровать"
             color="primary"
-            :to="'/lk/discount/' + item.id"
+            :to="'/lk/news/' + item.id"
           >
             <v-icon>mdi-pen</v-icon>
           </v-btn>
@@ -119,10 +119,11 @@ const settings = {
   transition: 'nice-modal-fade',
   clickToClose: false
 }
-import config from '../../init/config'
+import imageMixin from '../../mixins/image'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
+  mixins: [imageMixin],
   data: () => ({
     view: 'list',
     removedItem: null,
@@ -133,14 +134,7 @@ export default {
     ]
   }),
   methods: {
-    ...mapActions([
-      'getAllDiscounts',
-      'resetConfirmDialogResult',
-      'deleteDiscount'
-    ]),
-    img(url) {
-      return config.apiAddress + 'api/image/' + url
-    },
+    ...mapActions(['getAllNews', 'resetConfirmDialogResult', 'deleteNews']),
     deleteItem(item) {
       this.removedItem = item
       this.$modal.show(
@@ -155,19 +149,19 @@ export default {
     confirmDelete() {
       if (this.confirmDialogResult === true) {
         this.resetConfirmDialogResult()
-        this.deleteDiscount(this.removedItem)
+        this.deleteNews(this.removedItem)
         this.removedItem = null
       }
     }
   },
   computed: {
     ...mapState({
-      tableItems: state => state.discount.allDiscounts,
+      tableItems: state => state.news.allNews,
       confirmDialogResult: state => state.dialog.confirmDialogResult
     })
   },
   async created() {
-    await this.getAllDiscounts()
+    await this.getAllNews()
   }
 }
 </script>

@@ -18,6 +18,7 @@ Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
+Route::get('news', 'NewsController@index');
 Route::get('discounts', 'DiscountController@index');
 Route::get('sizes', 'SizeController@index');
 Route::get('sizes/{color_id}', 'SizeController@get');
@@ -37,6 +38,10 @@ Route::get('image/{filename}', 'ImageController@image');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('news', 'NewsController@create');
+    Route::post('news/delete/{id}', 'NewsController@delete');
+    Route::post('news/update/{id}', 'NewsController@update');
+
     Route::post('discounts', 'DiscountController@create');
     Route::post('discounts/delete/{id}', 'DiscountController@delete');
     Route::post('discounts/update/{id}', 'DiscountController@update');

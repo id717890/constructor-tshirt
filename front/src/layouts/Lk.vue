@@ -87,6 +87,14 @@
             <v-list-item-title>Акции</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/news">
+          <v-list-item-action>
+            <v-icon>mdi-newspaper</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Новости</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider vertical></v-divider>
         <v-list-item link @click="logoutBtn">
           <v-list-item-action>

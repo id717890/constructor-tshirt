@@ -90,6 +90,22 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'news',
+          beforeEnter: authGuard,
+          component: () => import('./components/News/Index.vue')
+        },
+        {
+          path: 'news/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/News/Create.vue')
+        },
+        {
+          path: 'news/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/News/Edit.vue')
+        },
+        {
           path: 'discounts',
           beforeEnter: authGuard,
           component: () => import('./components/Discount/Index.vue')

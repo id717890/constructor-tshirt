@@ -16,6 +16,7 @@ import canvas from './canvas'
 import size from './size'
 import auth from './auth'
 import discount from './discount'
+import news from './news'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     canvas,
     size,
     auth,
-    discount
+    discount,
+    news
   }
 })
