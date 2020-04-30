@@ -59,35 +59,33 @@
               </v-row>
             </v-col>
             <v-col md="6" cols="12">
-              <div class="h100 d-flex flex-column justify-space-between">
+              <div
+                class="h100 d-flex flex-column justify-space-between"
+                v-if="news"
+              >
                 <v-btn color="#465586" class="w100" outlined>
                   <v-icon class="mr-4">mdi-lead-pencil</v-icon>
                   Стань нашим корреспондентом</v-btn
                 >
-                <div class="news-item" v-for="i in 3" :key="i">
+                <div
+                  class="news-item"
+                  v-for="news in news3"
+                  :key="news.id"
+                  @click="$router.push('/news/' + news.id)"
+                  style="cursor: pointer"
+                >
                   <div class="date">
-                    <div class="day">{{ i * 3 }}</div>
-                    <div class="month">04.20</div>
+                    <div class="day">{{ getDay(news.created_at) }}</div>
+                    <div class="month">{{ getMonthYear(news.created_at) }}</div>
                   </div>
                   <div>
                     <div class="title">
-                      Lorem ipsum dolor sit amet
+                      {{ news.title }}
                     </div>
-                    <div class="text">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit, sed do Lorem ipsum dolor sit amet, consectetur
-                      adipiscing elit, sed do Lorem ipsum dolor sit amet,
-                      consectetur adipiscing elit, sed doLorem ipsum dolor sit
-                      amet, consectetur adipiscing elit, sed do Lorem ipsum
-                      dolor sit amet, consectetur adipiscing elit, sed doLorem
-                      ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do
-                    </div>
+                    <div class="text" v-html="news.text"></div>
                   </div>
                 </div>
-                <v-btn color="#f5a93c" class="w100" outlined>
+                <v-btn color="#f5a93c" class="w100" outlined to="/news">
                   <v-icon class="mr-4">mdi-newspaper</v-icon>
                   Все новости
                 </v-btn>
@@ -223,17 +221,33 @@
 </template>
 
 <script>
-import config from '../init/config'
 import { mapState } from 'vuex'
+import moment from 'moment'
+import imageMixin from '../mixins/image'
 export default {
+  mixins: [imageMixin],
+  data: () => ({
+    news3: []
+  }),
   computed: {
     ...mapState({
-      discounts: state => state.discount.allDiscounts
+      discounts: state => state.discount.allDiscounts,
+      news: state => state.news.allNews
     })
   },
+  mounted() {
+    setTimeout(() => {
+      if (this.news && this.news.length > 0) {
+        this.news3 = this.news.slice(0, 3)
+      }
+    }, 800)
+  },
   methods: {
-    img(url) {
-      return config.apiAddress + 'api/image/' + url
+    getMonthYear(date) {
+      return moment(date).format('MM.YY')
+    },
+    getDay(date) {
+      return moment(date).date()
     }
   }
 }

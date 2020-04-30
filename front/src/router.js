@@ -16,55 +16,71 @@ const router = new Router({
         {
           path: '',
           // redirect: '/constructor',
-          name: 'Home',
           components: {
             guest: () => import('./views/Home.vue')
           }
         },
         {
-          path: '/discount',
+          path: 'news/:id',
+          name: 'SingleNews',
+          props: {
+            guest: true
+          },
+          components: {
+            guest: () => import('./components/News/Single.vue')
+          }
+        },
+        {
+          path: 'news',
+          name: 'News',
+          components: {
+            guest: () => import('./components/News/IndexGuest.vue')
+          }
+        },
+        {
+          path: 'discount',
           name: 'Discount',
           components: {
             guest: () => import('./components/Discount/IndexGuest.vue')
           }
         },
         {
-          path: '/about',
+          path: 'about',
           name: 'About',
           components: {
             guest: () => import('./views/About.vue')
           }
         },
         {
-          path: '/photos',
+          path: 'photos',
           name: 'Photos',
           components: {
             guest: () => import('./views/Photogallery.vue')
           }
         },
         {
-          path: '/videos',
+          path: 'videos',
           name: 'Videos',
           components: {
             guest: () => import('./views/Videogallery.vue')
           }
         },
         {
-          path: '/feedbacks',
+          path: 'feedbacks',
           name: 'Feedbacks',
           components: {
             guest: () => import('./views/Feedback.vue')
           }
         },
         {
-          path: '/faq',
+          path: 'faq',
           name: 'FAQ',
           components: {
             guest: () => import('./views/Faq.vue')
           }
         },
         {
-          path: '/constructor',
+          path: 'constructor',
           name: 'Constructor',
           components: {
             guest: () => import('./layouts/Constructor.vue')

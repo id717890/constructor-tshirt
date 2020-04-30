@@ -73,6 +73,10 @@
             <v-icon dark>{{ item.icon }}</v-icon>
             <span class="text-center">{{ item.title }}</span>
           </router-link>
+          <router-link to="/lk" class="d-flex flex-column item" v-if="isAuth">
+            <v-icon dark>mdi-cogs</v-icon>
+            <span class="text-center">ЛК</span>
+          </router-link>
         </v-col>
       </v-row>
       <transition name="router-fade" mode="out-in">
@@ -143,6 +147,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     menu: [
@@ -161,6 +167,13 @@ export default {
   methods: {
     isActive(path) {
       return path === this.$route.path
+    }
+  },
+  computed: {
+    isAuth() {
+      let credetnrials = Vue.auth.getCredentials()
+      if (credetnrials === null || credetnrials === undefined) return false
+      return true
     }
   }
 }
