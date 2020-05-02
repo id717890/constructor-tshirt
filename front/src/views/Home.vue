@@ -127,11 +127,11 @@
               </v-carousel>
               <v-img
                 aspect-ratio="1.5"
-                height="262"
+                height="290"
                 class="mt-1 bg-constructor"
                 src="~@/assets/img/konstr-bg.jpg"
               >
-                <div class="w100 d-flex flex-column align-center pa-6 ">
+                <div class="w100 d-flex flex-column align-center pa-6  ">
                   <div class="t1 align-self-start">
                     Создай свою форму
                   </div>
