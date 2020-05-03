@@ -17,6 +17,7 @@ import size from './size'
 import auth from './auth'
 import discount from './discount'
 import news from './news'
+import video from './video'
 
 Vue.use(Vuex)
 
@@ -42,6 +43,7 @@ export default new Vuex.Store({
     size,
     auth,
     discount,
-    news
+    news,
+    video
   }
 })

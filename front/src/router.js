@@ -62,7 +62,7 @@ const router = new Router({
           path: 'videos',
           name: 'Videos',
           components: {
-            guest: () => import('./views/Videogallery.vue')
+            guest: () => import('./components/Video/IndexGuest.vue')
           }
         },
         {
@@ -105,6 +105,22 @@ const router = new Router({
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
+        {
+          path: 'videos',
+          beforeEnter: authGuard,
+          component: () => import('./components/Video/Index.vue')
+        },
+        {
+          path: 'video/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Video/Create.vue')
+        },
+        {
+          path: 'video/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Video/Edit.vue')
+        },
         {
           path: 'news',
           beforeEnter: authGuard,

@@ -1,11 +1,18 @@
 <template>
   <v-row>
-    <v-col lg="6" offset-lg="3" md="8" offset-md="2" cols="12">
+    <v-col
+      lg="6"
+      offset-lg="3"
+      md="8"
+      offset-md="2"
+      cols="12"
+      style="min-height: 80vh"
+    >
       <v-row>
         <v-col
           cols="12"
           class="d-flex flex-row flex-wrap justify-space-between"
-          v-if="news"
+          v-if="videos"
         >
           <v-pagination
             :length="length"
@@ -13,24 +20,17 @@
             class="mb-6"
           ></v-pagination>
           <v-row>
-            <v-col md="6" cols="12" v-for="i in perPage" :key="i">
+            <v-col md="6" cols="12" v-for="item in data" :key="item.id">
               <v-card
                 elevation="0"
                 class="card-hover card-video mb-12 d-flex flex-column"
               >
-                <iframe
-                  width="100%"
-                  height="315"
-                  src="https://www.youtube.com/embed/DZZwZ5KEiI4"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
+                <div class="video-wrapper" v-html="item.text"></div>
                 <v-card-text class="d-flex flex-grow-1 font-weight-bold">
-                  {{ title }}
+                  {{ item.title }}
                 </v-card-text>
                 <v-card-text class="news-date">
-                  {{ date(dt) }}
+                  {{ date(item.created_at) }}
                 </v-card-text>
               </v-card>
             </v-col>
@@ -55,11 +55,8 @@ export default {
   data: () => ({
     length: 1,
     page: 1,
-    perPage: 9,
-    data: [],
-    title: "Europe's borders and coronavirus - BBC News",
-    dt: '2020-01-01',
-    total: 30
+    perPage: 8,
+    data: []
   }),
   methods: {
     date(value) {
@@ -73,13 +70,13 @@ export default {
       )
     },
     getData() {
-      if (this.news && this.news.length > 0) {
+      if (this.videos && this.videos.length > 0) {
         if (this.page === 1) {
-          this.data = this.news.slice(0, this.perPage)
+          this.data = this.videos.slice(0, this.perPage)
         } else {
           const start = (this.page - 1) * this.perPage
           const end = this.perPage * this.page
-          this.data = this.news.slice(start, end)
+          this.data = this.videos.slice(start, end)
         }
       }
     }
@@ -90,26 +87,26 @@ export default {
     }
   },
   mounted() {
-    const l = Math.trunc(this.total / this.perPage)
-    const ost = this.total % this.perPage
-    this.length = l
-    if (ost !== 0) this.length++
-    // if (this.news && this.news.length > 0) {
-    //   const l = Math.trunc(this.news.length / this.perPage)
-    //   const ost = this.news.length % this.perPage
-    //   this.length = l
-    //   if (ost !== 0) this.length++
-    // } else {
-    //   this.length = 1
-    // }
-    this.getData()
+    // const l = Math.trunc(this.total / this.perPage)
+    // const ost = this.total % this.perPage
+    // this.length = l
+    // if (ost !== 0) this.length++
+    setTimeout(() => {
+      if (this.videos && this.videos.length > 0) {
+        const l = Math.trunc(this.videos.length / this.perPage)
+        const ost = this.videos.length % this.perPage
+        this.length = l
+        if (ost !== 0) this.length++
+      } else {
+        this.length = 1
+      }
+      this.getData()
+    }, 800)
   },
   computed: {
     ...mapState({
-      news: state => state.news.allNews
+      videos: state => state.video.allVideos
     })
   }
 }
 </script>
-
-<style></style>

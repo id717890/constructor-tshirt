@@ -115,7 +115,7 @@
 
 .swiper-active {
   border: 1px solid #007bff;
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 $size: 55px !important;
@@ -166,11 +166,11 @@ $size: 55px !important;
   background-color: #fbfbfb;
 }
 
-.tb{
+.tb {
   font-weight: bolder;
 }
 
-.fs12{
+.fs12 {
   font-size: 1.2rem !important
 }
 
@@ -179,9 +179,8 @@ $size: 55px !important;
   padding: 8px 15px;
 }
 
-.input-fio .v-input__control{
+.input-fio .v-input__control {
   min-height: 20px !important
-
 }
 
 .image-text .v-responsive__content {
@@ -230,10 +229,24 @@ $size: 55px !important;
   cursor: pointer;
 }
 
-.card-hover .v-image__image {
+.card-hover .v-image__image,
+.card-hover .video-wrapper iframe {
   transition: all .6s ease-in-out;
+}
+
+.card-hover .video-wrapper {
+  overflow: hidden;
+  height: 320px;
 }
 
 .card-hover:hover .v-image__image {
   transform: scale(1.2);
+}
+
+.card-hover:hover .video-wrapper iframe {
+  transform: scale(1.02);
+}
+
+.card-hover .video-wrapper iframe {
+  width: 100%;
 }
