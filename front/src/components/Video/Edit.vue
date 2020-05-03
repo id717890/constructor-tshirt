@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <h1>Редактирование новости</h1>
+          <h1>Редактирование видео</h1>
         </v-col>
       </v-row>
       <v-row>
@@ -18,31 +18,12 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12">
-          <v-btn @click="$refs.file.click()" dark class="mb-5 w100">
-            <v-icon>mdi-image</v-icon>
-            Загрузить изображение</v-btn
-          >
-          <input
-            style="display: none"
-            ref="file"
-            type="file"
-            @change="upload"
-          />
-          <div v-if="form.image">
-            <img
-              :src="img(form.image)"
-              style="width: 100%; border-radius: 5px"
-            />
-          </div>
-        </v-col>
-      </v-row>
-      <v-row v-if="form.text">
-        <v-col lg="6" md="8" sm="12" cols="12">
-          <tteditor
-            @editorChanged="textChanged($event)"
-            ref="editor"
-            :text="form.text"
-          />
+          <v-textarea
+            solo
+            name="input-7-4"
+            label="Код видео"
+            v-model="form.text"
+          ></v-textarea>
         </v-col>
       </v-row>
       <v-row>
@@ -58,7 +39,7 @@
             Сохранить
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" large to="/lk/news">
+          <v-btn color="secondary" large to="/lk/videos">
             <v-icon class="mr-2">mdi-arrow-left</v-icon>
             Отмена
           </v-btn>
@@ -69,63 +50,50 @@
 </template>
 
 <script>
-import imageMixin from '../../mixins/image'
 import loading from '../../mixins/loading'
 import { mapActions, mapGetters } from 'vuex'
-import TtEditor from '../TipTapEditor'
 
 export default {
-  mixins: [loading, imageMixin],
+  mixins: [loading],
   props: ['id'],
-  components: {
-    tteditor: TtEditor
-  },
   data: () => ({
     textField: [v => !!v || 'Обязательное поле'],
     form: {
       valid: true,
       title: '',
-      text: '',
-      image: ''
+      text: ''
     }
   }),
   async created() {
-    await this.getAllNews()
+    await this.getAllVideos()
     this.setLoad(false)
   },
-  mounted() {
-    setTimeout(() => {
-      if (this.news) {
-        this.form.title = this.news.title
-        this.form.image = this.news.image
-        this.form.text = this.news.text
+  watch: {
+    video(value) {
+      if (value) {
+        this.form.title = value.title
+        this.form.text = value.text
       }
-    }, 800)
+    }
+  },
+  mounted() {
+    if (this.video) {
+      this.form.title = this.video.title
+      this.form.text = this.video.text
+    }
   },
   computed: {
-    ...mapGetters(['getNewsById']),
-    news() {
-      return this.getNewsById(this.id)
+    ...mapGetters(['getVideoById']),
+    video() {
+      return this.getVideoById(this.id)
     }
   },
   methods: {
-    ...mapActions(['updateNews', 'getAllNews', 'uploadImage']),
-    textChanged(event) {
-      this.form.text = event
-    },
-    upload(event) {
-      const file = event.target.files[0]
-      let fd = new FormData()
-      fd.append('image', file)
-      fd.append('prefix', 'news-')
-      this.uploadImage(fd).then(x => {
-        this.form.image = x.fullname
-      })
-    },
+    ...mapActions(['updateVideo', 'getAllVideos']),
     save() {
       this.setLoad(true)
       if (this.$refs.form.validate()) {
-        this.updateNews({
+        this.updateVideo({
           id: this.id,
           ...this.form
         })
