@@ -13,17 +13,19 @@ class ImageSeeder extends Seeder
     {
         DB::table('images')->delete();
 
-        DB::table('images')->insert([
-            'title' => 'Image 1',
-            'image' => 'image-tulips.jpg',
-            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
-            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
-        ]);
-        DB::table('images')->insert([
-            'title' => 'Image 2',
-            'image' => 'image-lighthouse.jpg',
-            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
-            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
-        ]);
+//        for ($i = 1; $i <= 7; $i++) {
+            DB::table('images')->insert([
+                'title' => 'Пример изображение 1',
+                'image' => 'image-tulips.jpg',
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+            DB::table('images')->insert([
+                'title' => 'Пример изображение  2',
+                'image' => 'image-lighthouse.jpg',
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+//        }
     }
 }

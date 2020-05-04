@@ -13,7 +13,7 @@
         v-for="item in tableItems"
         :key="item.id"
         max-width="260"
-        class="mr-6 mb-6 d-flex flex-column card-hover"
+        class="mr-6 mb-6 d-flex flex-column"
       >
         <v-img
           max-height="260px"

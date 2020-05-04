@@ -55,7 +55,7 @@ const router = new Router({
           path: 'photos',
           name: 'Photos',
           components: {
-            guest: () => import('./views/Photogallery.vue')
+            guest: () => import('./components/Photo/IndexGuest.vue')
           }
         },
         {

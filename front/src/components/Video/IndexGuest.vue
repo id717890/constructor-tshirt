@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -58,7 +58,11 @@ export default {
     perPage: 8,
     data: []
   }),
+  async created() {
+    this.getAllVideos()
+  },
   methods: {
+    ...mapActions(['getAllVideos']),
     date(value) {
       moment.locale('ru')
       return (

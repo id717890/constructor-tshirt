@@ -5,22 +5,22 @@
 .t1 {
   font-size: 36px;
   font-family: "PTSans";
-  color: rgb( 255, 255, 255 );
+  color: rgb(255, 255, 255);
   font-weight: bold;
   text-transform: uppercase;
-  text-align: left; 
+  text-align: left;
 }
 
 .t2_1 {
   font-size: 18px;
   font-family: "PTSans";
-  color: rgb( 255, 255, 255 );
+  color: rgb(255, 255, 255);
 }
 
 .t3 {
   font-size: 36px;
   font-family: "PTSans";
-  color: rgb( 70, 85, 134 );
+  color: rgb(70, 85, 134);
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -28,14 +28,14 @@
 .t4 {
   font-size: 16px;
   font-family: "PTSans";
-  color: rgb( 145, 145, 145 );
+  color: rgb(145, 145, 145);
   line-height: 1.5;
 }
 
 .t5 {
   font-size: 16px;
   font-family: "PTSans";
-  color: rgb( 205, 205, 205 );
+  color: rgb(205, 205, 205);
   font-weight: bold;
   line-height: 1.5;
 }
@@ -64,14 +64,14 @@
   text-align: center;
   font-size: 30px;
   font-family: "PTSans";
-  color: rgb( 136, 136, 136 );
+  color: rgb(136, 136, 136);
 }
 
 .news-item .month {
   text-align: center;
   font-size: 18px;
   font-family: "PTSans";
-  color: rgb( 136, 136, 136 );
+  color: rgb(136, 136, 136);
 }
 
 .news-item .date {
@@ -83,14 +83,14 @@
   height: 30px;
   overflow: hidden;
   font-family: "PTSans";
-  color: rgb( 51, 51, 51 );
+  color: rgb(51, 51, 51);
   font-weight: bold;
 }
 
 .news-item .text {
   font-size: 14px;
   font-family: "PTSans";
-  color: rgb( 136, 136, 136 );
+  color: rgb(136, 136, 136);
   height: 40px;
   overflow: hidden;
 }
@@ -105,7 +105,7 @@
 }
 
 .img-galery .v-image__image {
-  border-radius: 5px; 
+  border-radius: 5px;
 }
 
 .news-date {
@@ -119,4 +119,12 @@
 
 .card-video {
   // width: 100%;
+}
+
+.card-photo .v-image {
+  border-radius: 5px;
+}
+
+.photos-carousel .v-window__next {
+  right: 0;
 }
