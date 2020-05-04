@@ -14,7 +14,7 @@ class NewsSeeder extends Seeder
         DB::table('news')->delete();
 
 
-        for ($i = 1; $i < 30; $i++) {
+        for ($i = 1; $i < 7; $i++) {
             DB::table('news')->insert([
                 'title' => 'BA may not reopen at Gatwick once pandemic passes',
                 'image' => 'news.png',

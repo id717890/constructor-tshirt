@@ -78,8 +78,6 @@ export default {
         buf.splice(find, 1)
         images = [image, ...buf]
       }
-      console.log(images)
-
       this.$modal.show(
         ImageSliderDialog,
         { images: images },
