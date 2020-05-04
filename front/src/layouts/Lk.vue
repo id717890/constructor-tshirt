@@ -100,7 +100,15 @@
             <v-icon>mdi-youtube</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Видео</v-list-item-title>
+            <v-list-item-title>Видеогалерея</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/lk/photos">
+          <v-list-item-action>
+            <v-icon>mdi-image</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Фотогалерея</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider vertical></v-divider>

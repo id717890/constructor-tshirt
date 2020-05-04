@@ -106,6 +106,22 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'photos',
+          beforeEnter: authGuard,
+          component: () => import('./components/Photo/Index.vue')
+        },
+        {
+          path: 'photo/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Photo/Create.vue')
+        },
+        {
+          path: 'photo/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Photo/Edit.vue')
+        },
+        {
           path: 'videos',
           beforeEnter: authGuard,
           component: () => import('./components/Video/Index.vue')

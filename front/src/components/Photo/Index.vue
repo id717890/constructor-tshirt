@@ -2,21 +2,25 @@
   <v-row>
     <v-col cols="12">
       <h2>
-        Видеогалерея
-        <v-btn fab small to="/lk/video/create">
+        Фотогалерея
+        <v-btn fab small to="/lk/photo/create" class="mx-3">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </h2>
     </v-col>
-    <v-col
-      md="4"
-      cols="12"
-      class="d-flex flex-row flex-wrap"
-      v-for="item in tableItems"
-      :key="item.id"
-    >
-      <v-card class="card-hover w100 mb-6 d-flex flex-column">
-        <div class="video-wrapper" v-html="item.text"></div>
+    <v-col cols="12" class="d-flex flex-row flex-wrap">
+      <v-card
+        v-for="item in tableItems"
+        :key="item.id"
+        max-width="260"
+        class="mr-6 mb-6 d-flex flex-column card-hover"
+      >
+        <v-img
+          max-height="260px"
+          :src="img(item.image)"
+          class="align-end white--text image-text"
+        >
+        </v-img>
         <v-card-text class="d-flex flex-grow-1">
           {{ item.title }}
         </v-card-text>
@@ -28,7 +32,7 @@
             small
             title="Редакитровать"
             color="primary"
-            :to="'/lk/video/' + item.id"
+            :to="'/lk/photo/' + item.id"
           >
             <v-icon>mdi-pen</v-icon>
           </v-btn>
@@ -49,23 +53,25 @@
 </template>
 
 <script>
-import config from '../../init/config'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ConfirmDialogModal from '../Dialog/ConfirmDialog'
+import config from '../../init/config'
+import imageMixin from '../../mixins/image'
+
 export default {
+  mixins: [imageMixin],
   data: () => ({
     removedItem: null
   }),
   methods: {
-    ...mapActions(['getAllVideos', 'resetConfirmDialogResult', 'deleteVideo']),
+    ...mapActions(['getAllPhotos', 'resetConfirmDialogResult', 'deletePhoto']),
     deleteItem(item) {
       this.removedItem = item
       this.$modal.show(
         ConfirmDialogModal,
         { question: 'Удалить запись?' },
         {
-          ...config.modalSettings,
-          maxWidth: 400
+          ...config.modalSettings
         },
         {
           closed: this.confirmDelete
@@ -75,19 +81,19 @@ export default {
     confirmDelete() {
       if (this.confirmDialogResult === true) {
         this.resetConfirmDialogResult()
-        this.deleteVideo(this.removedItem)
+        this.deletePhoto(this.removedItem)
         this.removedItem = null
       }
     }
   },
   computed: {
     ...mapState({
-      tableItems: state => state.video.allVideos,
+      tableItems: state => state.photo.allPhotos,
       confirmDialogResult: state => state.dialog.confirmDialogResult
     })
   },
-  async created() {
-    await this.getAllVideos()
+  async mounted() {
+    await this.getAllPhotos()
   }
 }
 </script>
