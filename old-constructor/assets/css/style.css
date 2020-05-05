@@ -1,0 +1,288 @@
+#types {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.slide {
+    margin: 5px;
+    padding: 10px;
+    -moz-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    border-radius: 2px;
+}
+
+#logo-100_logotypes {
+    max-width: 100%;
+}
+
+#logo-100_logotypes .slick-slide {
+    height: 100px !important;
+    max-width: 100% !important;
+}
+
+.slide:hover {
+    box-shadow: inset 0px 0px 0px 1px #007bff;
+    cursor: pointer;
+}
+
+.slide:focus {
+    outline: none;
+}
+
+.slideActive {
+    box-shadow: inset 0px 0px 0px 3px #007bff !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    font-size: 24px;
+    line-height: 1;
+    opacity: 1;
+    color: #343a40;
+    /*content: "←";*/
+}
+
+.inputColor {
+    border: none;
+    padding: 0px;
+    background-color: transparent;
+    margin-left: 10px;
+    border-radius: 2px;
+    height: 45px;
+    width: 45px;
+    outline: none;
+}
+
+#modelImage {
+    box-shadow: inset 0px 0px 0px 1px gainsboro;
+    border-radius: 2px;
+    padding: 10px 0px;
+}
+
+.canvas-container {
+    position: relative;
+    max-width: 1024px;
+    min-width: 240px;
+    margin: 0 auto;
+}
+
+.boxColor {
+    width: 32px;
+    min-width: 32px;
+    max-width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    display: inline-block;
+    transition-duration: 0.3s;
+}
+
+.boxColor:hover {
+    cursor: pointer;
+    box-shadow: inset 0px 0px 0px 2px #007bff;
+}
+
+.boxColorActive {
+    box-shadow: inset 0px 0px 0px 3px #007bff;
+}
+
+.boxSelectColors {
+    margin-left: -4px;
+    position: absolute;
+    right: 41px;
+    top: -46px;
+    max-width: 189px;
+    display: inline-table;
+    z-index: 9999;
+    border: 1px solid #ced4da;
+    padding-left: 4px;
+    border-radius: 4px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-top: 6px;
+    background-color: #fbfbfb;
+}
+
+@font-face {
+    font-family: "Nike";
+    src: url("../fonts/Nk767 ALY.otf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Adidas";
+    src: url("../fonts/FFF World Cup 2018 Adidas.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Alternativ";
+    src: url("../fonts/a_AlternaNr.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Atletico";
+    src: url("../fonts/Atletico Madrid 2013-2014.otf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Real";
+    src: url("../fonts/RealMadrid2011-2012.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+.swiper-container {
+    height: 300px;
+    width: 100%;
+}
+
+.swiper-wrapper {
+    margin: auto 50px;
+}
+
+.swiper-slide {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    transition: 1s;
+}
+
+.swiper-slide:hover {
+    transform: scale(0.9);
+}
+
+.swiper-slide_active {
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}
+
+.numberBezStrelok {
+    -moz-appearance: textfield;
+}
+
+.numberBezStrelok::-webkit-outer-spin-button,
+.numberBezStrelok::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    color: white;
+    font-size: 2rem;
+}
+
+.rules-for-form {
+    transition: 1s;
+    height: 50px;
+    max-height: 50px;
+    overflow: hidden;
+}
+
+.rules-all {
+    height: 760px;
+}
+
+.rules-btn {
+    text-decoration: none;
+    border-bottom: #007bff 1px dotted !important;
+}
+
+.rules-btn:hover {
+    text-decoration: none !important;
+}
+
+@media (min-width:768px) {
+    .modal-dialog {
+        width: 80%;
+        max-width: none;
+    }
+}
+
+.stamp,
+.sign {
+    position: relative;
+    bottom: -30px;
+}
+
+.yurik-contract-for-buy,
+.yurik-contract-for-nanesenie {
+    transition: 1s;
+    height: 500px;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.fizik-contract-for-buy,
+.fizik-contract-for-nanesenie {
+    transition: 1s;
+    height: 460px;
+    max-height: 460px;
+    overflow: hidden;
+}

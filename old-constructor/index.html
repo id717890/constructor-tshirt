@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="ie=edge" http-equiv="x-ua-compatible">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <link href="assets/css/swiper.min.css" rel="stylesheet" />
+  
+</head>
+
+<body>
+
+  <div class="container" id="c__app">
+    <div class="loading-container" v-if="loading">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div>Отправка заказа</div>
+    </div>
+    <!--<p v-for="(order, i) in orders">
+    <b>
+      Order: {{ i }}
+    </b>
+    <br>
+    {{ order }}
+    </br>
+  </p>
+  <p>
+    <b>
+      selectedOrder
+    </b>
+    : {{ selectedOrder }}
+  </p>-->
+
+    <!-- Область выбора типа, модели и цвета -->
+    <div v-show="showAreaChoice">
+      <!-- Типы -->
+      <ul class="mt-3 btn-group nav nav-fill" style="display: none;" v-show="types!=null">
+        <li
+          :class="['nav-item btn btn-outline-primary', i == appData.orders[appData.selectedOrder].selectedType ? 'active' : '']"
+          @click="selectType(i)" v-for="(type, i) in types">
+          {{ type.name }}
+        </li>
+      </ul>
+
+      <!-- Модели -->
+      <div class="my-3" v-if="showModels">
+        <h4 class="text-center text-primary">
+          МОДЕЛЬ
+        </h4>
+        <swiper :options="swiper" class="my-3" ref="swiperModels">
+
+          <!-- Слайды моделей -->
+          <swiper-slide :class="{'swiper-slide_active': i == appData.orders[appData.selectedOrder].selectedModel}"
+            :style="'background-image: url('+model.Изображение+'); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'"
+            @click.native="selectModel(i)"
+            v-for="(model, i) in appData.types[appData.orders[appData.selectedOrder].selectedType].models">
+          </swiper-slide>
+
+          <!-- Стрелки прокрутки моделей -->
+          <div class="swiper-button-prev" slot="button-prev">
+          </div>
+          <div class="swiper-button-next" slot="button-next">
+          </div>
+        </swiper>
+      </div>
+
+      <!-- Цвета -->
+      <div class="my-3" v-if="showColors">
+        <h4 class="text-center text-primary">
+          ЦВЕТ
+        </h4>
+        <swiper :options="swiper" class="my-3" ref="swiperColors">
+
+          <!-- Слайды цветов -->
+          <swiper-slide :class="{'swiper-slide_active': i == appData.orders[appData.selectedOrder].selectedColor}"
+            :style="'background-image: url('+color.Изображение+'); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'"
+            @click.native="selectColor(i)"
+            v-for="(color, i) in types[appData.orders[appData.selectedOrder].selectedType].models[appData.orders[appData.selectedOrder].selectedModel].colors">
+          </swiper-slide>
+
+          <!-- Стрелки прокрутки цветов -->
+          <div class="swiper-button-prev" slot="button-prev">
+          </div>
+          <div class="swiper-button-next" slot="button-next">
+          </div>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="my-2" id="model">
+      <div class="row">
+        <div class="col-lg-8">
+
+          <!-- Вкладки заказов -->
+          <ul v-show="((orders[0].order.model.name != null)&&(orders[0].order.color.name != null))"
+            class="nav nav-tabs">
+            <li v-if="((order.order.model.name != null) && (order.order.color.name != null))"
+              class="nav-item btn-sm p-0 m-0" v-for="(order, i) in orders">
+              <a :class="['nav-link', i == selectedOrder ? 'active' : '']" @click="selectOrder(i)" href="#">
+                {{ order.order.model.name+" "+order.order.color.name }}
+                <i class="fa fa-times" @click.prevent.stop="deleteOrder(i)"></i>
+              </a>
+            </li>
+            <li class="nav-item btn-sm p-0 m-0">
+              <a class="nav-link" href="#" onclick="addOrder()">
+                Добавить артикул
+              </a>
+            </li>
+          </ul>
+
+          <!-- Холст  -->
+          <div class="col-lg-12" id="modelImage" v-for="(order, orderIndex) in orders"
+            v-show="showAreaModelImage(orderIndex)">
+            <div class="col-12 text-center order-first">
+              <h4 class="mb-3" v-if="order.selectedColor!=null">
+                {{ types[orders[orderIndex].selectedType].models[orders[orderIndex].selectedModel].Название }}
+                <br>
+                <small class="text-muted">
+                  Артикул: {{
+                types[orders[orderIndex].selectedType].models[orders[orderIndex].selectedModel].colors[orders[orderIndex].selectedColor].Артикул
+                }}
+                </small>
+                <br>
+                </br>
+                </br>
+              </h4>
+            </div>
+            <div class="col-12 px-0">
+              <canvas class="w-100 bigImg" height="350" v-bind:id="'modelImageCanvas_'+orderIndex" ref="canvasImg"
+                width="700">
+              </canvas>
+            </div>
+            <div class="row my-4" v-if="order.selectedColor!=null">
+              <div class="col-7 pl-5" id="modelDescription">
+                {{ types[orders[orderIndex].selectedType].models[orders[orderIndex].selectedModel].Описание }}
+              </div>
+              <div :style="'font-family: '+fontName+'; font-size: 3rem;'" class="col-5" id="fontNumbers">
+                0123456789
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Нанесения -->
+        <div class="col-lg-4 px-3" id="modelDrawings" style="margin-top: 42px;" v-if="showDrawings"
+          v-show="orders[selectedOrder].selectedColor!=null">
+
+          <!-- Кнопка удаления нанесения -->
+          <div class="row mb-3" v-show="showButtonDeleteDrawing">
+            <div class="col text-center">
+              <button @click="deleteSelectedDrawing()" class="btn btn-danger btn-block">
+                Удалить выбранное нанесение
+              </button>
+            </div>
+          </div>
+
+          <!-- Логотип -->
+          <div class="form-row mb-3" id="logo">
+            <h5>
+              Нанесение логотипа
+            </h5>
+            <swiper :options="swiper" ref="swiperLogos" style="max-height: 150px !important;">
+
+              <!-- Слайды логотипов -->
+              <swiper-slide :class="{'swiper-slide_active': i == logoProps.i}"
+                :style="'background-image: url('+logo.Изображение+'); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'"
+                @click.native="setLogoImage(logo.Изображение, i)" v-for="(logo, i) in logos">
+              </swiper-slide>
+
+              <!-- Стрелки прокрутки логотипов -->
+              <div class="swiper-button-prev" slot="button-prev">
+              </div>
+              <div class="swiper-button-next" slot="button-next">
+              </div>
+            </swiper>
+            <label class="btn btn-sm btn-primary btn-block mt-2 mb-1" for="uploadLogo">
+              Загрузить свой логотип
+              <i class="fas fa-file-image">
+              </i>
+            </label>
+            <input @change="addLogoImage(event)" accept="image/*" id="uploadLogo" name="uploadLogo" style="display:none"
+              type="file" />
+            <select class="form-control form-control-sm my-1" id="logoType" v-model="logoProps.type">
+              <option v-bind:value="nameLogoType"
+                v-for="(logoType, nameLogoType) in drawings['Логотип'].sizes[logoProps.size].types">
+                {{ nameLogoType }}
+              </option>
+            </select>
+            <ul class="btn-group nav nav-fill w-100 my-1" id="logoSize">
+              <li v-for="tmpLogoSizeName in Object.keys(drawings['Логотип'].sizes)"
+                :class="['nav-item btn btn-sm btn-outline-dark', logoProps.size==tmpLogoSizeName ? 'active' : '']"
+                @click="setLogoSize(tmpLogoSizeName)">
+                {{ tmpLogoSizeName }}
+              </li>
+              <li @click="addLogo()" class="nav-item btn btn-sm bg-primary text-white">
+                Добавить
+                <i aria-hidden="true" class="fas fa-plus-square">
+                </i>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Номер -->
+          <div class="form-row mb-3" id="number">
+            <h5>
+              Нанесение номера
+            </h5>
+            <div class="input-group">
+              <input class="form-control form-control-sm numberBezStrelok" id="numberValue" min="0" placeholder="НОМЕР"
+                type="number" v-model="numberProps.value">
+              <div class="input-group-prepend">
+                <select class="form-control form-control-sm" id="numberFont" style="margin-left: 2px;"
+                  v-model="fontName">
+                  <option v-bind:value="font" v-for="(font, i) in fonts">
+                    {{ font }}
+                  </option>
+                </select>
+                <div :style="'background-color: '+numberProps.color.code+';'" :title="numberProps.color.name"
+                  @click="showSelectColors=!showSelectColors*1" class="nav-item boxColor boxColorActive">
+                </div>
+                <div class="boxSelectColors" v-show="showSelectColors==1">
+                  <div :class="['nav-item boxColor', numberProps.color.name==colorName ? 'boxColorActive' : '']"
+                    :style="'background-color: '+colorCode+';'" :title="colorName"
+                    @click="setTextColor(colorName, colorCode, numberProps)"
+                    v-for="(colorCode, colorName) in colorsCode" v-show="numberProps.color.name!=colorName">
+                  </div>
+                </div>
+              </div>
+              </input>
+            </div>
+            <ul class="btn-group nav nav-fill w-100 my-1" id="numberSize">
+              <li :class="['nav-item btn btn-sm btn-outline-dark', numberProps.size==numberSize ? 'active' : '']"
+                @click="setNumberSize(numberSize)" v-for="numberSize in Object.keys(appData.drawings['Номер'].sizes)">
+                {{ numberSize }}
+              </li>
+              <li @click="addNumber()" class="nav-item btn btn-sm bg-primary text-white">
+                Добавить
+                <i aria-hidden="true" class="fas fa-plus-square">
+                </i>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Строка -->
+          <div class="form-row mt-3" id="string">
+            <h5>
+              Нанесение надписи макс. 300 мм
+            </h5>
+            <div class="input-group">
+              <input @input="stringProps.value=stringProps.value.toUpperCase()"
+                class="form-control form-control-sm numberBezStrelok" id="stringValue" placeholder="ФАМИЛИЯ ИЛИ ТЕКСТ"
+                type="text" v-model.trim="stringProps.value" />
+              <div class="input-group-prepend">
+                <select class="form-control form-control-sm" id="stringFont" style="margin-left: 2px;"
+                  v-model="fontName">
+                  <option v-bind:value="font" v-for="(font, i) in fonts">
+                    {{ font }}
+                  </option>
+                </select>
+                <div :style="'background-color: '+stringProps.color.code+';'" :title="stringProps.color.name"
+                  @click="showSelectColors=!showSelectColors*2" class="nav-item boxColor boxColorActive">
+                </div>
+                <div class="boxSelectColors" v-show="showSelectColors==2">
+                  <div :class="['nav-item boxColor', stringProps.color.name==colorName ? 'boxColorActive' : '']"
+                    :style="'background-color: '+colorCode+';'" :title="colorName"
+                    @click="setTextColor(colorName, colorCode, stringProps)"
+                    v-for="(colorCode, colorName) in colorsCode" v-show="stringProps.color.name!=colorName">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="btn-group nav nav-fill w-100 my-1" id="stringSize">
+              <li :class="['nav-item btn btn-sm btn-outline-dark', stringProps.size==stringSize ? 'active' : '']"
+                @click="setStringSize(stringSize)" v-for="stringSize in Object.keys(appData.drawings['Надпись'].sizes)">
+                {{ stringSize }}
+              </li>
+              <li @click="addString()" class="nav-item btn btn-sm bg-primary text-white">
+                Добавить
+                <i aria-hidden="true" class="fas fa-plus-square">
+                </i>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-12" v-if="showOrderDetails()">
+
+          <!-- Размерный ряд -->
+          <div class="row my-4">
+            <div class="col">
+              <table class="table">
+                <tr style="font-size: 1.2rem;">
+                  <td width="200">
+                    <b>
+                      Размерный ряд
+                    </b>
+                  </td>
+                  <td :title="sizesTooltip[sizeName]" data-html="true"
+                    data-template="<div class='tooltip' role='tooltip' style='width: 500px !important;'><div class='arrow'></div><div class='tooltip-inner' style='max-width: 500px !important; padding: 0px !important;'></div></div>"
+                    data-toggle="tooltip"
+                    v-for="(sizeName, j) in Object.keys(types[orders[selectedOrder].selectedType].models[orders[selectedOrder].selectedModel]['Размеры'])">
+                    {{ sizeName }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>
+                      Склад Москва
+                    </b>
+                  </td>
+                  <td
+                    v-for="(sizeName, j) in Object.keys(types[orders[selectedOrder].selectedType].models[orders[selectedOrder].selectedModel]['Размеры'])">
+                    {{ currentOrder.order.sizes.sizeNames[sizeName].countMoscow }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>
+                      Склад Испания
+                    </b>
+                  </td>
+                  <td
+                    v-for="(sizeName, j) in Object.keys(types[orders[selectedOrder].selectedType].models[orders[selectedOrder].selectedModel]['Размеры'])">
+                    {{ currentOrder.order.sizes.sizeNames[sizeName].countSpain }}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size: 1.2rem;">
+                    <b>
+                      Заказ
+                    </b>
+                  </td>
+                  <td
+                    v-for="(sizeName, j) in Object.keys(types[orders[selectedOrder].selectedType].models[orders[selectedOrder].selectedModel]['Размеры'])">
+                    <input
+                      @input="currentOrder.order.setSizeCount(sizeName, orders[selectedOrder].sizes[sizeName].count)"
+                      class="form-control" min="0" type="number"
+                      v-model.number="orders[selectedOrder].sizes[sizeName].count">
+                    </input>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- <h1>123</h1>
+          <button @click="fillTableSizes()">CLICK</button>
+          {{tableSizes}} -->
+
+          <!-- Размерная сетка -->
+          <!--
+          <div class="row my-4">
+            <div class="col">
+              <button class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalSizeChart">Размерная сетка</button>
+              <div id="modalSizeChart" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSizeChart" aria-hidden="true">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Размерная сетка</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <img src="./images/Razmernaja_setka.png" alt="Размерная сетка" width="100%">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          -->
+          <div class="row my-4">
+
+            <!-- Таблица "Заказ Товар" -->
+            <div class="col-6">
+              <button class="btn btn-block btn-primary" data-target="#modalOrder" data-toggle="modal"
+                @click="fillTableSizes()">
+                Заказ Товар
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalOrder" class="modal fade" id="modalOrder" role="dialog"
+                tabindex="-1">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Заказ Товар
+                      </h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <th>
+                            Наименование
+                          </th>
+                          <th>
+                            Размер
+                          </th>
+                          <th>
+                            Количество Москва
+                          </th>
+                          <th>
+                            Количество Испания
+                          </th>
+                          <th>
+                            Общее количество
+                          </th>
+                          <th>
+                            Цена (руб.)
+                          </th>
+                          <th>
+                            Сумма (руб.)
+                          </th>
+                        </thead>
+                        <section v-if="tableSizes">
+                          <!-- <tbody v-for="(orderProduct, iOrderProduct) in orders"> -->
+                          <tbody>
+                            <!-- <tr v-for="(sizeName, iSizeName) in orderProduct.order.sizes.sizeNames" -->
+                            <tr v-for="(row, index) in tableSizes">
+                              <td>
+                                {{row.name}}
+                                <!-- {{ orderProduct.order.model.name+' '+orderProduct.order.color.name+' }} -->
+                                <!-- '+orderProduct.order.color.articul }} -->
+                              </td>
+                              <td>
+                                {{row.size}}
+                                <!-- {{ iSizeName }} -->
+                              </td>
+                              <td>
+                                {{row.countMoscow}}
+                                <!-- {{ sizeName.countMoscow }} -->
+                              </td>
+                              <td>
+                                {{row.countSpain}}
+                                <!-- {{ sizeName.countSpain }} -->
+                              </td>
+                              <td>
+                                {{row.count}}
+                                <!-- {{ sizeName.count }} -->
+                              </td>
+                              <td>
+                                {{row.price}}
+                                <!-- {{ sizeName.price }} -->
+                              </td>
+                              <td>
+                                {{row.sum}}
+                                <!-- {{ sizeName.total }} -->
+                              </td>
+                            </tr>
+                          </tbody>
+                        </section>
+
+                        <tr>
+                          <td colspan="6">
+                            <b>
+                              ИТОГО
+                            </b>
+                          </td>
+                          <td>
+                            <b>
+                              {{sumForTableSizes}}
+                              <!-- {{ totalProduct() }} -->
+                            </b>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Таблица "Ваш заказ Нанесение" -->
+            <div class="col-6">
+              <button class="btn btn-block btn-primary" data-target="#modalOrderDrawing" data-toggle="modal"
+                @click="fillTableItogoForZakazNanesenie()">
+                Заказ Нанесение
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalOrderDrawing" class="modal fade" id="modalOrderDrawing"
+                role="dialog" tabindex="-1" v-if="typeof currentOrder.order.logotypes != undefined">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Заказ Нанесение
+                      </h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul v-show="((orders[0].order.model.name != null)&&(orders[0].order.color.name != null))"
+                        class="nav nav-tabs">
+                        <li v-if="((order.order.model.name != null) && (order.order.color.name != null))"
+                          class="nav-item" v-for="(order, i) in orders">
+                          <a :class="['nav-link', i == selectedOrder && showItogZakazNanesenie !== true ? 'active' : '']"
+                            @click="selectOrder(i)" href="#">
+                            {{ order.order.model.name+" "+order.order.color.name }}
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a :class="['nav-link', showItogZakazNanesenie === true ? 'active' : '']" class="nav-link"
+                            href="#" @click="toggleItogZakazNanesenie">
+                            ИТОГО
+                          </a>
+                        </li>
+                      </ul>
+                      <table class="table table-bordered" v-if="!showItogZakazNanesenie">
+                        <thead class="thead-light">
+                          <th>
+                            Наименование
+                          </th>
+                          <th>
+                            Количество
+                          </th>
+                          <th>
+                            Цена (руб.)
+                          </th>
+                          <th>
+                            Сумма (руб.)
+                          </th>
+                        </thead>
+                        <tbody>
+                          <template
+                            v-for="(logotypeSizeName, iLogotypeSizeName) in orders[selectedOrder].order.logotypes.sizeNames"
+                            v-show="orders[selectedOrder].order.logotypes.count!=0">
+                            <tr v-for="(logotypeSizeNameType, iLogotypeSizeNameType) in logotypeSizeName"
+                              v-show="logotypeSizeNameType.count!=0">
+                              <td>
+                                {{ 'Логотип '+iLogotypeSizeName+' '+iLogotypeSizeNameType }}
+                              </td>
+                              <td>
+                                {{ logotypeSizeNameType.count }}
+                              </td>
+                              <td>
+                                {{ logotypeSizeNameType.price }}
+                              </td>
+                              <td>
+                                {{ logotypeSizeNameType.total }}
+                              </td>
+                            </tr>
+                          </template>
+                          <tr v-for="(numberSizeName, iNumberSizeName) in orders[selectedOrder].order.numbers.sizeNames"
+                            v-show="numberSizeName.count!=0">
+                            <td>
+                              {{ 'Номер '+iNumberSizeName }}
+                            </td>
+                            <td>
+                              {{ numberSizeName.count }}
+                            </td>
+                            <td>
+                              {{ numberSizeName.price }}
+                            </td>
+                            <td>
+                              {{ numberSizeName.total }}
+                            </td>
+                          </tr>
+                          <tr v-for="(stringSizeName, iStringSizeName) in orders[selectedOrder].order.strings.sizeNames"
+                            v-show="stringSizeName.count!=0">
+                            <td>
+                              {{ 'Надпись '+iStringSizeName }}
+                            </td>
+                            <td>
+                              {{ stringSizeName.count }}
+                            </td>
+                            <td>
+                              {{ stringSizeName.price }}
+                            </td>
+                            <td>
+                              {{ stringSizeName.total }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3">
+                              <b>
+                                ИТОГО
+                              </b>
+                            </td>
+                            <td>
+                              <b>
+                                {{ orders[selectedOrder].order.drawingsTotal }}
+                              </b>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <table class="table table-bordered" v-if="showItogZakazNanesenie">
+                        <thead class="thead-light">
+                          <th>
+                            Наименование
+                          </th>
+                          <th>
+                            Количество
+                          </th>
+                          <th>
+                            Сумма (руб.)
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(row, index) in itogoTableForZakazNanesenie">
+                            <td>{{row.name}}</td>
+                            <td>{{row.count}}</td>
+                            <td>{{row.sum}}</td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <b>
+                                ИТОГО
+                              </b>
+                            </td>
+                            <td>
+                              <b>
+                                {{ itogoForZakazNanesenie }}
+                              </b>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-4">
+            <!-- Таблица "Размер-Номер-Фамилия" -->
+            <div class="col-6">
+              <button class="btn btn-block btn-primary" data-target="#modalTableRazNomFam" data-toggle="modal">
+                Таблица РАЗМЕР-НОМЕР-ФАМИЛИЯ
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalTableRazNomFam" class="modal show" id="modalTableRazNomFam"
+                role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Таблица РАЗМЕР-НОМЕР-ФАМИЛИЯ
+                      </h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul v-show="((orders[0].order.model.name != null)&&(orders[0].order.color.name != null))"
+                        class="nav nav-tabs">
+                        <li v-if="((order.order.model.name != null) && (order.order.color.name != null))"
+                          class="nav-item" v-for="(order, i) in orders">
+                          <a :class="['nav-link', i == selectedOrder && showItogZakazNanesenie !== true ? 'active' : '']"
+                            @click="selectOrder(i)" href="#">
+                            {{ order.order.model.name+" "+order.order.color.name }}
+                          </a>
+                        </li>
+                      </ul>
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <th>
+                            Размер
+                          </th>
+                          <th>
+                            Номер
+                          </th>
+                          <th>
+                            Фамилия
+                          </th>
+                        </thead>
+
+                        <!-- Цикл по размерам-->
+                        <tbody v-for="sizeName in Object.keys(currentOrder.order.sizes.sizeNames)"
+                          v-if="currentOrder.order.sizes.count>0">
+
+                          <!-- Цикл по номерам-фамилиям -->
+                          <tr v-if="currentOrder.order.sizes.sizeNames[sizeName].count>0">
+                            <td :rowspan="currentOrder.order.sizes.sizeNames[sizeName].count">
+                              {{ sizeName }}
+                            </td>
+                            <td>
+                              <input class="form-control" type="number"
+                                v-model.number="currentOrder.order.sizes.sizeNames[sizeName].numberSurname[0].number">
+                              </input>
+                            </td>
+                            <td>
+                              <input class="form-control" type="text"
+                                v-model="currentOrder.order.sizes.sizeNames[sizeName].numberSurname[0].surname">
+                              </input>
+                            </td>
+                          </tr>
+                          <tr
+                            v-for="numberSurname in currentOrder.order.sizes.sizeNames[sizeName].numberSurname.slice(1)">
+                            <td>
+                              <input class="form-control" type="number" v-model.number="numberSurname.number">
+                              </input>
+                            </td>
+                            <td>
+                              <input class="form-control" type="text" v-model="numberSurname.surname">
+                              </input>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div></div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-success" data-dismiss="modal">Готово</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Таблица "Ваш заказ Москва" -->
+            <div class="col-6">
+              <button class="btn btn-block btn-success " modalTableRazNomFam="modalTableRazNomFam"
+                data-target="#modalRules" data-toggle="modal" @click="prepareForm">
+                <i class="fa fa-check"></i>
+                Оформить заказ
+              </button>
+
+              <!-- <button class="btn btn-block btn-primary" data-target="#modalTableRazNomFam" data-toggle="modal">
+                Таблица РАЗМЕР-НОМЕР-ФАМИЛИЯ
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalTableRazNomFam" class="modal show" id="modalTableRazNomFam"
+                role="dialog" tabindex="-1"> -->
+
+
+              <!-- Modal Оформить заказ -->
+              <div class="modal fade" id="modalRules" tabindex="-1" role="dialog" role="dialog"
+                aria-labelledby="modalRulesLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ПРАВИЛА УХОДА ЗА СПОРТИВНОЙ ФОРМОЙ И ЭКИПИРОВКОЙ С
+                        НАНЕСЕНИЕМ</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="rules-for-form" ref="rules-for-form">
+                        <p>Чтобы спортивная форма, экипировка с нанесением долго служили и выполняли свое предназначение
+                          нужен правильный уход. Всего несколько советов помогут продлить срок службы.</p>
+                        <p>В первую очередь ознакомьтесь с правилами стирки указанными на вшивном ярлыке с изнаночной
+                          стороны вашего изделия.</p>
+                        <p>Самым важным советом по уходу за вещами, будет стирать её после каждой тренировки, не
+                          откладывая. Так как на тренировках мы потеем, а пот - это раствор солей и органических
+                          веществ,
+                          которые могут разрушать ткань. Еще очень важно, не бросать мокрые вещи сразу в сумку. Лучше
+                          если
+                          это будет пакет, а затем уже сумка, и тогда не придется стирать сумку каждый раз.</p>
+                        <p>
+                          <ul>
+                            <li><strong>Стирайте вещи вывернутыми наизнанку.</strong></li>
+                            <li><strong>Замки должны быть застегнуты.</strong></li>
+                            <li><strong>Температура не больше 30-40 градусов.</strong></li>
+                            <li><strong>Программу стирки выбираем с минимальным временем.</strong> Так как особых
+                              загрязнений нет, этого
+                              будет
+                              достаточно. Есть программы типа повседневной стирки или быстрой, около полу часа стирки
+                              будет
+                              более чем достаточно.</li>
+                            <li><strong>Пониженные обороты отжима.</strong> Если есть возможность снизить обороты в
+                              вашей стиральной
+                              машинке,
+                              будет очень кстати, веди высокие обороты разрушают ткань. А такая одежда и так быстро
+                              сохнет.</li>
+                            <li><strong>Выбирайте мягкое средство для стирки</strong> (cейчас даже есть специальные, с
+                              отметкой SPORT).
+                            </li>
+                            <li><strong>Не добавляйте смягчающий кондиционер.</strong></li>
+                            <li><strong>Не добавляйте отбеливатель.</strong></li>
+                            <li>Если требуется <strong>глажка, лучше это сделать отпаривателем,</strong> или на
+                              минимальной температуре
+                              утюга,
+                              <strong>выворачивая наизнанку.</strong></li>
+                          </ul>
+                        </p>
+                        <p>
+                          Эти простые советы помогут продлить срок эксплуатации вашей одежды для тренировок.
+                          Проставьте галочку в окне «Я ОЗНАКОМЛЕН С ПРАВИЛАМИ УХОДА»
+                          Только после этого вы сможете перейти к подписанию договора.
+                        </p>
+                      </div>
+
+                      <div class="text-center">
+                        <a href="#" class="rules-btn" @click.prevent.stop="toggleRules" v-if="!shoaAllRules">Читать
+                          далее</a>
+                        <a href="#" class="rules-btn" @click.prevent.stop="toggleRules" v-if="shoaAllRules">Скрыть</a>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" v-model="agreeRules" :value="agreeRules"
+                          id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                          Я ОЗНАКОМЛЕН С ПРАВИЛАМИ УХОДА
+                        </label>
+                      </div>
+                      <div v-if="agreeRules === true">
+                        <h3 class="text-center">Вы являетесь</h3>
+                        <div class="row">
+                          <div class="col-6 text-center">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                                value="fizik" v-model="typeCustomer">
+                              <label class="form-check-label" for="exampleRadios1">
+                                Физическим лицом
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-6 text-center">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                                value="yurik" v-model="typeCustomer">
+                              <label class="form-check-label" for="exampleRadios2">
+                                Юридическим лицом
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row py-5" v-if="typeCustomer === 'fizik'">
+                          <div class="col-sm-12 col-md-6 text-justify ">
+                            <section ref="fizik-contract-for-buy" class="fizik-contract-for-buy">
+                              <h4 class="text-center">ДОГОВОР КУПЛИ-ПРОДАЖИ № {{fizik.number}}</h4>
+                              <div class="d-flex flex-row flex-nowrap justify-content-between mb-5">
+                                <span>г.Москва</span>
+                                <span>{{fizik.date}}г.</span>
+                              </div>
+                              <p class="text-justify">
+                                Индивидуальный предприниматель Кляус Наталья Сергеевна, именуемый в дальнейшем
+                                «Продавец», в
+                                лице
+                                Кляус Натальи Сергеевны, действующей на основании Свидетельства о государственной
+                                регистрации
+                                физического лица в качестве индивидуального предпринимателя, с одной стороны, и
+                              </p>
+                              <div>
+                                <form>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.firstName"
+                                      placeholder="Имя *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.lastName"
+                                      placeholder="Фамилия *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.middleName"
+                                      placeholder="Отчество *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="email" class="form-control form-control-sm" v-model="fizik.email"
+                                      placeholder="Электронный адрес">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.phone"
+                                      placeholder="Телефон *">
+                                  </div>
+                                  <button type="submit" class="btn btn-primary d-none">Submit</button>
+                                </form>
+                              </div>
+                              <p>, именуемый в дальнейшем «Покупательс другой
+                                стороны, совместно именуемые Стороны, заключили настоящий Договор о нижеследующем:</p>
+                              <h5 class="text-center">1. ПРЕДМЕТ ДОГОВОРА</h5>
+                              <p>
+                                <strong>1.1.</strong> В рамках настоящего договора Покупатель в любое время имеет право
+                                совершать
+                                ряд не связанных между собой сделок по купле-продаже спортивной одежды (далее —
+                                «Товар»).
+                                Основанием для возникновения прав и обязанностей по настоящему договору является
+                                обращение
+                                Покупателя с Заказом клиента на совершение сделки купли-продажи.
+                              </p>
+                              <p>
+                                <strong>1.2.</strong> Продавец обязуется передать в собственность Покупателя Товар в
+                                количестве,
+                                ассортименте и по
+                                ценам указанным в товарных накладных, а Покупатель принять и оплатить его. Предметом
+                                каждой
+                                сделки
+                                является купленный Товар в ассортименте, оговоренном в Заказе клиента и указанный в
+                                товарных
+                                накладных с итоговой суммой сделки, определяемой, как сумма всех товарных накладных
+                                отгруженного
+                                Товара по данному Заказу клиента.
+                              </p>
+                              <h5 class="text-center">2. СУММА ДОГОВОРА</h5>
+                              <p>
+                                <strong>2.1.</strong> Сумма Договора и цены на поставляемый Товар определяются заказом
+                                (Приложение
+                                №1), которая
+                                являются неотъемлемой частью настоящего Договора.
+                              </p>
+                              <p>
+                                <strong>2.2.</strong> Изменение цены Товара в течение срока действия настоящего Договора
+                                Продавцом
+                                без письменного
+                                согласия Покупателя недействительно.
+                              </p>
+
+                              <h5 class="text-center">3. ОБЯЗАННОСТИ СТОРОН</h5>
+                              <p><strong>3.1.</strong> Продавец обязан:</p>
+                              <p><strong>3.1.1.</strong> Направить Покупателю счет на оплату Товара.</p>
+                              <p><strong>3.1.2.</strong> Передать Покупателю Товар надлежащего качества, в соответствии
+                                с
+                                ассортиментом и количеством,
+                                указанным в товарных накладных. Обязанность Продавца передать Товар считается
+                                исполненной с
+                                момента
+                                подписания товарно-транспортной накладной первым уполномоченным перевозчиком или
+                                представителем
+                                Покупателя со склада Продавца в г. Москва.</p>
+                              <p><strong>3.1.3.</strong> Передать Покупателю все документы, относящиеся к Товару:
+                                товарно-транспортные накладные,
+                                счета.</p>
+                              <p><strong>3.1.4.</strong> На основании акта, принять к возврату Товар, проданный
+                                Покупателем
+                                возвращенный в пределах
+                                гарантийного срока, с выявленными производственными дефектами. В этом случае Продавец
+                                возмещает
+                                стоимость возвращенного Товара, либо, по согласованию с Покупателем, заменяет
+                                бракованный Товар
+                                на
+                                качественный в течение 10 (десяти) рабочих дней.</p>
+                              <p><strong>3.2.</strong> Покупатель обязан:</p>
+                              <p><strong>3.2.1.</strong> Оформить заказ - Заказ клиента на сделку по купле-продаже, в
+                                которой
+                                должен указать артикул,
+                                цвет, размер и количество необходимого для поставки Товара.</p>
+                              <p><strong>3.2.2.</strong> Обеспечить приемку товара. Приемка товара по количеству и
+                                качеству
+                                осуществляется в
+                                соответствии с законодательно установленными нормами на складе Продавца.</p>
+
+                              <h5 class="text-center">4. ГАРАНТИЙНЫЙ СРОК ТОВАРА</h5>
+                              <p><strong>4.1.</strong> Покупатель вправе предъявлять претензии, связанные с
+                                производственными
+                                дефектами Товара, при их
+                                обнаружении в течение гарантийного срока.</p>
+                              <p><strong>4.2.</strong> Срок гарантийных обязательств Продавца составляет 6 (шесть)
+                                месяцев с
+                                момента передачи Товара
+                                Покупателю.</p>
+
+                              <h5 class="text-center">5. ПОСТАВКА ТОВАРА</h5>
+                              <p><strong>5.1.</strong> Доставка Товара до Покупателя осуществляется силами и средствами
+                                Покупателя.</p>
+                              <p><strong>5.2.</strong> Товар по Заказу клиента поставляется со склада Продавца в
+                                г.Москва.
+                                Наименование,
+                                ассортимент,
+                                количество указаны в товарных накладных, являющихся неотъемлемой частью настоящего
+                                Договора.</p>
+                              <p><strong>5.3.</strong> Датой поставки Товара считается дата получения товара Покупателем
+                                с
+                                оформлением всех
+                                необходимых документов, согласно п. 3.1.3.</p>
+                              <p><strong>5.4.</strong> Условия поставки - Поставка товара на склад Покупателя за счет
+                                Поставщика.
+                              </p>
+                              <p><strong>5.5.</strong> Срок поставки товара по Заказу клиента производится в течение 20
+                                (двадцати)
+                                календарных дней
+                                со
+                                дня поступления денежных средств на счет Поставщика.</p>
+                              <p><strong>5.5.</strong> Поставщик по согласованию с Покупателем имеет право на досрочную
+                                поставку
+                                Товара при наличии
+                                Товара или его части на складе Поставщика в г. Москва.</p>
+
+                              <h5 class="text-center">6. ПОРЯДОК РАСЧЕТОВ</h5>
+                              <p><strong>6.1.</strong> Оплата товара производится после подписания договора и
+                                выставления счета.
+                              </p>
+                              <p><strong>6.2.</strong> Основанием для расчетов между сторонами являются данный договор и
+                                счет в
+                                котором указаны
+                                отпускные цены на товар Покупателю.</p>
+                              <p><strong>6.3.</strong> Моментом оплаты считается дата поступления денег на расчетный
+                                счет
+                                Продавца.</p>
+                              <p><strong>6.4.</strong> Покупатель оплачивает Товар в рублях.</p>
+
+                              <h5 class="text-center">7. ПРАВО СОБСТВЕННОСТИ</h5>
+                              <p><strong>7.1.</strong> Право собственности на Товар переходит к Покупателю в момент
+                                фактической
+                                передачи Товара
+                                Полномочному представителю Покупателя.</p>
+                              <p><strong>7.2.</strong> Риск случайной гибели или порчи товара переходит от Поставщика к
+                                Покупателю
+                                в момент
+                                передачи
+                                Товара первому перевозчику/экспедитору или уполномоченному представителю Покупателя, в
+                                зависимости
+                                какое событие наступит раньше.</p>
+
+                              <h5 class="text-center">8. ОТВЕТСТВЕННОСТЬ СТОРОН</h5>
+                              <p><strong>8.1 </strong>В случае невыполнения полностью или частично своих обязательств,
+                                предусмотренных в п.п. 6,
+                                виновная сторона выплачивает другой стороне, по требованию последней, пени в размере
+                                0,10%
+                                (десять
+                                сотых процента) от стоимости неоплаченного Товара за каждый день просрочки, но не более
+                                10%
+                                стоимости неисполненного обязательства.
+                              </p>
+
+                              <h5 class="text-center">9. ГАРАНТИИ ИСПОЛНЕНИЯ ДОГОВОРА</h5>
+                              <p><strong>9.1.</strong> За неисполнение или ненадлежащие исполнение обязательств по
+                                Договору
+                                Стороны несут
+                                ответственность в соответствии с действующим законодательством РФ.</p>
+                              <p><strong>9.2.</strong> Покупатель обязан возместить убытки Продавца, возникшие в
+                                результате
+                                ненадлежащего
+                                исполнения
+                                Покупателем условий Договора.</p>
+                              <p><strong>9.3.</strong> Стороны несут ответственность за невыполнение обязательств по
+                                Договору,
+                                если не докажут, что
+                                надлежащее исполнение оказалось невозможным вследствие непреодолимой силы, то есть
+                                чрезвычайных
+                                и
+                                непредотвратимых при данных условиях обстоятельств.</p>
+
+                              <h5 class="text-center">10. ПОРЯДОК РАЗРЕШЕНИЯ СПОРОВ</h5>
+                              <p><strong>10.1.</strong> В случае возникновения споров и разногласий, стороны прилагают
+                                усилия
+                                для
+                                их разрешения путем
+                                переговоров.</p>
+                              <p><strong>10.2.</strong> Если стороны не урегулировали разногласия в результате
+                                переговоров или
+                                досудебного
+                                претензионного порядка урегулирования спора, он передается на разрешение в Арбитражный
+                                суд г.
+                                Москвы
+                                в соответствии с законодательством РФ.</p>
+                              <p><strong>10.3.</strong> Во всем остальном, что не предусмотрено Договором, Стороны
+                                руководствуются
+                                действующим
+                                законодательством РФ.</p>
+
+                              <h5 class="text-center">11. СРОК ДЕЙСТВИЯ ДОГОВОРА</h5>
+                              <p><strong>11.1 </strong>Настоящий Договор вступает в силу с момента его подписания и
+                                действует до
+                                полного выполнения
+                                Сторонами своих обязательств.</p>
+                              <p><strong>11.2 </strong>Договор может быть расторгнут Сторонами досрочно в одностороннем
+                                порядке
+                                путем направления
+                                уведомления о расторжении договора не менее чем за 30 (тридцать) календарных дней до
+                                предполагаемой
+                                даты расторжения, и в случаях, предусмотренных действующим законодательством РФ.</p>
+                              <p><strong>11.3 </strong>При расторжении договора Стороны обязаны произвести все
+                                взаиморасчеты.
+                              </p>
+                              <p><strong>11.4 </strong>Договор составлен в 2 (двух) экземплярах, имеющих одинаковую
+                                юридическую
+                                силу, по одному
+                                экземпляру для каждой из Сторон.</p>
+                              <p><strong>11.5 </strong>Любые изменения и дополнения к Договору действительны при
+                                условии, если
+                                они
+                                совершены в
+                                письменно форме и подписаны уполномоченными представителями Сторон.</p>
+
+                              <h5 class="text-center">12. ЮРИДИЧЕСКИЕ АДРЕСА И ПЛАТЕЖНЫЕ РЕКВИЗИТЫ СТОРОН</h5>
+                              <div class="row">
+                                <div class="col-sm-12 col-md-6 d-flex flex-column">
+                                  <h5>«ПОКУПАТЕЛЬ»</h5>
+                                  <div class="d-flex flex-colum flex-grow-1">
+                                    <br>
+                                    Фамилия: {{fizik.lastName}}
+                                    <br>
+                                    Имя: {{fizik.firstName}}
+                                    <br>
+                                    Отчество: {{fizik.middleName}}
+                                    <br>
+                                    Электронный адрес: {{fizik.email}}
+                                    <br>
+                                    Телефон: {{fizik.phone}}
+                                    <br>
+                                  </div>
+
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="sign">Подписать</span>
+                                    </div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">/</div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between">
+                                  <div>
+                                    <h5>"ПРОДАВЕЦ"</h5>
+                                    <br>
+                                    ИП Кляус Наталья Сергеевна
+                                    <br>
+                                    ОГРНИП: 315500300005930
+                                    <br>
+                                    ИНН 753609484820
+                                    <br>
+                                    Тел./факс +7(967) 21-92-444
+                                    <br>
+                                    Е-mail : s-klyaus@mail.ru
+                                    <br>
+                                    р/с 40802810540000011210
+                                    <br>
+                                    в ПАО Сбербанк
+                                    <br>
+                                    г.Видное ул. Советская 34А
+                                    <br>
+                                    <br>
+                                    К/с 30101810400000000225
+                                    <br>
+                                    БИК: 044525225
+
+                                    Карта СБ 4276 4000 5311 7280
+                                    В назначении платежа указать № заказа
+                                  </div>
+
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="stamp">м.п.</span></div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
+                                      /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус</div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </section>
+                            <div class="text-center">
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleFizBuy"
+                                v-if="!fizik.showContractBuy">Читать
+                                далее</a>
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleFizBuy"
+                                v-if="fizik.showContractBuy">Скрыть</a>
+                            </div>
+                            <div class="col-12 pt-3">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" v-model="fizik.agreeContractBuy"
+                                  :value="fizik.agreeContractBuy" id="agreeContractBuy">
+                                <label class="form-check-label" for="agreeContractBuy">
+                                  Согласен на условия договора и обработку личных данных
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6">
+                            <section ref="fizik-contract-for-nanesenie" class="fizik-contract-for-nanesenie">
+                              <h4 class="text-center">ДОГОВОР ОКАЗАНИЯ УСЛУГ № {{fizik.number}}</h4>
+                              <div class="d-flex flex-row flex-nowrap justify-content-between mb-5">
+                                <span>г.Москва</span>
+                                <span>{{fizik.date}}г.</span>
+                              </div>
+                              <p class="text-justify">
+                                Индивидуальный предприниматель Кляус Наталья Сергеевна, именуемый в дальнейшем
+                                «Исполнитель», в
+                                лице Кляус Натальи Сергеевны, действующей на основании Свидетельства о государственной
+                                регистрации
+                                физического лица в качестве индивидуального предпринимателя, с одной стороны, и
+                              </p>
+                              <div>
+                                <form>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.firstName"
+                                      placeholder="Имя *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.lastName"
+                                      placeholder="Фамилия *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.middleName"
+                                      placeholder="Отчество *">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="email" class="form-control form-control-sm" v-model="fizik.email"
+                                      placeholder="Электронный адрес">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" v-model="fizik.phone"
+                                      placeholder="Телефон *">
+                                  </div>
+                                  <button type="submit" class="btn btn-primary d-none">Submit</button>
+                                </form>
+                              </div>
+                              <p>, именуемый в дальнейшем «Заказчик», с другой стороны,
+                                совместно именуемые Стороны, заключили настоящий Договор о нижеследующем:</p>
+
+                              <h5 class="text-center">1. ПРЕДМЕТ ДОГОВОРА</h5>
+                              <p>
+                                <strong>1.1.</strong> Исполнитель обязуется оказать Заказчику услуги (далее – Услуги),
+                                предусмотренные п. 1.2
+                                настоящего договора, а Заказчик обязуется оплатить эти Услуги.
+                              </p>
+                              <p><strong>1.2</strong> Услуги по нанесению логотипов и номеров, вид, содержание и объем
+                                нанесения
+                                логотипов и
+                                номеров
+                                определены в утвержденном макете и заказе, которые являются неотъемлемой частью
+                                настоящего
+                                Договора.</p>
+
+                              <h5 class="text-center">2. ПОРЯДОК ОКАЗАНИЯ УСЛУГ</h5>
+                              <p><strong>2.1.</strong> Услуги оказываются в месте нахождения Исполнителя.</p>
+
+                              <h5 class="text-center">3. ЦЕНА ДОГОВОРА</h5>
+                              <p><strong>3.1.</strong> Стоимость Услуг, оказываемых Исполнителем составляет
+                                <strong>{{fizik.price}} руб.
+                                  ноль
+                                  копеек</strong> (НДС не облагается) определяется согласно заказом от {{fizik.date}}г.
+                                и
+                                макета,
+                                являющиеся
+                                неотъемлемой частью настоящего Договора.</p>
+                              <p><strong>3.2.</strong> Стоимость Услуг включает вознаграждение Исполнителя, а также
+                                возмещение
+                                издержек и
+                                дополнительных расходов Исполнителя, связанных с исполнением настоящего Договора.</p>
+                              <p></p>
+
+                              <h5 class="text-center">4. УСЛОВИЯ И ПОРЯДОК ОПЛАТЫ</h5>
+                              <p><strong>4.1.</strong> Оплата стоимости оказанных Услуг производится Заказчиком в
+                                безналичной
+                                форме путем перечисления
+                                денежных средств на расчетный счет, указанный Исполнителем. Обязательства Заказчика по
+                                оплате
+                                стоимости Услуг считаются исполненными с момента зачисления средств на расчетный счет,
+                                указанный
+                                Исполнителем.</p>
+                              <p><strong>4.2.</strong> Оплата стоимости Услуг производится Заказчиком в размере 100% не
+                                позднее
+                                5
+                                (пяти) рабочих дней
+                                с момента заключения настоящего договора и выставлении счета.</p>
+
+                              <h5 class="text-center">5. СРОКИ ОКАЗАНИЯ УСЛУГ</h5>
+                              <p><strong>5.1.</strong> Услуги, указанные в п. 1.1. настоящего Договора, оказываются
+                                Исполнителем
+                                в
+                                течении 5 (пяти)
+                                рабочих дней с момента поступления товара на склад Исполнителя.</p>
+                              <p><strong>5.2.</strong> Стороны вправе изменить сроки оказания услуг, указанные в п. 5.1.
+                                настоящего Договора, путем
+                                заключения дополнительного соглашения к настоящему Договору.</p>
+
+                              <h5 class="text-center">6. ПОРЯДОК ПРИЕМКИ УСЛУГ</h5>
+                              <p><strong>6.1.</strong> Приемка услуг, оказанных Исполнителем, осуществляется путем
+                                подписания
+                                Сторонами акта об
+                                оказании услуг.</p>
+                              <p><strong>6.2.</strong> Акт об оказании услуг составляется и подписывается Сторонами
+                                настоящего
+                                Договора в течение
+                                трех
+                                рабочих дней с момента оказания Услуг в полном объеме.</p>
+
+                              <h5 class="text-center">7. ОТВЕТСТВЕННОСТЬ СТОРОН</h5>
+                              <p><strong>7.1.</strong> В случае нарушения срока оплаты Услуг, указанного в п. 4.2.
+                                настоящего
+                                Договора, Заказчик
+                                выплачивает Исполнителю неустойку в размере 1 % от стоимости Услуг, указанной в п. 3.1.
+                                настоящего
+                                Договора за каждый день просрочки.</p>
+                              <p><strong>7.2.</strong> В случае нарушения срока оказания Услуг, указанного в п. 5.1.
+                                настоящего
+                                Договора,
+                                Исполнитель
+                                выплачивает Заказчику неустойку в размере 1 % от стоимости Услуг, указанной в п. 3.1.
+                                настоящего
+                                Договора за каждый день просрочки.</p>
+                              <p><strong>7.3.</strong> В случаях, не предусмотренных настоящим Договором,
+                                ответственность Сторон
+                                определяется в
+                                соответствии с действующим законодательством.</p>
+
+                              <h5 class="text-center">8. ФОРС МАЖОР</h5>
+                              <p><strong>8.1.</strong> Ни одна из Сторон не несет ответственности за полное или
+                                частичное
+                                неисполнение обязательств по
+                                Настоящему договору, если это явилось следствием обстоятельств непреодолимой силы, а
+                                именно:
+                                пожар,
+                                землетрясение, наводнение, иные стихийные бедствия, забастовки, военные действия,
+                                действий
+                                органов
+                                государственной власти и местного самоуправления.</p>
+                              <p><strong>8.2.</strong> Сторона, для которой наступили обстоятельства, указанные в п.
+                                8.1.
+                                настоящего Договора, должна
+                                немедленно известить другую сторону о наступлении таковых.</p>
+                              <p><strong>8.3.</strong> Если обстоятельства, указанные в п. 8.1. настоящего Договора,
+                                будут
+                                продолжаться более 6
+                                месяцев, каждая Сторона имеет право отказаться от дальнейшего исполнения обязательств по
+                                настоящему
+                                договору, и в этом случае ни одна из Сторон не будет иметь права требовать от другой
+                                Стороны
+                                возмещения возможных убытков.</p>
+
+                              <h5 class="text-center">9. СПОРЫ И РАЗНОГЛАСИЯ</h5>
+                              <p><strong>9.1.</strong> Все споры и разногласия по настоящему договору будут разрешаться
+                                путем
+                                переговоров на основе
+                                действующего законодательства и обычаев делового оборота.</p>
+                              <p><strong>9.2.</strong> При не урегулировании спорных вопросов в процессе переговоров
+                                споры
+                                разрешаются в суде в
+                                порядке, установленном действующим законодательством.</p>
+
+                              <h5 class="text-center">10. АНТИКОРРУПЦИОННАЯ ОГОВОРКА.</h5>
+                              <p><strong>10.1</strong> Каждая из Сторон Договора, ее аффилированные лица, работники или
+                                посредники
+                                отказываются от
+                                стимулирования каким-либо образом работников другой Стороны, в том числе путем
+                                предоставления
+                                денежных сумм, подарков, безвозмездного выполнения в их адрес работ (услуг) и другими,
+                                не
+                                поименованными здесь способами, ставящего работника в определенную зависимость и
+                                направленного
+                                на
+                                обеспечение выполнения этим работником каких-либо действий в пользу стимулирующей его
+                                Стороны.
+                              </p>
+                              <p><strong>10.2</strong>. Под действиями работника, осуществляемыми в пользу стимулирующей
+                                его
+                                Стороны, понимаются:
+                                <br>
+                                1) предоставление неоправданных преимуществ по сравнению с другими контрагентами;
+                                <br>
+                                2) предоставление каких-либо гарантий;
+                                <br>
+                                3) ускорение существующих процедур;
+                                <br>
+                                4) иные действия, выполняемые работником в рамках своих должностных обязанностей, но
+                                идущие
+                                вразрез
+                                с принципами прозрачности и открытости взаимоотношений между Сторонами.</p>
+                              <p><strong>10.3</strong>. В случае возникновения у Стороны подозрений, что произошло или
+                                может
+                                произойти нарушение
+                                каких-либо положений настоящего раздела Договора, соответствующая Сторона обязуется
+                                уведомить
+                                другую
+                                Сторону в письменной форме. После письменного уведомления, соответствующая Сторона имеет
+                                право
+                                приостановить исполнение обязательств по настоящему Договору до получения подтверждения
+                                от
+                                другой
+                                Стороны после проведённой ею проверки, что нарушения не произошло или не произойдет. Это
+                                подтверждение должно быть направлено в течение десяти рабочих дней с даты направления
+                                письменного
+                                уведомления.</p>
+                              <p><strong>10.4</strong>. В случае нарушения одной Стороной обязательств воздерживаться от
+                                запрещенных настоящим
+                                разделом действий и/или неполучения другой Стороной в установленный Договором срок
+                                подтверждения,
+                                что нарушения не произошло или не произойдет, другая Сторона имеет право расторгнуть
+                                Договор в
+                                одностороннем порядке, направив письменное уведомление о расторжении. Сторона, по чьей
+                                инициативе
+                                был расторгнут настоящий Договор в соответствии с положениями настоящей статьи, вправе
+                                требовать
+                                возмещения реального ущерба, возникшего в результате такого расторжения.</p>
+
+                              <h5 class="text-center">11. КОНФИДЕНЦИАЛЬНОСТЬ.</h5>
+                              <p><strong>11.1.</strong> В течение срока действия настоящего Договора, а также в течение
+                                12
+                                месяцев
+                                после его
+                                прекращения Стороны не должны предоставлять или разглашать иным способом
+                                конфиденциальную
+                                информацию, полученную в результате совместной деятельности, равно как и не должны
+                                недобросовестно
+                                использовать такую информацию для того, чтобы самим конкурировать друг с другом.</p>
+
+                              <h5 class="text-center">12. ДОПОЛНИТЕЛЬНЫЕ УСЛОВИЯ</h5>
+                              <p><strong>12.1.</strong> Все изменения и дополнения к настоящему Договору являются его
+                                неотъемлемыми частями и
+                                действительны, если совершены в той же форме, что и настоящий договор, и подписаны
+                                обеими
+                                Сторонами
+                                или надлежаще уполномоченными на то представителями Сторон.</p>
+                              <p><strong>12.2.</strong> Настоящий Договор составлен в двух экземплярах: по одному
+                                экземпляру для
+                                Исполнителя и
+                                Заказчика. Каждый экземпляр имеет равную юридическую силу.</p>
+                              <p><strong>12.3.</strong> Все уведомления и сообщения в рамках исполнения настоящего
+                                Договора
+                                должны
+                                направляться в
+                                письменной форме c уведомлением о вручении и описью вложения.</p>
+                              <p><strong>12.4.</strong> Во всем остальном, не предусмотренном настоящим договором,
+                                Стороны будут
+                                руководствоваться
+                                действующим законодательством РФ.</p>
+
+                              <h5 class="text-center">13. ЮРИДИЧЕСКИЕ АДРЕСА, ПЛАТЕЖНЫЕ РЕКВИЗИТЫ И ПОДПИСИ СТОРОН</h5>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                  <h5>«ЗАКАЗЧИК»</h5>
+                                  <div>
+                                    <br>
+                                    Фамилия: {{fizik.lastName}}
+                                    <br>
+                                    Имя: {{fizik.firstName}}
+                                    <br>
+                                    Отчество: {{fizik.middleName}}
+                                    <br>
+                                    Электронный адрес: {{fizik.email}}
+                                    <br>
+                                    Телефон: {{fizik.phone}}
+                                    <br>
+                                  </div>
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="sign">Подписать</span>
+                                    </div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">/</div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between">
+                                  <div>
+                                    <h5>"ИСПОЛНИТЕЛЬ"</h5>
+
+                                    <br>
+                                    ИП Кляус Наталья Сергеевна
+                                    <br>
+                                    ОГРНИП: 315500300005930
+                                    <br>
+                                    ИНН 753609484820
+                                    <br>
+                                    Тел./факс +7(967) 21-92-444
+                                    <br>
+                                    Е-mail :info@joma-club.ru
+                                    <br>
+                                    р/с 40802810540000011210
+                                    <br>
+                                    в ПАО Сбербанк
+                                    <br>
+                                    г.Видное ул. Советская 34А
+                                    <br>
+                                    К/с 30101810400000000225
+                                    <br>
+                                    БИК: 044525225
+
+                                  </div>
+
+                                  Индивидуальный предприниматель
+                                  <br>
+                                  <div class="d-flex flex-row flex-nowrap">
+
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="stamp">м.п.</span></div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
+                                      /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
+                            <div class="text-center">
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleFizNanesenie"
+                                v-if="!fizik.showContractNanesenie">Читать
+                                далее</a>
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleFizNanesenie"
+                                v-if="fizik.showContractNanesenie">Скрыть</a>
+                            </div>
+                            <div class="col-12 pt-3">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" v-model="fizik.agreeContractNanesenie"
+                                  :value="fizik.agreeContractNanesenie" id="agreeContractNanesenie">
+                                <label class="form-check-label" for="agreeContractNanesenie">
+                                  Согласен на условия договора и обработку личных данных
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" v-if="typeCustomer === 'yurik'">
+                          <div class="col-sm-12 col-md-6 text-justify ">
+                            <section ref="yurik-contract-for-buy" class="yurik-contract-for-buy">
+                              <h4 class="text-center">ДОГОВОР КУПЛИ-ПРОДАЖИ № {{yurik.number}}</h4>
+                              <div class="d-flex flex-row flex-nowrap justify-content-between mb-5">
+                                <span>г.Москва</span>
+                                <span>{{yurik.date}}г.</span>
+                              </div>
+                              <p class="text-justify">
+                                Индивидуальный предприниматель Кляус Наталья Сергеевна, именуемый в дальнейшем
+                                «Продавец», в
+                                лице Кляус Натальи Сергеевны, действующей на основании Свидетельства о государственной
+                                регистрации физического лица в качестве индивидуального предпринимателя, с одной
+                                стороны, и
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field1"
+                                    placeholder="Поле обязательное для заполнения *">
+                                </div>
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.phone"
+                                    placeholder="Телефон *">
+                                </div>
+                                <div class="form-group">
+                                  <input type="email" class="form-control form-control-sm" v-model="yurik.email"
+                                    placeholder="E-mail">
+                                </div>
+                                , именуемый в дальнейшем «Покупатель», в лице
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field2">
+                                </div>
+                                , действующего на основании
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field3">
+                                </div>
+                                , с
+                                другой стороны, совместно именуемые Стороны, заключили настоящий Договор о
+                                нижеследующем:
+                              </p>
+
+                              <h5 class="text-center">1. ПРЕДМЕТ ДОГОВОРА</h5>
+                              <p>
+                                1.1. В рамках настоящего договора Покупатель в любое время имеет право
+                                совершать ряд не
+                                связанных
+                                между собой сделок по купле-продаже спортивной одежды (далее — «Товар»). Основанием для
+                                возникновения прав и обязанностей по настоящему договору является обращение Покупателя с
+                                Заказом
+                                клиента на совершение сделки купли-продажи.
+                              </p>
+                              <p>1.2. Продавец обязуется передать в собственность Покупателя Товар в
+                                количестве,
+                                ассортименте и
+                                по
+                                ценам указанным в товарных накладных, а Покупатель принять и оплатить его. Предметом
+                                каждой
+                                сделки
+                                является купленный Товар в ассортименте, оговоренном в Заказе клиента и указанный в
+                                товарных
+                                накладных с итоговой суммой сделки, определяемой, как сумма всех товарных накладных
+                                отгруженного
+                                Товара по данному Заказу клиента.</p>
+
+                              <h5 class="text-center">2. СУММА ДОГОВОРА</h5>
+                              <p>2.1. Сумма Договора и цены на поставляемый Товар определяются заказом
+                                (Приложение №1), которая
+                                являются неотъемлемой частью настоящего Договора.</p>
+                              <p>2.2. Изменение цены Товара в течение срока действия настоящего Договора
+                                Продавцом без
+                                письменного
+                                согласия Покупателя недействительно.</p>
+
+                              <h5 class="text-center">3. ОБЯЗАННОСТИ СТОРОН</h5>
+                              <p>3.1. Продавец обязан:</p>
+                              <p>3.1.1. Направить Покупателю счет на оплату Товара.</p>
+                              <p>3.1.2. Передать Покупателю Товар надлежащего качества, в соответствии с
+                                ассортиментом и
+                                количеством, указанным в товарных накладных. Обязанность Продавца передать Товар
+                                считается
+                                исполненной с момента подписания товарно-транспортной накладной первым уполномоченным
+                                перевозчиком
+                                или представителем Покупателя со склада Продавца в г. Москва.</p>
+                              <p>3.1.3. Передать Покупателю все документы, относящиеся к Товару:
+                                товарно-транспортные накладные,
+                                счета.</p>
+                              <p>3.1.4. На основании акта, принять к возврату Товар, проданный Покупателем
+                                возвращенный в
+                                пределах
+                                гарантийного срока, с выявленными производственными дефектами. В этом случае Продавец
+                                возмещает
+                                стоимость возвращенного Товара, либо, по согласованию с Покупателем, заменяет
+                                бракованный Товар
+                                на
+                                качественный в течение 10 (десяти) рабочих дней.</p>
+                              <p>3.2. Покупатель обязан:</p>
+                              <p>3.2.1. Оформить заказ - Заказ клиента на сделку по купле-продаже, в которой
+                                должен указать
+                                артикул, цвет, размер и количество необходимого для поставки Товара.</p>
+                              <p>3.2.2. Обеспечить приемку товара. Приемка товара по количеству и качеству
+                                осуществляется в
+                                соответствии с законодательно установленными нормами на складе Продавца.</p>
+
+                              <h5 class="text-center">4. ГАРАНТИЙНЫЙ СРОК ТОВАРА</h5>
+                              <p>4.1. Покупатель вправе предъявлять претензии, связанные с производственными дефектами
+                                Товара,
+                                при
+                                их обнаружении в течение гарантийного срока.</p>
+                              <p>4.2. Срок гарантийных обязательств Продавца составляет 6 (шесть) месяцев с момента
+                                передачи
+                                Товара
+                                Покупателю.</p>
+
+                              <h5 class="text-center">5. ПОСТАВКА ТОВАРА</h5>
+                              <p>5.1. Доставка Товара до Покупателя осуществляется силами и средствами Покупателя.</p>
+                              <p>5.2. Товар по Заказу клиента поставляется со склада Продавца в г.Москва. Наименование,
+                                ассортимент, количество указаны в товарных накладных, являющихся неотъемлемой частью
+                                настоящего
+                                Договора.</p>
+                              <p>5.3. Датой поставки Товара считается дата получения товара Покупателем с оформлением
+                                всех
+                                необходимых документов, согласно п. 3.1.3.</p>
+                              <p>5.4. Условия поставки - Поставка товара на склад Покупателя за счет Поставщика.</p>
+                              <p>5.5. Срок поставки товара по Заказу клиента производится в течение 20 (двадцати)
+                                календарных
+                                дней
+                                со дня поступления денежных средств на счет Поставщика.</p>
+                              <p>5.5. Поставщик по согласованию с Покупателем имеет право на досрочную поставку Товара
+                                при
+                                наличии
+                                Товара или его части на складе Поставщика в г. Москва.</p>
+
+                              <h5 class="text-center">6. ПОРЯДОК РАСЧЕТОВ</h5>
+                              <p>6.1. Оплата товара производится после подписания договора и выставления счета.</p>
+                              <p>6.2. Основанием для расчетов между сторонами являются данный договор и счет в котором
+                                указаны
+                                отпускные цены на товар Покупателю.</p>
+                              <p>6.3. Моментом оплаты считается дата поступления денег на расчетный счет Продавца.</p>
+                              <p>6.4. Покупатель оплачивает Товар в рублях.</p>
+
+                              <h5 class="text-center">7. ПРАВО СОБСТВЕННОСТИ</h5>
+                              <p>7.1. Право собственности на Товар переходит к Покупателю в момент фактической передачи
+                                Товара
+                                Полномочному представителю Покупателя.</p>
+                              <p>7.2. Риск случайной гибели или порчи товара переходит от Поставщика к Покупателю в
+                                момент
+                                передачи
+                                Товара первому перевозчику/экспедитору или уполномоченному представителю Покупателя, в
+                                зависимости
+                                какое событие наступит раньше.</p>
+
+                              <h5 class="text-center">8. ОТВЕТСТВЕННОСТЬ СТОРОН</h5>
+                              <p>8.1 В случае невыполнения полностью или частично своих обязательств, предусмотренных в
+                                п.п. 6,
+                                виновная сторона выплачивает другой стороне, по требованию последней, пени в размере
+                                0,10%
+                                (десять
+                                сотых процента) от стоимости неоплаченного Товара за каждый день просрочки, но не более
+                                10%
+                                стоимости неисполненного обязательства.</p>
+
+                              <h5 class="text-center">9. ГАРАНТИИ ИСПОЛНЕНИЯ ДОГОВОРА</h5>
+                              <p>9.1. За неисполнение или ненадлежащие исполнение обязательств по Договору Стороны несут
+                                ответственность в соответствии с действующим законодательством РФ.</p>
+                              <p>9.2. Покупатель обязан возместить убытки Продавца, возникшие в результате ненадлежащего
+                                исполнения
+                                Покупателем условий Договора.</p>
+                              <p>9.3. Стороны несут ответственность за невыполнение обязательств по Договору, если не
+                                докажут,
+                                что
+                                надлежащее исполнение оказалось невозможным вследствие непреодолимой силы, то есть
+                                чрезвычайных
+                                и
+                                непредотвратимых при данных условиях обстоятельств.</p>
+
+                              <h5 class="text-center">10. ПОРЯДОК РАЗРЕШЕНИЯ СПОРОВ</h5>
+                              <p>10.1. В случае возникновения споров и разногласий, стороны прилагают усилия для их
+                                разрешения
+                                путем переговоров.</p>
+                              <p>10.2. Если стороны не урегулировали разногласия в результате переговоров или
+                                досудебного
+                                претензионного порядка урегулирования спора, он передается на разрешение в Арбитражный
+                                суд г.
+                                Москвы в соответствии с законодательством РФ.</p>
+                              <p>10.3. Во всем остальном, что не предусмотрено Договором, Стороны руководствуются
+                                действующим
+                                законодательством РФ.</p>
+
+                              <h5 class="text-center">11. СРОК ДЕЙСТВИЯ ДОГОВОРА</h5>
+                              <p>11.1 Настоящий Договор вступает в силу с момента его подписания и действует до полного
+                                выполнения
+                                Сторонами своих обязательств.</p>
+                              <p>11.2 Договор может быть расторгнут Сторонами досрочно в одностороннем порядке путем
+                                направления
+                                уведомления о расторжении договора не менее чем за 30 (тридцать) календарных дней до
+                                предполагаемой даты расторжения, и в случаях, предусмотренных действующим
+                                законодательством РФ.
+                              </p>
+                              <p>11.3 При расторжении договора Стороны обязаны произвести все взаиморасчеты.</p>
+                              <p>11.4 Договор составлен в 2 (двух) экземплярах, имеющих одинаковую юридическую силу, по
+                                одному
+                                экземпляру для каждой из Сторон.</p>
+                              <p>11.5 Любые изменения и дополнения к Договору действительны при условии, если они
+                                совершены в
+                                письменно форме и подписаны уполномоченными представителями Сторон.</p>
+
+                              <h5 class="text-center">12. ЮРИДИЧЕСКИЕ АДРЕСА И ПЛАТЕЖНЫЕ РЕКВИЗИТЫ СТОРОН</h5>
+                              <div class="row">
+                                <div class="col-sm-12 col-md-6 d-flex flex-column">
+                                  <h5>«ПОКУПАТЕЛЬ»</h5>
+                                  <div class="d-flex flex-column flex-grow-1">
+                                    <br>
+                                    {{yurik.field1}}
+                                    <br>
+                                    <span v-if="yurik.phone">Телефон: {{yurik.phone}}</span>
+                                    <br v-if="yurik.phone">
+                                    <span v-if="yurik.email">E-mail: {{yurik.email}}</span>
+                                    <br v-if="yurik.email">
+                                    {{yurik.field2}}
+                                    <br>
+                                    {{yurik.field3}}
+                                  </div>
+
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="sign">м.п.</span>
+                                    </div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">/</div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between">
+                                  <div>
+                                    <h5>"ПРОДАВЕЦ"</h5>
+                                    <br>
+                                    ИП Кляус Наталья Сергеевна
+                                    <br>
+                                    ОГРНИП: 315500300005930
+                                    <br>
+                                    ИНН 753609484820
+                                    <br>
+                                    Тел./факс +7(967) 21-92-444
+                                    <br>
+                                    Е-mail : s-klyaus@mail.ru
+                                    <br>
+                                    р/с 40802810540000011210
+                                    <br>
+                                    в ПАО Сбербанк
+                                    <br>
+                                    г.Видное ул. Советская 34А
+                                    <br>
+                                    К/с 30101810400000000225
+                                    <br>
+                                    БИК: 044525225
+                                  </div>
+                                  <br>
+                                  <br>
+                                  <br>
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="stamp">м.п.</span></div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
+                                      /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус</div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </section>
+                            <div class="text-center">
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleYurBuy"
+                                v-if="!yurik.showContractBuy">Читать
+                                далее</a>
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleYurBuy"
+                                v-if="yurik.showContractBuy">Скрыть</a>
+                            </div>
+                            <div class="col-12 pt-3">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" v-model="yurik.agreeContractBuy"
+                                  :value="yurik.agreeContractBuy" id="agreeContractBuy">
+                                <label class="form-check-label" for="agreeContractBuy">
+                                  Согласен на условия договора и обработку личных данных
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6">
+                            <section ref="yurik-contract-for-nanesenie" class="yurik-contract-for-nanesenie">
+                              <h4 class="text-center">ДОГОВОР ОКАЗАНИЯ УСЛУГ № {{yurik.number}}</h4>
+                              <div class="d-flex flex-row flex-nowrap justify-content-between mb-5">
+                                <span>г.Москва</span>
+                                <span>{{yurik.date}}г.</span>
+                              </div>
+                              <p class="text-justify">
+                                Индивидуальный предприниматель Кляус Наталья Сергеевна, именуемый в дальнейшем
+                                «Исполнитель», в
+                                лице Кляус Натальи Сергеевны, действующей на основании Свидетельства о государственной
+                                регистрации физического лица в качестве индивидуального предпринимателя, с одной
+                                стороны, и
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field1"
+                                    placeholder="Поле обязательное для заполнения *">
+                                </div>
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.phone"
+                                    placeholder="Телефон *">
+                                </div>
+                                <div class="form-group">
+                                  <input type="email" class="form-control form-control-sm" v-model="yurik.email"
+                                    placeholder="E-mail">
+                                </div>
+                                , именуемое в дальнейшем «Заказчик», в лице
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field2">
+                                </div>
+                                , действующего на основании
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-sm" v-model="yurik.field3">
+                                </div>
+                                с другой стороны, совместно именуемые Стороны, заключили настоящий Договор о
+                                нижеследующем:
+                              </p>
+
+                              <h5 class="text-center">1. ПРЕДМЕТ ДОГОВОРА</h5>
+                              <p>1.1. Исполнитель обязуется оказать Заказчику услуги (далее – Услуги), предусмотренные
+                                п. 1.2
+                                настоящего договора, а Заказчик обязуется оплатить эти Услуги.</p>
+                              <p>1.2 Услуги по нанесению логотипов и номеров, вид, содержание и объем нанесения
+                                логотипов и
+                                номеров
+                                определены в утвержденном макете и заказе, которые являются неотъемлемой частью
+                                настоящего
+                                Договора.</p>
+
+                              <h5 class="text-center">2. ПОРЯДОК ОКАЗАНИЯ УСЛУГ</h5>
+                              <p>2.1. Услуги оказываются в месте нахождения Исполнителя.</p>
+
+                              <h5 class="text-center">3. ЦЕНА ДОГОВОРА</h5>
+                              <p>3.1. Стоимость Услуг, оказываемых Исполнителем составляет {{yurik.price}} руб. ноль
+                                копеек (НДС не облагается) определяется согласно заказом от {{yurik.date}}г. и макета,
+                                являющиеся
+                                неотъемлемой частью настоящего Договора.</p>
+                              <p>3.2. Стоимость Услуг включает вознаграждение Исполнителя, а также возмещение издержек и
+                                дополнительных расходов Исполнителя, связанных с исполнением настоящего Договора.</p>
+
+                              <h5 class="text-center">4. УСЛОВИЯ И ПОРЯДОК ОПЛАТЫ</h5>
+                              <p>4.1. Оплата стоимости оказанных Услуг производится Заказчиком в безналичной форме путем
+                                перечисления денежных средств на расчетный счет, указанный Исполнителем. Обязательства
+                                Заказчика
+                                по оплате стоимости Услуг считаются исполненными с момента зачисления средств на
+                                расчетный счет,
+                                указанный Исполнителем.</p>
+                              <p>4.2. Оплата стоимости Услуг производится Заказчиком в размере 100% не позднее 5 (пяти)
+                                рабочих
+                                дней с момента заключения настоящего договора и выставлении счета.</p>
+
+                              <h5 class="text-center">5. СРОКИ ОКАЗАНИЯ УСЛУГ</h5>
+                              <p>5.1. Услуги, указанные в п. 1.1. настоящего Договора, оказываются Исполнителем в
+                                течении 5
+                                (пяти)
+                                рабочих дней с момента поступления товара на склад Исполнителя.</p>
+                              <p>5.2. Стороны вправе изменить сроки оказания услуг, указанные в п. 5.1. настоящего
+                                Договора,
+                                путем
+                                заключения дополнительного соглашения к настоящему Договору.</p>
+
+                              <h5 class="text-center">6. ПОРЯДОК ПРИЕМКИ УСЛУГ</h5>
+                              <p>6.1. Приемка услуг, оказанных Исполнителем, осуществляется путем подписания Сторонами
+                                акта об
+                                оказании услуг.</p>
+                              <p>6.2. Акт об оказании услуг составляется и подписывается Сторонами настоящего Договора в
+                                течение
+                                трех рабочих дней с момента оказания Услуг в полном объеме.</p>
+
+                              <h5 class="text-center">7. ОТВЕТСТВЕННОСТЬ СТОРОН</h5>
+                              <p>7.1. В случае нарушения срока оплаты Услуг, указанного в п. 4.2. настоящего Договора,
+                                Заказчик
+                                выплачивает Исполнителю неустойку в размере 1 % от стоимости Услуг, указанной в п. 3.1.
+                                настоящего
+                                Договора за каждый день просрочки.</p>
+                              <p>7.2. В случае нарушения срока оказания Услуг, указанного в п. 5.1. настоящего Договора,
+                                Исполнитель выплачивает Заказчику неустойку в размере 1 % от стоимости Услуг, указанной
+                                в п.
+                                3.1.
+                                настоящего Договора за каждый день просрочки.</p>
+                              <p>7.3. В случаях, не предусмотренных настоящим Договором, ответственность Сторон
+                                определяется в
+                                соответствии с действующим законодательством.</p>
+
+                              <h5 class="text-center">8. ФОРС МАЖОР</h5>
+                              <p>8.1. Ни одна из Сторон не несет ответственности за полное или частичное неисполнение
+                                обязательств
+                                по Настоящему договору, если это явилось следствием обстоятельств непреодолимой силы, а
+                                именно:
+                                пожар, землетрясение, наводнение, иные стихийные бедствия, забастовки, военные действия,
+                                действий
+                                органов государственной власти и местного самоуправления.</p>
+                              <p>8.2. Сторона, для которой наступили обстоятельства, указанные в п. 8.1. настоящего
+                                Договора,
+                                должна немедленно известить другую сторону о наступлении таковых.</p>
+                              <p>8.3. Если обстоятельства, указанные в п. 8.1. настоящего Договора, будут продолжаться
+                                более 6
+                                месяцев, каждая Сторона имеет право отказаться от дальнейшего исполнения обязательств по
+                                настоящему договору, и в этом случае ни одна из Сторон не будет иметь права требовать от
+                                другой
+                                Стороны возмещения возможных убытков.</p>
+
+                              <h5 class="text-center">9. СПОРЫ И РАЗНОГЛАСИЯ</h5>
+                              <p>9.1. Все споры и разногласия по настоящему договору будут разрешаться путем переговоров
+                                на
+                                основе
+                                действующего законодательства и обычаев делового оборота.</p>
+                              <p>9.2. При не урегулировании спорных вопросов в процессе переговоров споры разрешаются в
+                                суде в
+                                порядке, установленном действующим законодательством.</p>
+
+                              <h5 class="text-center">10. АНТИКОРРУПЦИОННАЯ ОГОВОРКА.</h5>
+                              <p>10.1 Каждая из Сторон Договора, ее аффилированные лица, работники или посредники
+                                отказываются
+                                от
+                                стимулирования каким-либо образом работников другой Стороны, в том числе путем
+                                предоставления
+                                денежных сумм, подарков, безвозмездного выполнения в их адрес работ (услуг) и другими,
+                                не
+                                поименованными здесь способами, ставящего работника в определенную зависимость и
+                                направленного
+                                на
+                                обеспечение выполнения этим работником каких-либо действий в пользу стимулирующей его
+                                Стороны.
+                              </p>
+                              <p>10.2. Под действиями работника, осуществляемыми в пользу стимулирующей его Стороны,
+                                понимаются:
+                                <br>
+                                1) предоставление неоправданных преимуществ по сравнению с другими контрагентами;
+                                <br>
+                                2) предоставление каких-либо гарантий;
+                                <br>
+                                3) ускорение существующих процедур;
+                                <br>
+                                4) иные действия, выполняемые работником в рамках своих должностных обязанностей, но
+                                идущие
+                                вразрез с принципами прозрачности и открытости взаимоотношений между Сторонами.</p>
+                              <p>10.3. В случае возникновения у Стороны подозрений, что произошло или может произойти
+                                нарушение
+                                каких-либо положений настоящего раздела Договора, соответствующая Сторона обязуется
+                                уведомить
+                                другую Сторону в письменной форме. После письменного уведомления, соответствующая
+                                Сторона имеет
+                                право приостановить исполнение обязательств по настоящему Договору до получения
+                                подтверждения от
+                                другой Стороны после проведённой ею проверки, что нарушения не произошло или не
+                                произойдет. Это
+                                подтверждение должно быть направлено в течение десяти рабочих дней с даты направления
+                                письменного
+                                уведомления.</p>
+                              <p>10.4. В случае нарушения одной Стороной обязательств воздерживаться от запрещенных
+                                настоящим
+                                разделом действий и/или неполучения другой Стороной в установленный Договором срок
+                                подтверждения,
+                                что нарушения не произошло или не произойдет, другая Сторона имеет право расторгнуть
+                                Договор в
+                                одностороннем порядке, направив письменное уведомление о расторжении. Сторона, по чьей
+                                инициативе
+                                был расторгнут настоящий Договор в соответствии с положениями настоящей статьи, вправе
+                                требовать
+                                возмещения реального ущерба, возникшего в результате такого расторжения.</p>
+
+                              <h5 class="text-center">11. КОНФИДЕНЦИАЛЬНОСТЬ.</h5>
+                              <p>11.1. В течение срока действия настоящего Договора, а также в течение 12 месяцев после
+                                его
+                                прекращения Стороны не должны предоставлять или разглашать иным способом
+                                конфиденциальную
+                                информацию, полученную в результате совместной деятельности, равно как и не должны
+                                недобросовестно
+                                использовать такую информацию для того, чтобы самим конкурировать друг с другом.</p>
+
+                              <h5 class="text-center">12. ДОПОЛНИТЕЛЬНЫЕ УСЛОВИЯ</h5>
+                              <p>12.1. Все изменения и дополнения к настоящему Договору являются его неотъемлемыми
+                                частями и
+                                действительны, если совершены в той же форме, что и настоящий договор, и подписаны
+                                обеими
+                                Сторонами или надлежаще уполномоченными на то представителями Сторон.</p>
+                              <p>12.2. Настоящий Договор составлен в двух экземплярах: по одному экземпляру для
+                                Исполнителя и
+                                Заказчика. Каждый экземпляр имеет равную юридическую силу.</p>
+                              <p>12.3. Все уведомления и сообщения в рамках исполнения настоящего Договора должны
+                                направляться в
+                                письменной форме c уведомлением о вручении и описью вложения.</p>
+                              <p>12.4. Во всем остальном, не предусмотренном настоящим договором, Стороны будут
+                                руководствоваться
+                                действующим законодательством РФ.</p>
+
+                              <h5 class="text-center">13. ЮРИДИЧЕСКИЕ АДРЕСА, ПЛАТЕЖНЫЕ РЕКВИЗИТЫ И ПОДПИСИ СТОРОН</h5>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-md-6 d-flex flex-column">
+                                  <h5>«ЗАКАЗЧИК»</h5>
+                                  <div class="flex-grow-1">
+                                    <br>
+                                    {{yurik.field1}}
+                                    <br>
+                                    <span v-if="yurik.phone">Телефон: {{yurik.phone}}</span>
+                                    <br v-if="yurik.phone">
+                                    <span v-if="yurik.email">E-mail: {{yurik.email}}</span>
+                                    <br v-if="yurik.email">
+                                    {{yurik.field2}}
+                                    <br>
+                                    {{yurik.field3}}
+                                  </div>
+                                  <div class="d-flex flex-row flex-nowrap">
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="sign">Подписать</span>
+                                    </div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">/</div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-between">
+                                  <div>
+                                    <h5>"ИСПОЛНИТЕЛЬ"</h5>
+
+                                    <br>
+                                    ИП Кляус Наталья Сергеевна
+                                    <br>
+                                    ОГРНИП: 315500300005930
+                                    <br>
+                                    ИНН 753609484820
+                                    <br>
+                                    Тел./факс +7(967) 21-92-444
+                                    <br>
+                                    Е-mail :info@joma-club.ru
+                                    <br>
+                                    р/с 40802810540000011210
+                                    <br>
+                                    в ПАО Сбербанк
+                                    <br>
+                                    г.Видное ул. Советская 34А
+                                    <br>
+                                    К/с 30101810400000000225
+                                    <br>
+                                    БИК: 044525225
+                                    <br>
+                                  </div>
+                                  <br>
+                                  <br>
+                                  <br>
+                                  Индивидуальный предприниматель
+                                  <br>
+                                  <br>
+                                  <div class="d-flex flex-row flex-nowrap">
+
+                                    <div class="flex-grow-1" style="border-bottom: 1px solid black; height: 25px; ">
+                                      <span class="stamp">м.п.</span></div>
+                                    <div style="border-bottom: 1px solid black; height: 25px; flex-basis: 45%;">
+                                      /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Н.С. Кляус</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
+                            <div class="text-center">
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleYurNanesenie"
+                                v-if="!yurik.showContractNanesenie">Читать
+                                далее</a>
+                              <a href="#" class="rules-btn" @click.prevent.stop="toggleYurNanesenie"
+                                v-if="yurik.showContractNanesenie">Скрыть</a>
+                            </div>
+                            <div class="col-12 pt-3">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" v-model="yurik.agreeContractNanesenie"
+                                  :value="yurik.agreeContractNanesenie" id="agreeContractNanesenie">
+                                <label class="form-check-label" for="agreeContractNanesenie">
+                                  Согласен на условия договора и обработку личных данных
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary btn-lg" :disabled="allowSendFormFizik"
+                        data-dismiss="modal" @click="sendForm"><i class="fa fa-check"></i> Оформить заказ</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-block btn-primary d-none" data-target="#modalOrderMoscow" data-toggle="modal">
+                Ваш заказ Москва
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalOrderMoscow" class="modal fade" id="modalOrderMoscow"
+                role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Ваш заказ Москва
+                      </h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <th>
+                            Артикул
+                          </th>
+                          <th>
+                            Размеры
+                          </th>
+                          <th>
+                            Нанесения
+                          </th>
+                          <th>
+                            Цена
+                          </th>
+                        </thead>
+                        <tr>
+                          <td>
+                            123456.789
+                          </td>
+                          <td>
+                            <table class="table table-sm">
+                              <tr>
+                                <td>
+                                  S
+                                </td>
+                                <td>
+                                  M
+                                </td>
+                                <td>
+                                  XL
+                                </td>
+                                <td>
+                                  XLL
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  1
+                                </td>
+                                <td>
+                                  0
+                                </td>
+                                <td>
+                                  4
+                                </td>
+                                <td>
+                                  3
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td>
+                            <table class="table table-sm">
+                              <tr>
+                                <td>
+                                  Логотип
+                                </td>
+                                <td>
+                                  Номер
+                                </td>
+                                <td>
+                                  Надпись
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  2
+                                </td>
+                                <td>
+                                  1
+                                </td>
+                                <td>
+                                  2
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td>
+                            14200,23 руб.
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-4">
+
+            <!-- Таблица "Ваш заказ Испания" -->
+            <div class="col-6">
+              <button class="btn btn-block btn-primary d-none" data-target="#modalOrderSpain" data-toggle="modal">
+                Ваш заказ Испания
+              </button>
+              <div aria-hidden="true" aria-labelledby="modalOrderSpain" class="modal fade" id="modalOrderSpain"
+                role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg" style="max-width: 95% !important;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        Ваш заказ Испания
+                      </h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <th>
+                            Артикул
+                          </th>
+                          <th>
+                            Размеры
+                          </th>
+                          <th>
+                            Нанесения
+                          </th>
+                          <th>
+                            Цена
+                          </th>
+                        </thead>
+                        <tr>
+                          <td>
+                            928384.019
+                          </td>
+                          <td>
+                            <table class="table table-sm">
+                              <tr>
+                                <td>
+                                  S
+                                </td>
+                                <td>
+                                  M
+                                </td>
+                                <td>
+                                  XL
+                                </td>
+                                <td>
+                                  XLL
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  0
+                                </td>
+                                <td>
+                                  2
+                                </td>
+                                <td>
+                                  4
+                                </td>
+                                <td>
+                                  1
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td>
+                            <table class="table table-sm">
+                              <tr>
+                                <td>
+                                  Логотип
+                                </td>
+                                <td>
+                                  Номер
+                                </td>
+                                <td>
+                                  Надпись
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  1
+                                </td>
+                                <td>
+                                  1
+                                </td>
+                                <td>
+                                  1
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td>
+                            18420,00 руб.
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+<script src="assets/js/vue.js"></script>
+<script src="assets/js/axios.js"></script>
+
+<!-- jquery.min.js -->
+<script src="assets/js/jquery-3.1.1.min.js"></script>
+<!-- popper.min.js -->
+<script src="assets/js/popper.min.js"></script>
+<!-- bootstrap.min.js -->
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Swiper JS -->
+<script src="assets/js/swiper.min.js"></script>
+<!-- Swiper JS Vue -->
+<script src="assets/js/vue-awesome-swiper.js"></script>
+
+<!-- fontfaceobserver.js -->
+<script src="assets/js/fontfaceobserver.js"></script>
+<!-- fabric.js -->
+<script src="assets/js/fabric.min.js"></script>
+<!-- Класс Order для работы с заказом -->
+<script src="assets/js/Order.js"></script>
+<!-- Класс Canvas для работы с холстом в HTML5 -->
+<script src="assets/js/Canvas.js"></script>
+<!-- Inputmask.js -->
+<script src="assets/js/jquery.inputmask.bundle.min.js"></script>
+<!-- Основной скрипт -->
+<script src="assets/js/main.js"></script>
+
+<!-- Иконки Font Awesome -->
+<script src="https://kit.fontawesome.com/3e67313945.js"></script>

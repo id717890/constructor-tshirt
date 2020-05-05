@@ -58,7 +58,7 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col md="6" cols="12">
+            <v-col md="6" cols="12" class="py-0">
               <div
                 class="h100 d-flex flex-column justify-space-between"
                 v-if="news"
@@ -95,7 +95,7 @@
           <v-row>
             <v-col md="6" cols="12" class="pt-1">
               <v-carousel
-                height="390"
+                height="auto"
                 hide-delimiters
                 :interval="7000"
                 :cycle="true"

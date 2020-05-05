@@ -5,7 +5,7 @@
         <v-col md="8" offset-md="2" sm="12" cols="12">
           <v-row>
             <v-col cols="2">
-              <div>
+              <div class="h100 pt-5">
                 <img class="logo" src="~@/assets/img/logo.png" alt="" />
                 <div class="phone">
                   8(800)123-45-67
@@ -28,6 +28,8 @@
                 width="45"
                 height="45"
                 :elevation="1"
+                target="_blank"
+                @click="openUrl('https://www.vk.com')"
                 ><i class="fab fa-vk"></i
               ></v-btn>
               <v-btn
@@ -37,6 +39,7 @@
                 dark
                 color="#3b5998"
                 :elevation="1"
+                @click="openUrl('https://facebook.com')"
               >
                 <fai :icon="['fab', 'facebook-f']" />
               </v-btn>
@@ -46,11 +49,17 @@
                 class="btn-social mr-1"
                 dark
                 color="#00aeed"
+                @click="openUrl('https://twitter.com')"
                 :elevation="1"
               >
                 <fai :icon="['fab', 'twitter']" />
               </v-btn>
-              <v-btn height="45" class="pdf-catalog btn-j mr-1" dark>
+              <v-btn
+                height="45"
+                class="pdf-catalog btn-j mr-1"
+                dark
+                @click="downloadCatalog"
+              >
                 <v-icon>mdi-download</v-icon>
                 Скачать каталог в PDF
               </v-btn>
@@ -115,6 +124,7 @@
                   width="45"
                   height="45"
                   :elevation="1"
+                  @click="openUrl('https://www.vk.com')"
                   ><i class="fab fa-vk"></i
                 ></v-btn>
                 <v-btn
@@ -123,6 +133,7 @@
                   class="btn-social mr-1"
                   dark
                   color="#3b5998"
+                  @click="openUrl('https://facebook.com')"
                   :elevation="1"
                 >
                   <fai :icon="['fab', 'facebook-f']" />
@@ -134,6 +145,7 @@
                   dark
                   color="#00aeed"
                   :elevation="1"
+                  @click="openUrl('https://twitter.com')"
                 >
                   <fai :icon="['fab', 'twitter']" />
                 </v-btn>
@@ -148,6 +160,7 @@
 
 <script>
 import Vue from 'vue'
+import context from '../api/api'
 import { mapGetters } from 'vuex'
 export default {
   data: () => ({
@@ -165,6 +178,26 @@ export default {
     ]
   }),
   methods: {
+    openUrl(url) {
+      window.open(url, '_blank')
+    },
+    downloadCatalog() {
+      context
+        .post('api/export/catalog', null, {
+          // 'content-type': 'application/vnd.ms-excel;charset=UTF-8',
+          responseType: 'blob'
+        })
+        .then(x => {
+          console.log(x)
+          let fileUrl = window.URL.createObjectURL(new Blob([x]))
+          let fileLink = document.createElement('a')
+          fileLink.href = fileUrl
+          fileLink.setAttribute('download', 'catalog.pdf')
+          document.body.appendChild(fileLink)
+          fileLink.click()
+          fileLink.remove()
+        })
+    },
     isActive(path) {
       return path === this.$route.path
     }

@@ -4,12 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Exports\SizesExport;
 use App\Imports\SizesImport;
+use App\Models\Size;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 
 class ExportController extends Controller
 {
+    public function exportCatalog(Request $request)
+    {
+        try {
+            $sizes = Size::with('color')->with('color.model')->get();
+
+            $data = [
+                'heading' => 'Каталог товаров',
+                'sizes'=>$sizes,
+                'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+            ];
+
+//            PDF::setOptions(['defaultFont' => 'dejavu sans']);
+            $pdf = PDF::loadView('pdf.catalog', $data);
+            return $pdf->download('Catalog.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
     public function importSizes(Request $request)
     {
         try {

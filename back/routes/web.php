@@ -24,10 +24,13 @@ Route::get('/print-pdf', 'HomeController@printPDF');
 
 
 
+
 //Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
 //Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
 
-//Route::get('/clear-cache', function() {
-//    Artisan::call('cache:clear');
-//    return "Cache is cleared";
-//});
+Route::get('/clear-cache', function() {
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    return "Cache is cleared";
+});
