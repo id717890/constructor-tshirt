@@ -20,6 +20,8 @@ Route::get('/doc4', 'HomeController@doc4');
 //    return "Cache is cleared";
 //});
 
+Route::get('/print-pdf', 'HomeController@printPDF');
+
 
 
 //Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
