@@ -2,7 +2,7 @@
   <v-row no-gutters>
     <v-col cols="12" class="pa-0">
       <v-row>
-        <v-col md="8" offset-md="2" cols="12" class="pa-0 pt-1">
+        <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
           <v-carousel height="290" hide-delimiters>
             <v-carousel-item src="~@/assets/img/slider-img.jpg">
             </v-carousel-item>
@@ -14,7 +14,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col md="8" offset-md="2" cols="12" class="pa-0 pt-1">
+        <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
           <v-row>
             <v-col md="6" cols="12" class=" py-0">
               <v-row>

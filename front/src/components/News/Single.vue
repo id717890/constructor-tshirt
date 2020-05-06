@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col
-      lg="4"
-      offset-lg="4"
+      lg="6"
+      offset-lg="3"
       md="8"
       offset-md="2"
       cols="12"

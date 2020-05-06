@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col lg="6" offset-lg="3" md="8" offset-md="2" cols="12">
+    <v-col md="10" offset-md="1" cols="12">
       <v-row v-for="row in discounts" :key="row.id">
         <v-col cols="6">
           <v-img aspect-ratio="1.6" :src="img(row.image)"></v-img>

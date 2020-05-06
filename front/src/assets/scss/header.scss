@@ -16,7 +16,6 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
 }
 
 .menu .item {
@@ -26,12 +25,25 @@
   // border-right: 1px solid rgb( 255, 255, 255, 0.2 );
   border-left: 1px solid rgb( 255, 255, 255, 0.2 );
   padding: 10px 20px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
 }
 
 .menu .item:hover,
 .menu .item.active {
   background-color: rgb( 24, 42, 104, 0.8 );
 }
+
+.cogs {
+  background-color: #fb8c00;
+}
+
+.cogs:hover,
+.cogs-active{
+  background-color: #ff9e29 !important
+}
+
 
 .menu .item:last-child {
   border-right: 1px solid rgb( 255, 255, 255, 0.2 );
@@ -71,7 +83,7 @@
 }
 
 .logo {
-  width: 100%;
+  width: 175px;
 }
 
 .footer {
@@ -87,3 +99,9 @@
   text-decoration: underline;
 }
 
+.header-row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}

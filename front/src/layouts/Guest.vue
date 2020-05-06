@@ -2,59 +2,94 @@
   <v-app id="app" dark style="background: white">
     <v-container fluid class="pa-0">
       <v-row no-gutters class="header">
-        <v-col md="8" offset-md="2" sm="12" cols="12">
+        <v-col md="10" offset-md="1" sm="12" cols="12">
           <v-row>
-            <v-col cols="2">
-              <div class="h100 pt-5">
-                <img class="logo" src="~@/assets/img/logo.png" alt="" />
-                <div class="phone">
+            <v-col class="header-row">
+              <img class="logo" src="~@/assets/img/logo.png" alt="" />
+              <!-- <div class="phone">
                   8(800)123-45-67
+                </div> -->
+
+              <div>
+                <div class="t7">
+                  <v-icon>mdi-clock-outline</v-icon>
+                  с 8:00 - 20:00
                 </div>
+                <div class="t7">заявки круглосуточно</div>
               </div>
-            </v-col>
-            <v-col cols="4">
-              <div class="t2">
+
+              <!-- <div class="t2">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea
                 doloremque facilis quasi molestias veniam cupiditate sit a
                 excepturi? Ex, tempore saepe. Dolorem, impedit ratione? Ut in
                 modi minus perspiciatis nulla?
+              </div> -->
+
+              <div>
+                <div class="t7">
+                  <v-icon>mdi-phone</v-icon>
+                  +7 (495) 123-456-6 (Москва)
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-cellphone</v-icon>
+                  +7 (495) 123-456-6 (Москва)
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-cellphone</v-icon>
+                  +7 (495) 123-456-6 (Волгоград)
+                </div>
               </div>
-            </v-col>
-            <v-col cols="6" class="d-flex flex-row flex-nowrap align-center">
-              <v-btn
-                class="btn-social mr-1 pa-0"
-                dark
-                color="#4a76a8"
-                width="45"
-                height="45"
-                :elevation="1"
-                target="_blank"
-                @click="openUrl('https://www.vk.com')"
-                ><i class="fab fa-vk"></i
-              ></v-btn>
-              <v-btn
-                width="45"
-                height="45"
-                class="btn-social mr-1"
-                dark
-                color="#3b5998"
-                :elevation="1"
-                @click="openUrl('https://facebook.com')"
-              >
-                <fai :icon="['fab', 'facebook-f']" />
-              </v-btn>
-              <v-btn
-                width="45"
-                height="45"
-                class="btn-social mr-1"
-                dark
-                color="#00aeed"
-                @click="openUrl('https://twitter.com')"
-                :elevation="1"
-              >
-                <fai :icon="['fab', 'twitter']" />
-              </v-btn>
-              <v-btn
+
+              <div>
+                <div class="t7">
+                  <v-icon>mdi-map-marker</v-icon>
+                  г.Москва, 2-й Кабельный пр. 2А стр. 45
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-map-marker</v-icon>
+                  г.Москва, 2-й Кабельный пр. 2А стр. 45
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-email</v-icon>
+                  info@joma-club.ru
+                </div>
+              </div>
+
+              <div>
+                <!-- <v-btn
+                  class="btn-social mr-1 pa-0"
+                  dark
+                  color="#4a76a8"
+                  width="45"
+                  height="45"
+                  :elevation="1"
+                  target="_blank"
+                  @click="openUrl('https://www.vk.com')"
+                  ><i class="fab fa-vk"></i
+                ></v-btn>
+                <v-btn
+                  width="45"
+                  height="45"
+                  class="btn-social mr-1"
+                  dark
+                  color="#3b5998"
+                  :elevation="1"
+                  @click="openUrl('https://facebook.com')"
+                >
+                  <fai :icon="['fab', 'facebook-f']" />
+                </v-btn>
+                <v-btn
+                  width="45"
+                  height="45"
+                  class="btn-social mr-1"
+                  dark
+                  color="#00aeed"
+                  @click="openUrl('https://twitter.com')"
+                  :elevation="1"
+                >
+                  <fai :icon="['fab', 'twitter']" />
+                </v-btn> -->
+                <!-- <v-btn
                 height="45"
                 class="pdf-catalog btn-j mr-1"
                 dark
@@ -62,16 +97,25 @@
               >
                 <v-icon>mdi-download</v-icon>
                 Скачать каталог в PDF
-              </v-btn>
-              <v-btn height="45" class="btn-social" color="warning" outlined
-                >Оставить заявку</v-btn
-              >
+              </v-btn> -->
+                <v-btn height="45" class="btn-social" color="warning" outlined
+                  >Оставить заявку</v-btn
+                >
+              </div>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" class="menu pa-0">
+          <router-link
+            to="/constructor"
+            class="d-flex flex-column item cogs"
+            :class="{ 'cogs-active': isActive('/constructor') }"
+          >
+            <v-icon dark>mdi-cogs</v-icon>
+            <span class="text-center">Конструктор</span>
+          </router-link>
           <router-link
             :to="item.url"
             v-for="(item, index) in menu"
@@ -80,8 +124,12 @@
             :class="{ active: isActive(item.url) }"
           >
             <v-icon dark>{{ item.icon }}</v-icon>
-            <span class="text-center">{{ item.title }}</span>
+            <span class="text-center" v-html="item.title"></span>
           </router-link>
+          <a @click.prevent="downloadCatalog" class="d-flex flex-column item">
+            <v-icon dark>mdi-download</v-icon>
+            <span class="text-center"> Скачать каталог</span>
+          </a>
           <router-link to="/lk" class="d-flex flex-column item" v-if="isAuth">
             <v-icon dark>mdi-cogs</v-icon>
             <span class="text-center">ЛК</span>
@@ -92,12 +140,19 @@
         <router-view name="guest"></router-view>
       </transition>
       <v-row class="footer">
-        <v-col md="8" offset-md="2" sm="12" cols="12">
+        <v-col md="10" offset-md="1" sm="12" cols="12">
           <v-row>
             <v-col cols="3" class="d-flex align-center">
               <img class="" src="~@/assets/img/logo2.png" alt="" />
             </v-col>
-            <v-col cols="3" class="d-flex flex-column">
+            <v-col cols="3" class="d-flex flex-column justify-space-between">
+              <router-link
+                class="footer-link"
+                to="/constructor"
+                color="#fb8c00"
+              >
+                Конструктор
+              </router-link>
               <router-link
                 v-for="(item, index) in menu"
                 :key="index"
@@ -106,15 +161,49 @@
                 >{{ item.title }}</router-link
               >
             </v-col>
-            <v-col cols="3">
-              <div class="t4">
+            <v-col cols="4">
+              <div class="white--text mb-6">
+                <div class="t7">
+                  <v-icon>mdi-clock-outline</v-icon>
+                  с 8:00 - 20:00
+                </div>
+              </div>
+              <div class="white--text mb-6">
+                <div class="t7">
+                  <v-icon>mdi-phone</v-icon>
+                  +7 (495) 123-456-6 (Москва)
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-cellphone</v-icon>
+                  +7 (495) 123-456-6 (Москва)
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-cellphone</v-icon>
+                  +7 (495) 123-456-6 (Волгоград)
+                </div>
+              </div>
+              <div class="white--text">
+                <div class="t7">
+                  <v-icon>mdi-map-marker</v-icon>
+                  г.Москва, 2-й Кабельный пр. 2А стр. 45
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-map-marker</v-icon>
+                  г.Москва, 2-й Кабельный пр. 2А стр. 45
+                </div>
+                <div class="t7">
+                  <v-icon>mdi-email</v-icon>
+                  info@joma-club.ru
+                </div>
+              </div>
+              <!-- <div class="t4">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Mollitia fugiat quae suscipit dignissimos accusamus.
                 Reprehenderit eveniet, ipsum laboriosam nostrum quas asperiores
                 cumque nesciunt vitae? Totam ipsum eligendi veniam nisi autem?
-              </div>
+              </div> -->
             </v-col>
-            <v-col cols="3">
+            <v-col cols="2">
               <div class="t5 mb-5">Мы в соцсетях</div>
               <div>
                 <v-btn

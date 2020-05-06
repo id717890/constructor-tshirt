@@ -1,10 +1,8 @@
 <template>
   <v-row>
     <v-col
-      lg="6"
-      offset-lg="3"
-      md="8"
-      offset-md="2"
+      md="10"
+      offset-md="1"
       cols="12"
       class="pa-12"
       style="min-height: 90vh"
