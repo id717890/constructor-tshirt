@@ -26,29 +26,29 @@
               </div> -->
 
               <div>
-                <div class="t7">
+                <!-- <div class="t7">
                   <v-icon>mdi-phone</v-icon>
                   +7 (495) 123-456-6 (Москва)
-                </div>
+                </div> -->
                 <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
-                  +7 (495) 123-456-6 (Москва)
+                  +7 (967) 21-92-444 (Москва)
                 </div>
-                <div class="t7">
+                <!-- <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
                   +7 (495) 123-456-6 (Волгоград)
-                </div>
+                </div> -->
               </div>
 
               <div>
-                <div class="t7">
+                <div class="" style="font-family: 'PTSans'">
+                  <v-icon>mdi-map-marker</v-icon>
+                  г.Москва, ул.Краснобогатырская д.89, стр.3
+                </div>
+                <!-- <div class="t7">
                   <v-icon>mdi-map-marker</v-icon>
                   г.Москва, 2-й Кабельный пр. 2А стр. 45
-                </div>
-                <div class="t7">
-                  <v-icon>mdi-map-marker</v-icon>
-                  г.Москва, 2-й Кабельный пр. 2А стр. 45
-                </div>
+                </div>-->
                 <div class="t7">
                   <v-icon>mdi-email</v-icon>
                   info@joma-club.ru
@@ -145,7 +145,7 @@
             <v-col cols="3" class="d-flex align-center">
               <img class="" src="~@/assets/img/logo2.png" alt="" />
             </v-col>
-            <v-col cols="3" class="d-flex flex-column justify-space-between">
+            <v-col cols="2" class="d-flex flex-column justify-space-between">
               <router-link
                 class="footer-link"
                 to="/constructor"
@@ -161,38 +161,38 @@
                 >{{ item.title }}</router-link
               >
             </v-col>
-            <v-col cols="4">
+            <v-col cols="5">
               <div class="white--text mb-6">
                 <div class="t7">
-                  <v-icon>mdi-clock-outline</v-icon>
+                  <v-icon color="#cdcdcd">mdi-clock-outline</v-icon>
                   с 8:00 - 20:00
                 </div>
               </div>
               <div class="white--text mb-6">
                 <div class="t7">
-                  <v-icon>mdi-phone</v-icon>
-                  +7 (495) 123-456-6 (Москва)
+                  <v-icon color="#cdcdcd">mdi-phone</v-icon>
+                  +7 (967) 21-92-444 (Москва)
                 </div>
-                <div class="t7">
+                <!-- <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
                   +7 (495) 123-456-6 (Москва)
                 </div>
                 <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
                   +7 (495) 123-456-6 (Волгоград)
-                </div>
+                </div> -->
               </div>
               <div class="white--text">
-                <div class="t7">
+                <!-- <div class="t7">
                   <v-icon>mdi-map-marker</v-icon>
                   г.Москва, 2-й Кабельный пр. 2А стр. 45
+                </div> -->
+                <div class="t7">
+                  <v-icon color="#cdcdcd">mdi-map-marker</v-icon>
+                  г.Москва, ул.Краснобогатырская д.89, стр.3
                 </div>
                 <div class="t7">
-                  <v-icon>mdi-map-marker</v-icon>
-                  г.Москва, 2-й Кабельный пр. 2А стр. 45
-                </div>
-                <div class="t7">
-                  <v-icon>mdi-email</v-icon>
+                  <v-icon color="#cdcdcd">mdi-email</v-icon>
                   info@joma-club.ru
                 </div>
               </div>
