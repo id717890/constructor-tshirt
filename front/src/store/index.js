@@ -19,6 +19,7 @@ import discount from './discount'
 import news from './news'
 import video from './video'
 import photo from './photo'
+import feedback from './feedback'
 
 Vue.use(Vuex)
 
@@ -46,6 +47,7 @@ export default new Vuex.Store({
     discount,
     news,
     video,
-    photo
+    photo,
+    feedback
   }
 })

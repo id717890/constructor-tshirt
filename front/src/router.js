@@ -69,7 +69,7 @@ const router = new Router({
           path: 'feedbacks',
           name: 'Feedbacks',
           components: {
-            guest: () => import('./views/Feedback.vue')
+            guest: () => import('./components/Feedback/IndexGuest.vue')
           }
         },
         {
@@ -105,6 +105,17 @@ const router = new Router({
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
+        {
+          path: 'feedbacks',
+          beforeEnter: authGuard,
+          component: () => import('./components/Feedback/Index.vue')
+        },
+        {
+          path: 'feedback/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Feedback/Edit.vue')
+        },
         {
           path: 'photos',
           beforeEnter: authGuard,

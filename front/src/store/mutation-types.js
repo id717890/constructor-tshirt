@@ -27,6 +27,9 @@ export const GET_ALL_PHOTOS = 'GET_ALL_PHOTOS'
 export const GET_ALL_VIDEOS = 'GET_ALL_VIDEOS'
 
 /* NEWS */
+export const GET_ALL_FEEDBACKS = 'GET_ALL_FEEDBACKS'
+
+/* NEWS */
 export const GET_ALL_NEWS = 'GET_ALL_NEWS'
 
 /* DISCOUNT */
