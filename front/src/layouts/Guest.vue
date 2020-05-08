@@ -98,7 +98,12 @@
                 <v-icon>mdi-download</v-icon>
                 Скачать каталог в PDF
               </v-btn> -->
-                <v-btn height="45" class="btn-social" color="warning" outlined
+                <v-btn
+                  height="45"
+                  class="btn-social"
+                  color="warning"
+                  outlined
+                  @click.prevent="callMeDialog"
                   >Оставить заявку</v-btn
                 >
               </div>
@@ -250,6 +255,8 @@
 <script>
 import Vue from 'vue'
 import context from '../api/api'
+import config from '../init/config'
+import CallMeDialog from '../components/Dialog/CallDialog'
 import { mapGetters } from 'vuex'
 export default {
   data: () => ({
@@ -267,6 +274,14 @@ export default {
     ]
   }),
   methods: {
+    callMeDialog() {
+      this.$modal.show(
+        CallMeDialog,
+        {},
+        { ...config.modalSettings, clickToClose: true, maxWidth: 400 },
+        {}
+      )
+    },
     openUrl(url) {
       window.open(url, '_blank')
     },

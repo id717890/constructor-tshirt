@@ -15,6 +15,33 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CallbackController extends Controller
 {
+    public function  callMe(Request $request)
+    {
+        try {
+            $name = Input::get('name');
+            $phone = Input::get('phone');
+            $subject = "Новая заявка с JOMA-CLUB.RU";
+            $email = [];
+            array_push($email, 'jusupovz@gmail.com');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+            $fr = 'info@joma-club.ru';
+            $seo = 'JOMA-CLUB';
+            Mail::send('email.call_me', [
+                'name' => $name,
+                'phone' => $phone,
+            ],
+                function ($mail) use ($email, $subject, $fr, $seo) {
+                    $mail->from($fr, $seo);
+                    $mail->to($email);
+                    $mail->subject($subject);
+                });
+
+            return response()->json(200);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        }
+    }
+
     public function  sendIdea(Request $request)
     {
         try {
