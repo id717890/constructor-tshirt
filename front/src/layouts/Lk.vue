@@ -1,6 +1,5 @@
 <template>
   <v-app id="inspire">
-    <modals-container />
     <v-navigation-drawer v-model="drawer" app permanent dark>
       <v-list dense>
         <v-list-item link to="/">

@@ -22,7 +22,7 @@
     </span>
     <textarea
       ref="textarea"
-      class="textarea"
+      class="textarea-emoji"
       :value="value"
       @input="$emit('input', $event.target.value)"
       rows="3"
@@ -68,15 +68,15 @@ export default {
 }
 </script>
 <style scoped>
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 .textarea-emoji-picker {
   position: relative;
   width: 100%;
   margin: 0 auto;
 }
-.textarea {
+.textarea-emoji {
   width: 100%;
   min-height: 80px;
   height: 80px;

@@ -15,6 +15,34 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CallbackController extends Controller
 {
+    public function  sendIdea(Request $request)
+    {
+        try {
+            $name = Input::get('name');
+            $phone = Input::get('phone');
+            $text = Input::get('text');
+            $subject = "Новое предложение JOMA-CLUB.RU";
+            $email = [];
+//            array_push($email, 'jusupovz@gmail.com');
+            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+            $fr = 'info@joma-club.ru';
+            $seo = 'JOMA-CLUB';
+            Mail::send('email.idea', [
+                'name' => $name,
+                'phone' => $phone,
+                'text' => $text,
+            ],
+                function ($mail) use ($email, $subject, $fr, $seo) {
+                    $mail->from($fr, $seo);
+                    $mail->to($email);
+                    $mail->subject($subject);
+                });
+
+            return response()->json(200);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        }
+    }
 
     public function sendMail(Request $request)
     {
@@ -46,8 +74,8 @@ class CallbackController extends Controller
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
             Mail::send('email.zakaz', [
-                'typeCustomer'=>$typeCustomer,
-                'fio'=>$fio,
+                'typeCustomer' => $typeCustomer,
+                'fio' => $fio,
                 'info' => $info,
                 'date' => $date,
                 'number' => $number,

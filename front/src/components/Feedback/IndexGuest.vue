@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="v-application">
     <v-col md="10" offset-md="1" sm="12" cols="12" style="min-height: 90vh">
       <v-card height="100%" flat>
         <v-card-title>
@@ -16,9 +16,19 @@
             <textarea-emoji-picker v-model="form.text" />
           </v-form>
         </v-card-text>
-        <v-card-text>
+        <v-card-text class="d-flex flex-row">
           <v-btn
-            style="float: right"
+            large
+            color="primary"
+            tile
+            outlined
+            @click.prevent="ideaDialog"
+          >
+            <v-icon class="mr-6">mdi-lightbulb-on</v-icon>
+            предложение
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
             large
             color="success"
             tile
@@ -56,8 +66,10 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import moment from 'moment'
+import config from '../../init/config'
 import TextareaEmojiPicker from '../../components/TextareaEmojiPicker'
 import loading from '../../mixins/loading'
+import IdeaDialog from '@/components/Dialog/IdeaDialog'
 
 export default {
   mixins: [loading],
@@ -86,6 +98,14 @@ export default {
   },
   methods: {
     ...mapActions(['getAllFeedbacks', 'createFeedback']),
+    ideaDialog() {
+      this.$modal.show(
+        IdeaDialog,
+        {},
+        { ...config.modalSettings, clickToClose: true },
+        {}
+      )
+    },
     date(value) {
       moment.locale('ru')
       return (
