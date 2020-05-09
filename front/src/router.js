@@ -106,6 +106,11 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'page/about',
+          beforeEnter: authGuard,
+          component: () => import('./components/Page/About.vue')
+        },
+        {
           path: 'feedbacks',
           beforeEnter: authGuard,
           component: () => import('./components/Feedback/Index.vue')

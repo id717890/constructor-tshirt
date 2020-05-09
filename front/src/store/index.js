@@ -20,6 +20,7 @@ import news from './news'
 import video from './video'
 import photo from './photo'
 import feedback from './feedback'
+import page from './page'
 
 Vue.use(Vuex)
 
@@ -48,6 +49,7 @@ export default new Vuex.Store({
     news,
     video,
     photo,
-    feedback
+    feedback,
+    page
   }
 })

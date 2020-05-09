@@ -16,9 +16,10 @@ export default {
   async created() {
     await this.getAllDiscounts()
     await this.getAllNews()
+    await this.getAllPages()
   },
   methods: {
-    ...mapActions(['getAllDiscounts', 'getAllNews'])
+    ...mapActions(['getAllDiscounts', 'getAllNews', 'getAllPages'])
   }
 }
 </script>

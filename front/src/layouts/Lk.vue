@@ -118,6 +118,14 @@
             <v-list-item-title>Отзывы</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/page/about">
+          <v-list-item-action>
+            <v-icon>mdi-domain</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>О компании</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider vertical></v-divider>
         <v-list-item link @click="logoutBtn">
           <v-list-item-action>
