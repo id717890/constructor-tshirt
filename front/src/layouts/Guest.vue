@@ -5,11 +5,10 @@
         <v-col md="10" offset-md="1" sm="12" cols="12">
           <v-row>
             <v-col class="header-row">
-              <img class="logo" src="~@/assets/img/logo.png" alt="" />
+              <img class="logo" src="~@/assets/img/logo3.png" alt="" />
               <!-- <div class="phone">
                   8(800)123-45-67
                 </div> -->
-
               <div>
                 <div class="t7">
                   <v-icon>mdi-clock-outline</v-icon>
@@ -104,8 +103,10 @@
                   color="warning"
                   outlined
                   @click.prevent="callMeDialog"
-                  >Оставить заявку</v-btn
                 >
+                  <v-icon class="mr-2">mdi-phone</v-icon>
+                  Заказать звонок
+                </v-btn>
               </div>
             </v-col>
           </v-row>
@@ -148,7 +149,7 @@
         <v-col md="10" offset-md="1" sm="12" cols="12">
           <v-row>
             <v-col cols="3" class="d-flex align-center">
-              <img class="" src="~@/assets/img/logo2.png" alt="" />
+              <img class="logo" src="~@/assets/img/logo3.png" alt="" />
             </v-col>
             <v-col cols="2" class="d-flex flex-column justify-space-between">
               <router-link

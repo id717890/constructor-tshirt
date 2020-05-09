@@ -10,5 +10,5 @@ class Feedback extends Model
 
     protected $fillable = array('text', 'rating', 'show');
 
-    protected $hidden = array('updated_at');
+//    protected $hidden = array('updated_at');
 }

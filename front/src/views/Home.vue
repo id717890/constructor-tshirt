@@ -63,7 +63,12 @@
                 class="h100 d-flex flex-column justify-space-between"
                 v-if="news"
               >
-                <v-btn color="#465586" class="w100" outlined>
+                <v-btn
+                  color="#465586"
+                  class="w100"
+                  outlined
+                  @click.prevent="becomeCorrespondentDialog"
+                >
                   <v-icon class="mr-4">mdi-lead-pencil</v-icon>
                   Стань нашим корреспондентом</v-btn
                 >
@@ -224,6 +229,9 @@
 import { mapState } from 'vuex'
 import moment from 'moment'
 import imageMixin from '../mixins/image'
+import config from '../init/config'
+import Correspondent from '../components/Dialog/BecomeCorrestpondent'
+
 export default {
   mixins: [imageMixin],
   data: () => ({
@@ -243,6 +251,14 @@ export default {
     }, 800)
   },
   methods: {
+    becomeCorrespondentDialog() {
+      this.$modal.show(
+        Correspondent,
+        {},
+        { ...config.modalSettings, clickToClose: true, maxWidth: 400 },
+        {}
+      )
+    },
     getMonthYear(date) {
       return moment(date).format('MM.YY')
     },

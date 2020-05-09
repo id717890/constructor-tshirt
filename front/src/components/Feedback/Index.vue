@@ -12,6 +12,9 @@
         class="elevation-1"
         hide
       >
+        <template v-slot:item.created_at="{ item }">
+          {{ dt(item.created_at) }}
+        </template>
         <template v-slot:item.show="{ item }">
           <v-icon large color="success" v-if="item.show === 1"
             >mdi-toggle-switch</v-icon
@@ -62,6 +65,7 @@ import imageMixin from '../../mixins/image'
 import config from '../../init/config'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ConfirmDialogModal from '../Dialog/ConfirmDialog'
+import moment from 'moment'
 export default {
   mixins: [imageMixin],
   data: () => ({
@@ -71,6 +75,7 @@ export default {
       { text: 'Текст', value: 'text' },
       { text: 'Рейтинг', value: 'rating', width: '200' },
       { text: 'Вкл/Выкл', value: 'show', sortable: false, width: '75' },
+      { text: 'Дата', value: 'created_at', width: '100' },
       { text: '', value: '', value: 'act', width: '120', sortable: false }
     ]
   }),
@@ -80,6 +85,9 @@ export default {
       'resetConfirmDialogResult',
       'deleteFeedback'
     ]),
+    dt(value) {
+      return moment(value).format('DD.MM.YY')
+    },
     ratingColor(rating) {
       switch (rating) {
         case 1:
