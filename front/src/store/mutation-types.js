@@ -20,6 +20,9 @@ export const GET_ALL_MODELS = 'GET_ALL_MODELS'
 /* TYPE */
 export const GET_ALL_TYPES = 'GET_ALL_TYPES'
 
+/* FAQS */
+export const GET_ALL_FAQS = 'GET_ALL_FAQS'
+
 /* PHOTOS */
 export const GET_ALL_PHOTOS = 'GET_ALL_PHOTOS'
 

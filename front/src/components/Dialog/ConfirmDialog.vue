@@ -1,6 +1,6 @@
 <template>
-  <div class="dialog-body-wrapper">
-    <v-card>
+  <div class="dialog-body-wrapper v-application">
+    <v-card class="w100">
       <!-- <v-card-title class="headline grey lighten-2" primary-title>
         Подтверждение
       </v-card-title> -->

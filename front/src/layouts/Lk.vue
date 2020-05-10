@@ -4,7 +4,7 @@
       <v-list dense>
         <v-list-item link to="/">
           <v-list-item-action>
-            <v-icon>mdi-cogs</v-icon>
+            <v-icon small>mdi-cogs</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Конструктор</v-list-item-title>
@@ -12,7 +12,7 @@
         </v-list-item>
         <v-list-item link to="/lk/types">
           <v-list-item-action>
-            <v-icon>mdi-tshirt-v</v-icon>
+            <v-icon small>mdi-tshirt-v</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Типы футболок</v-list-item-title>
@@ -20,7 +20,7 @@
         </v-list-item>
         <v-list-item link to="/lk/models">
           <v-list-item-action>
-            <v-icon>mdi-tshirt-crew</v-icon>
+            <v-icon small>mdi-tshirt-crew</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Модели</v-list-item-title>
@@ -37,7 +37,7 @@
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/logos">
           <v-list-item-action>
-            <v-icon>mdi-drawing</v-icon>
+            <v-icon small>mdi-drawing</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Логотипы</v-list-item-title>
@@ -45,7 +45,7 @@
         </v-list-item>
         <v-list-item link to="/lk/logo_sizes">
           <v-list-item-action>
-            <v-icon>mdi-drawing</v-icon>
+            <v-icon small>mdi-drawing</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Лого тип-размер</v-list-item-title>
@@ -62,7 +62,7 @@
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/number_sizes">
           <v-list-item-action>
-            <v-icon>mdi-numeric</v-icon>
+            <v-icon small>mdi-numeric</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Номер - размеры</v-list-item-title>
@@ -71,7 +71,7 @@
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/text_sizes">
           <v-list-item-action>
-            <v-icon>mdi-format-text</v-icon>
+            <v-icon small>mdi-format-text</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Надпись - размеры</v-list-item-title>
@@ -80,7 +80,7 @@
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/discounts">
           <v-list-item-action>
-            <v-icon>mdi-sale</v-icon>
+            <v-icon small>mdi-sale</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Акции</v-list-item-title>
@@ -88,7 +88,7 @@
         </v-list-item>
         <v-list-item link to="/lk/news">
           <v-list-item-action>
-            <v-icon>mdi-newspaper</v-icon>
+            <v-icon small>mdi-newspaper</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Новости</v-list-item-title>
@@ -96,7 +96,7 @@
         </v-list-item>
         <v-list-item link to="/lk/videos">
           <v-list-item-action>
-            <v-icon>mdi-youtube</v-icon>
+            <v-icon small>mdi-youtube</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Видеогалерея</v-list-item-title>
@@ -104,7 +104,7 @@
         </v-list-item>
         <v-list-item link to="/lk/photos">
           <v-list-item-action>
-            <v-icon>mdi-image</v-icon>
+            <v-icon small>mdi-image</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Фотогалерея</v-list-item-title>
@@ -112,7 +112,7 @@
         </v-list-item>
         <v-list-item link to="/lk/feedbacks">
           <v-list-item-action>
-            <v-icon>mdi-message-outline</v-icon>
+            <v-icon small>mdi-message-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Отзывы</v-list-item-title>
@@ -120,16 +120,24 @@
         </v-list-item>
         <v-list-item link to="/lk/page/about">
           <v-list-item-action>
-            <v-icon>mdi-domain</v-icon>
+            <v-icon small>mdi-domain</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>О компании</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/faqs">
+          <v-list-item-action>
+            <v-icon small>mdi-help-circle</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Вопрос-ответ</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider vertical></v-divider>
         <v-list-item link @click="logoutBtn">
           <v-list-item-action>
-            <v-icon>mdi-logout</v-icon>
+            <v-icon small>mdi-logout</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Выход</v-list-item-title>

@@ -76,7 +76,7 @@ const router = new Router({
           path: 'faq',
           name: 'FAQ',
           components: {
-            guest: () => import('./views/Faq.vue')
+            guest: () => import('./components/Faq/IndexGuest.vue')
           }
         },
         {
@@ -105,6 +105,22 @@ const router = new Router({
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
+        {
+          path: 'faqs',
+          beforeEnter: authGuard,
+          component: () => import('./components/Faq/Index.vue')
+        },
+        {
+          path: 'faq/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Faq/Create.vue')
+        },
+        {
+          path: 'faq/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Faq/Edit.vue')
+        },
         {
           path: 'page/about',
           beforeEnter: authGuard,
