@@ -12,18 +12,20 @@ import 'swiper/css/swiper.css'
 import Auth from './plugins/auth'
 import './plugins/font-awesome'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import VueNoty from 'vuejs-noty-2'
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
 
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import 'vuejs-noty-2/dist/vuejs-noty.css'
 AOS.init()
 
 Vue.config.productionTip = false
 Vue.use(VueJsModal, { dynamic: true })
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
 Vue.use(Auth)
+Vue.use(VueNoty)
 
 Vue.component('fai', FontAwesomeIcon)
 

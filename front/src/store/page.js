@@ -1,6 +1,6 @@
 import context from '../api/api'
 import * as types from './mutation-types'
-import router from '../router'
+import Vue from 'vue'
 
 const state = {
   allPages: []
@@ -13,8 +13,11 @@ const actions = {
       .post('api/pages/update/' + payload.id, payload)
       .then(x => {
         dispatch('setLoading', false)
+        // console.log(Vye)
+        Vue.noty.success('Сохранено!')
       })
       .catch(x => {
+        Vue.noty.error('Ошибка сохранения!')
         console.log(x)
         dispatch('setLoading', false)
       })
