@@ -264,7 +264,7 @@ export default {
     menu: [
       { icon: 'mdi-home', title: 'Главная', url: '/' },
       { icon: 'mdi-information', title: 'О компании', url: '/about' },
-      { icon: 'mdi-image-multiple', title: 'Фотогалерея', url: '/photos' },
+      { icon: 'mdi-image-multiple', title: 'Фотогалерея', url: '/albums' },
       { icon: 'mdi-video', title: 'Видеогалерея', url: '/videos' },
       {
         icon: 'mdi-message-outline',

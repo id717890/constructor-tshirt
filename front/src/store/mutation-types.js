@@ -21,6 +21,9 @@ export const GET_ALL_MODELS = 'GET_ALL_MODELS'
 export const GET_ALL_TYPES = 'GET_ALL_TYPES'
 
 /* FAQS */
+export const GET_ALL_ALBUMS = 'GET_ALL_ALBUMS'
+
+/* FAQS */
 export const GET_ALL_FAQS = 'GET_ALL_FAQS'
 
 /* PHOTOS */

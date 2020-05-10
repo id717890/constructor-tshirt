@@ -22,6 +22,7 @@ import photo from './photo'
 import feedback from './feedback'
 import page from './page'
 import faq from './faq'
+import album from './album'
 
 Vue.use(Vuex)
 
@@ -52,6 +53,7 @@ export default new Vuex.Store({
     photo,
     feedback,
     page,
-    faq
+    faq,
+    album
   }
 })

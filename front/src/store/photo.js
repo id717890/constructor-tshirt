@@ -49,6 +49,9 @@ const mutations = {
 const getters = {
   getPhotoById: state => id => {
     return state.allPhotos.find(x => Number(x.id) === Number(id))
+  },
+  getPhotosByAlbumId: state => id => {
+    return state.allPhotos.find(x => Number(x.album_id) === Number(id))
   }
 }
 

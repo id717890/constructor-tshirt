@@ -14,6 +14,13 @@
             required
             :rules="textField"
           ></v-text-field>
+          <v-select
+            :items="albums"
+            label="Альбомы"
+            return-object
+            item-text="name"
+            v-model="form.album"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row>
@@ -74,29 +81,56 @@ export default {
     form: {
       valid: true,
       title: '',
+      album: null,
       image: null
     }
   }),
+  watch: {
+    albums(value) {
+      if (value) this.form.album = value[0]
+    },
+    photo(value) {
+      if (value) {
+        this.form.title = value.title
+        this.form.image = value.image
+        if (this.albums)
+          this.form.album = this.albums.find(
+            x => Number(x.id) === value.album_id
+          )
+      }
+    }
+  },
   async created() {
+    await this.getAllAlbums()
     await this.getAllPhotos()
     this.setLoad(false)
   },
   mounted() {
-    setTimeout(() => {
-      if (this.photo) {
-        this.form.title = this.photo.title
-        this.form.image = this.photo.image
-      }
-    }, 800)
+    if (this.photo) {
+      this.form.title = this.photo.title
+      this.form.image = this.photo.image
+      if (this.albums)
+        this.form.album = this.albums.find(
+          x => Number(x.id) === this.photo.album_id
+        )
+    }
   },
   computed: {
     ...mapGetters(['getPhotoById']),
+    ...mapState({
+      albums: state => state.album.allAlbums
+    }),
     photo() {
       return this.getPhotoById(this.id)
     }
   },
   methods: {
-    ...mapActions(['updatePhoto', 'getAllPhotos', 'uploadImage']),
+    ...mapActions([
+      'updatePhoto',
+      'getAllPhotos',
+      'uploadImage',
+      'getAllAlbums'
+    ]),
     upload(event) {
       const file = event.target.files[0]
       let fd = new FormData()
@@ -111,6 +145,7 @@ export default {
       if (this.$refs.form.validate() && this.form.image) {
         this.updatePhoto({
           id: this.id,
+          album_id: this.form.album.id,
           ...this.form
         })
       } else this.setLoad(false)

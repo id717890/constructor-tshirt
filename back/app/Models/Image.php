@@ -8,7 +8,7 @@ class Image extends Model
 {
     protected $table = 'images';
 
-    protected $fillable = array('title', 'image');
+    protected $fillable = array('title', 'image', 'album_id');
 
     protected $hidden = array('updated_at');
 }

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
+use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class PhotoController extends Controller
+class AlbumController extends Controller
 {
     public function index () {
-        $result = Image::orderBy('created_at','desc')->get();
+        $result = Album::with('images')->orderBy('created_at','desc')->get();
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
 
     public function create(Request $request)
     {
         try {
-            $staff = Image::create(Input::all());
+            $staff = Album::create(Input::all());
             return response()->json($staff, 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
@@ -26,11 +26,9 @@ class PhotoController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $find = Image::find($id);
+            $find = Album::find($id);
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
-            $find->title = Input::get('title');
-            $find->image= Input::get('image');
-            $find->album_id= Input::get('album_id');
+            $find->name = Input::get('name');
             $find->save();
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
@@ -40,7 +38,7 @@ class PhotoController extends Controller
 
     public function delete ($id) {
         try {
-            $item = Image::find($id);
+            $item = Album::find($id);
             if ($item !== null) {
                 $item->delete();
             } else {

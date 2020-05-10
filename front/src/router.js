@@ -52,6 +52,21 @@ const router = new Router({
           }
         },
         {
+          path: 'albums',
+          name: 'Albums',
+          components: {
+            guest: () => import('./components/Album/IndexGuest.vue')
+          }
+        },
+        {
+          path: 'album/:id',
+          name: 'AlbumsSingle',
+          props: { guest: true },
+          components: {
+            guest: () => import('./components/Photo/IndexByAlbumGuest.vue')
+          }
+        },
+        {
           path: 'photos',
           name: 'Photos',
           components: {
@@ -105,6 +120,22 @@ const router = new Router({
       redirect: '/lk/types',
       component: () => import('./layouts/Lk.vue'),
       children: [
+        {
+          path: 'albums',
+          beforeEnter: authGuard,
+          component: () => import('./components/Album/Index.vue')
+        },
+        {
+          path: 'album/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Album/Create.vue')
+        },
+        {
+          path: 'album/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Album/Edit.vue')
+        },
         {
           path: 'faqs',
           beforeEnter: authGuard,

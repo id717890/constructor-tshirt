@@ -13,12 +13,23 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
+        Schema::create('albums', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->string('name')->nullable(false);
+            $table->timestamps();
+        });
+
         Schema::create('images', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('title')->nullable(false);
             $table->string('image')->nullable(false);
+            $table->integer('album_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('album_id')->references('id')->on('albums')->onDelete('cascade');
+
         });
     }
 
@@ -30,5 +41,6 @@ class CreateImagesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('images');
+        Schema::dropIfExists('albums');
     }
 }

@@ -14,6 +14,13 @@
             required
             :rules="textField"
           ></v-text-field>
+          <v-select
+            :items="albums"
+            label="Альбомы"
+            return-object
+            item-text="name"
+            v-model="form.album"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row>
@@ -74,11 +81,25 @@ export default {
     form: {
       valid: true,
       title: '',
+      album: null,
       image: null
     }
   }),
+  async created() {
+    await this.getAllAlbums()
+  },
+  computed: {
+    ...mapState({
+      albums: state => state.album.allAlbums
+    })
+  },
+  watch: {
+    albums(value) {
+      if (value) this.form.album = value[0]
+    }
+  },
   methods: {
-    ...mapActions(['createPhoto', 'uploadImage']),
+    ...mapActions(['createPhoto', 'getAllAlbums', 'uploadImage']),
     upload(event) {
       const file = event.target.files[0]
       let fd = new FormData()
@@ -91,7 +112,10 @@ export default {
     save() {
       this.setLoad(true)
       if (this.$refs.form.validate() && this.form.image) {
-        this.createPhoto(this.form)
+        this.createPhoto({
+          ...this.form,
+          album_id: this.form.album.id
+        })
       } else this.setLoad(false)
     }
   }
