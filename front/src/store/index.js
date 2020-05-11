@@ -24,6 +24,7 @@ import page from './page'
 import faq from './faq'
 import album from './album'
 import home from './home'
+import config from './config'
 
 Vue.use(Vuex)
 
@@ -56,6 +57,7 @@ export default new Vuex.Store({
     page,
     faq,
     album,
-    home
+    home,
+    config
   }
 })

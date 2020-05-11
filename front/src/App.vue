@@ -14,6 +14,7 @@ export default {
     this.$vuetify.lang.current = 'ru'
   },
   async created() {
+    await this.getAllConfigs()
     await this.getAllHomeSlides()
     await this.getAllDiscounts()
     await this.getAllNews()
@@ -21,6 +22,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getAllConfigs',
       'getAllDiscounts',
       'getAllNews',
       'getAllPages',

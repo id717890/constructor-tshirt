@@ -2,7 +2,32 @@
   <v-row>
     <v-col cols="12">
       <v-card class="pa-1">
-        <v-carousel v-if="slides" height="290" hide-delimiters>
+        <v-row>
+          <v-col cols="12" lg="3" md="4" sm="12" class="d-flex">
+            <v-text-field
+              class="flex-shrink-0 ma-3"
+              type="number"
+              v-model="slidesHeight"
+              label="Высота слайдера"
+              outlined
+            ></v-text-field>
+            <v-btn
+              @click.prevent="
+                saveConfig({ key: 'home_slider_height', value: slidesHeight })
+              "
+              class="mt-1"
+              fab
+              text
+              x-large
+              color="success"
+              title="Сохранить высоту"
+            >
+              <v-icon>mdi-content-save</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+
+        <v-carousel v-if="slides" :height="slidesHeight" hide-delimiters>
           <v-carousel-item
             class="home-slide"
             :src="img(slide.image)"
@@ -61,6 +86,7 @@ import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
   mixins: [imageMixin],
   data: () => ({
+    slidesHeight: 290,
     removedItem: null,
     headers: [
       { text: 'Вопрос', value: 'question' },
@@ -69,10 +95,14 @@ export default {
   }),
   methods: {
     ...mapActions([
+      'setConfig',
       'getAllHomeSlides',
       'resetConfirmDialogResult',
       'deleteHomeSlide'
     ]),
+    saveConfig(cfg) {
+      this.setConfig(cfg)
+    },
     openUrl(url) {
       if (
         url.toLowerCase().includes('https') ||
@@ -101,13 +131,26 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getConfigByKey']),
     ...mapState({
       slides: state => state.home.allHomeSlides,
       confirmDialogResult: state => state.dialog.confirmDialogResult
-    })
+    }),
+    slidesHeightCfg() {
+      return this.getConfigByKey('home_slider_height')
+    }
   },
   async created() {
     await this.getAllHomeSlides()
+  },
+  mounted() {
+    if (this.slidesHeightCfg)
+      this.slidesHeight = parseInt(this.slidesHeightCfg.value)
+  },
+  watch: {
+    slidesHeightCfg(value) {
+      if (value) this.slidesHeight = parseInt(value.value)
+    }
   }
 }
 </script>

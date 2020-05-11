@@ -3,7 +3,7 @@
     <v-col cols="12" class="pa-0">
       <v-row v-if="slides">
         <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
-          <v-carousel height="290" hide-delimiters class="home-slide">
+          <v-carousel :height="slidesHeight" hide-delimiters class="home-slide">
             <v-carousel-item
               :src="img(slide.image)"
               v-for="slide in slides"
@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 import imageMixin from '../mixins/image'
 import config from '../init/config'
@@ -254,28 +254,36 @@ import Correspondent from '../components/Dialog/BecomeCorrestpondent'
 export default {
   mixins: [imageMixin],
   data: () => ({
+    slidesHeight: 290,
     news3: []
   }),
   computed: {
+    ...mapGetters(['getConfigByKey']),
     ...mapState({
       discounts: state => state.discount.allDiscounts,
       news: state => state.news.allNews,
       slides: state => state.home.allHomeSlides
-    })
+    }),
+    slidesHeightCfg() {
+      return this.getConfigByKey('home_slider_height')
+    }
   },
   watch: {
     news(value) {
       if (value && value.length > 0) {
         this.news3 = value.slice(0, 3)
       }
+    },
+    slidesHeightCfg(value) {
+      if (value) this.slidesHeight = parseInt(value.value)
     }
   },
   mounted() {
-    // setTimeout(() => {
-    //   if (this.news && this.news.length > 0) {
-    //     this.news3 = this.news.slice(0, 3)
-    //   }
-    // }, 800)
+    if (this.news && this.news.length > 0) {
+      this.news3 = this.news.slice(0, 3)
+    }
+    if (this.slidesHeightCfg)
+      this.slidesHeight = parseInt(this.slidesHeightCfg.value)
   },
   methods: {
     openUrl(url) {

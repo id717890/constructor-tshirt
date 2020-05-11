@@ -14,6 +14,9 @@ export const GET_ALL_COLORS = 'GET_ALL_COLORS'
 /* CANAVAS */
 export const SHOW_DELETE_BTN = 'SHOW_DELETE_BTN'
 
+/* CONFIGS */
+export const GET_ALL_CONFIGS = 'GET_ALL_CONFIGS'
+
 /* MODEL */
 export const GET_ALL_MODELS = 'GET_ALL_MODELS'
 
