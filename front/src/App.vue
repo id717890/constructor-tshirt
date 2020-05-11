@@ -14,12 +14,18 @@ export default {
     this.$vuetify.lang.current = 'ru'
   },
   async created() {
+    await this.getAllHomeSlides()
     await this.getAllDiscounts()
     await this.getAllNews()
     await this.getAllPages()
   },
   methods: {
-    ...mapActions(['getAllDiscounts', 'getAllNews', 'getAllPages'])
+    ...mapActions([
+      'getAllDiscounts',
+      'getAllNews',
+      'getAllPages',
+      'getAllHomeSlides'
+    ])
   }
 }
 </script>

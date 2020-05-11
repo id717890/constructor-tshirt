@@ -1,15 +1,34 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12" class="pa-0">
-      <v-row>
+      <v-row v-if="slides">
         <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
-          <v-carousel height="290" hide-delimiters>
-            <v-carousel-item src="~@/assets/img/slider-img.jpg">
+          <v-carousel height="290" hide-delimiters class="home-slide">
+            <v-carousel-item
+              :src="img(slide.image)"
+              v-for="slide in slides"
+              :key="slide.id"
+            >
+              <div class="home-slide__content">
+                <div></div>
+                <div class="text-center">
+                  <v-btn
+                    v-if="slide.url"
+                    color="warning"
+                    large
+                    outlined
+                    target="_blank"
+                    @click.prevent="openUrl(slide.url)"
+                  >
+                    Подробнее
+                  </v-btn>
+                </div>
+              </div>
+            </v-carousel-item>
+            <!-- <v-carousel-item src="~@/assets/img/slider-img.jpg">
             </v-carousel-item>
             <v-carousel-item src="~@/assets/img/slider-img.jpg">
-            </v-carousel-item>
-            <v-carousel-item src="~@/assets/img/slider-img.jpg">
-            </v-carousel-item>
+            </v-carousel-item> -->
           </v-carousel>
         </v-col>
       </v-row>
@@ -240,17 +259,33 @@ export default {
   computed: {
     ...mapState({
       discounts: state => state.discount.allDiscounts,
-      news: state => state.news.allNews
+      news: state => state.news.allNews,
+      slides: state => state.home.allHomeSlides
     })
   },
-  mounted() {
-    setTimeout(() => {
-      if (this.news && this.news.length > 0) {
-        this.news3 = this.news.slice(0, 3)
+  watch: {
+    news(value) {
+      if (value && value.length > 0) {
+        this.news3 = value.slice(0, 3)
       }
-    }, 800)
+    }
+  },
+  mounted() {
+    // setTimeout(() => {
+    //   if (this.news && this.news.length > 0) {
+    //     this.news3 = this.news.slice(0, 3)
+    //   }
+    // }, 800)
   },
   methods: {
+    openUrl(url) {
+      if (
+        url.toLowerCase().includes('https') ||
+        url.toLowerCase().includes('http')
+      ) {
+        window.open(url, '_blank')
+      } else this.$router.push(url)
+    },
     becomeCorrespondentDialog() {
       this.$modal.show(
         Correspondent,

@@ -23,6 +23,9 @@ export const GET_ALL_TYPES = 'GET_ALL_TYPES'
 /* FAQS */
 export const GET_ALL_ALBUMS = 'GET_ALL_ALBUMS'
 
+/* HOME_SLIDES */
+export const GET_ALL_HOME_SLIDES = 'GET_ALL_HOME_SLIDES'
+
 /* FAQS */
 export const GET_ALL_FAQS = 'GET_ALL_FAQS'
 

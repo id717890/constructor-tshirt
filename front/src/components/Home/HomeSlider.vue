@@ -1,0 +1,113 @@
+<template>
+  <v-row>
+    <v-col cols="12">
+      <v-card class="pa-1">
+        <v-carousel v-if="slides" height="290" hide-delimiters>
+          <v-carousel-item
+            class="home-slide"
+            :src="img(slide.image)"
+            v-for="slide in slides"
+            :key="slide.id"
+          >
+            <div class="home-slide__content">
+              <div>
+                <v-btn
+                  fab
+                  text
+                  title="Редакитровать"
+                  color="primary"
+                  :to="'/lk/home/slide/edit/' + slide.id"
+                >
+                  <v-icon>mdi-pen</v-icon>
+                </v-btn>
+                <v-btn
+                  color="error"
+                  fab
+                  text
+                  @click.prevent="deleteItem(slide)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+              <div class="text-center">
+                <v-btn
+                  v-if="slide.url"
+                  color="warning"
+                  large
+                  outlined
+                  target="_blank"
+                  @click.prevent="openUrl(slide.url)"
+                >
+                  Подробнее
+                </v-btn>
+              </div>
+            </div>
+          </v-carousel-item>
+        </v-carousel>
+        <v-btn color="primary" class="ma-4" to="/lk/home/slide/create">
+          <v-icon>mdi-plus</v-icon>
+          Добавить слайд
+        </v-btn>
+      </v-card>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+import config from '../../init/config'
+import imageMixin from '../../mixins/image'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import ConfirmDialogModal from '../Dialog/ConfirmDialog'
+export default {
+  mixins: [imageMixin],
+  data: () => ({
+    removedItem: null,
+    headers: [
+      { text: 'Вопрос', value: 'question' },
+      { text: '', value: '', value: 'act', width: '120', sortable: false }
+    ]
+  }),
+  methods: {
+    ...mapActions([
+      'getAllHomeSlides',
+      'resetConfirmDialogResult',
+      'deleteHomeSlide'
+    ]),
+    openUrl(url) {
+      if (
+        url.toLowerCase().includes('https') ||
+        url.toLowerCase().includes('http')
+      ) {
+        window.open(url, '_blank')
+      } else this.$router.push(url)
+    },
+    deleteItem(item) {
+      this.removedItem = item
+      this.$modal.show(
+        ConfirmDialogModal,
+        { question: 'Удалить запись?' },
+        config.modalSettings,
+        {
+          closed: this.confirmDelete
+        }
+      )
+    },
+    confirmDelete() {
+      if (this.confirmDialogResult === true) {
+        this.resetConfirmDialogResult()
+        this.deleteHomeSlide(this.removedItem)
+        this.removedItem = null
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      slides: state => state.home.allHomeSlides,
+      confirmDialogResult: state => state.dialog.confirmDialogResult
+    })
+  },
+  async created() {
+    await this.getAllHomeSlides()
+  }
+}
+</script>

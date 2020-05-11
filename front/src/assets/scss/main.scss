@@ -255,3 +255,15 @@ $size: 55px !important;
 .card-hover .video-wrapper iframe {
   width: 100%;
 }
+
+.home-slide .v-responsive__content {
+  z-index: 10;
+}
+
+.home-slide__content {
+  padding-bottom: 30px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  justify-content:space-between;
+}
