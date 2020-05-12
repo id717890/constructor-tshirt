@@ -57,7 +57,7 @@ class ImageSeeder extends Seeder
 
         DB::table('images')->insert([
             'title' => 'Пример изображение 1',
-            'image' => 'image-tulips.jpg',
+            'image' => 'image-city.jpg',
             'album_id' => 2,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')

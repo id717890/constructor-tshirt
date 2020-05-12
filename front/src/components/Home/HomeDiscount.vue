@@ -65,10 +65,13 @@ export default {
     homeDiscount: null
   }),
   methods: {
-    ...mapActions(['setConfig', 'uploadImage']),
+    ...mapActions(['updateDiscountSlide', 'uploadImage']),
     saveHomeDiscount() {
       if (this.homeDiscount)
-        this.setConfig({ key: 'home_slide_discount', value: this.homeDiscount })
+        this.updateDiscountSlide({
+          key: 'home_slide_discount',
+          value: this.homeDiscount
+        })
     },
     uploadHomeDiscount(event) {
       const file = event.target.files[0]

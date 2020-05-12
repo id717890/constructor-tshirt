@@ -60,6 +60,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::post('configs/set', 'ConfigController@set');
 
+    Route::post('home/discount/update', 'HomeSliderController@updateDiscountSlide');
+
     Route::post('home/slides', 'HomeSliderController@createHomeSlide');
     Route::post('home/slides/delete/{id}', 'HomeSliderController@deleteHomeSlide');
     Route::post('home/slides/update/{id}', 'HomeSliderController@updateHomeSlide');

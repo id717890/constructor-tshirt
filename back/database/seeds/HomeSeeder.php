@@ -21,7 +21,7 @@ class HomeSeeder extends Seeder
         ]);
 
         DB::table('home_slides')->insert([
-            'image' => 'home-slide-1.jpg',
+            'image' => 'home-slide-2.jpg',
             'url' => null,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use App\Models\HomeSlider;
 use App\Models\Partner;
 use Illuminate\Http\Request;
@@ -30,8 +31,15 @@ class HomeSliderController extends Controller
     {
         try {
             $find = HomeSlider::find($id);
+            $image = Input::get('image');
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
-            $find->image = Input::get('image');
+            if ($find->image !== $image) {
+                try {
+                    if (Storage::exists('images/' . $find->image) === true) Storage::delete('images/' . $find->image);
+                } catch (\Exception $e) {
+                }
+            }
+            $find->image = $image;
             $find->url = Input::get('url');
             $find->save();
             return response()->json(['success' => true], 200);
@@ -54,6 +62,32 @@ class HomeSliderController extends Controller
                 return response()->json(['success' => false, 'error' => 'User not found'], 400);
             }
             return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
+    public function updateDiscountSlide()
+    {
+        try {
+            $key = Input::get('key');
+            $value = Input::get('value');
+            if ($key === null) return response()->json(['success' => false, 'error' => 'Key is null'], 400);
+            if ($value === null) return response()->json(['success' => false, 'error' => 'Value is null'], 400);
+            $find = Config::where('key', $key)->first();
+            if ($find === null) {
+                $model = Config::create(Input::all());
+            } else {
+                if ($find->value !== $value) {
+                    try {
+                        if (Storage::exists('images/' . $find->value) === true) Storage::delete('images/' . $find->value);
+                    } catch (\Exception $e) {
+                    }
+                }
+                $find->value = $value;
+                $find->save();
+            }
+            return response()->json(['success' => true], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
         }

@@ -2,31 +2,6 @@
   <v-row>
     <v-col cols="12">
       <v-card class="pa-1">
-        <v-row>
-          <v-col cols="12" lg="3" md="4" sm="12" class="d-flex">
-            <v-text-field
-              class="flex-shrink-0 ma-3"
-              type="number"
-              v-model="slidesHeight"
-              label="Высота слайдера"
-              outlined
-            ></v-text-field>
-            <v-btn
-              @click.prevent="
-                saveConfig({ key: 'home_slider_height', value: slidesHeight })
-              "
-              class="mt-1"
-              fab
-              text
-              x-large
-              color="success"
-              title="Сохранить высоту"
-            >
-              <v-icon>mdi-content-save</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-
         <v-carousel v-if="slides" :height="slidesHeight" hide-delimiters>
           <v-carousel-item
             class="home-slide"
@@ -69,10 +44,34 @@
             </div>
           </v-carousel-item>
         </v-carousel>
-        <v-btn color="primary" class="ma-4" to="/lk/home/slide/create">
-          <v-icon>mdi-plus</v-icon>
-          Добавить слайд
-        </v-btn>
+        <v-row>
+          <v-col cols="12" lg="3" md="4" sm="12" class="d-flex">
+            <v-btn color="primary" class="ma-4" to="/lk/home/slide/create">
+              <v-icon>mdi-plus</v-icon>
+              Добавить слайд
+            </v-btn>
+            <v-text-field
+              class="flex-shrink-0 ma-3"
+              type="number"
+              v-model="slidesHeight"
+              label="Высота слайдера"
+              outlined
+            ></v-text-field>
+            <v-btn
+              @click.prevent="
+                saveConfig({ key: 'home_slider_height', value: slidesHeight })
+              "
+              class="mt-1"
+              fab
+              text
+              x-large
+              color="success"
+              title="Сохранить высоту"
+            >
+              <v-icon>mdi-content-save</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>

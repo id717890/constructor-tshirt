@@ -1,6 +1,7 @@
 import context from '../api/api'
 import * as types from './mutation-types'
 import router from '../router'
+import Vue from 'vue'
 
 const state = {
   allHomeSlides: [],
@@ -9,6 +10,20 @@ const state = {
 
 // actions
 const actions = {
+  async updateDiscountSlide({ dispatch }, payload) {
+    await context
+      .post('api/home/discount/update', payload)
+      .then(() => {
+        dispatch('getAllConfigs')
+        Vue.noty.success('Сохранено!')
+      })
+      .catch(x => {
+        Vue.noty.error('Ошибка сохранения!')
+        console.log(x)
+        dispatch('setLoading', false)
+      })
+  },
+  /////
   async updatePartner({ dispatch }, payload) {
     await context
       .post('api/partners/update/' + payload.id, payload)

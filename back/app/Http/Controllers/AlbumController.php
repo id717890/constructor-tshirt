@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 class AlbumController extends Controller
 {
-    public function index () {
-        $result = Album::with('images')->orderBy('created_at','desc')->get();
+    public function index()
+    {
+        $result = Album::with('images')->orderBy('created_at', 'desc')->get();
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
 
@@ -36,10 +38,19 @@ class AlbumController extends Controller
         }
     }
 
-    public function delete ($id) {
+    public function delete($id)
+    {
         try {
             $item = Album::find($id);
             if ($item !== null) {
+                if ($item->images && count($item->images) > 0) {
+                    foreach ($item->images as $image) {
+                        try {
+                            if (Storage::exists('images/' . $image->image) === true) Storage::delete('images/' . $image->image);
+                        } catch (\Exception $e) {
+                        }
+                    }
+                }
                 $item->delete();
             } else {
                 return response()->json(['success' => false, 'error' => 'User not found'], 400);

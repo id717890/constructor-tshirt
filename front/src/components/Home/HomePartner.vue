@@ -2,6 +2,9 @@
   <v-row>
     <v-col cols="12">
       <v-card class="pa-1">
+        <v-card-title>
+          Партнеры
+        </v-card-title>
         <swiper
           ref="partnerSwiper"
           class="partnerSwiper"
