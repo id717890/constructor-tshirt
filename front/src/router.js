@@ -121,6 +121,17 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'home/partner/edit/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Home/HomePartnerEdit.vue')
+        },
+        {
+          path: 'home/partner/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Home/HomePartnerCreate.vue')
+        },
+        {
           path: 'home/slide/edit/:id',
           props: true,
           beforeEnter: authGuard,

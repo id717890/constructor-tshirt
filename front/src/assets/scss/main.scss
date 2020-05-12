@@ -34,6 +34,23 @@
   transform: scale(0.9);
 }
 
+.partnerSwiper {
+  min-height: 160px;
+}
+
+.swiper-element__partner {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+}
+
+.swiper-element__partner .partner-content {
+  z-index: 10;
+}
+
+.swiper-element__partner .partner-content .v-btn {
+  z-index: 10;
+}
 
 .f1 {
   // font: normal normal normal 75px/1.4em 'arial black', arial-w01-black, arial-w02-black, 'arial-w10 black', sans-serif;

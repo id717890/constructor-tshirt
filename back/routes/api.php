@@ -19,6 +19,7 @@ Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
+Route::get('partners', 'HomeSliderController@getPartners');
 Route::get('configs/get', 'ConfigController@index');
 Route::get('home/slides', 'HomeSliderController@getHomeSlides');
 Route::get('albums', 'AlbumController@index');
@@ -53,6 +54,10 @@ Route::get('image/{filename}', 'ImageController@image');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('partners', 'HomeSliderController@createPartner');
+    Route::post('partners/delete/{id}', 'HomeSliderController@deletePartner');
+    Route::post('partners/update/{id}', 'HomeSliderController@updatePartner');
+
     Route::post('configs/set', 'ConfigController@set');
 
     Route::post('home/slides', 'HomeSliderController@createHomeSlide');

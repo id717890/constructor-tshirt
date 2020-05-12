@@ -87,11 +87,7 @@ export default {
   mixins: [imageMixin],
   data: () => ({
     slidesHeight: 290,
-    removedItem: null,
-    headers: [
-      { text: 'Вопрос', value: 'question' },
-      { text: '', value: '', value: 'act', width: '120', sortable: false }
-    ]
+    removedItem: null
   }),
   methods: {
     ...mapActions([

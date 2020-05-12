@@ -19,6 +19,7 @@ export default {
     await this.getAllDiscounts()
     await this.getAllNews()
     await this.getAllPages()
+    await this.getAllPartners()
   },
   methods: {
     ...mapActions([
@@ -26,7 +27,8 @@ export default {
       'getAllDiscounts',
       'getAllNews',
       'getAllPages',
-      'getAllHomeSlides'
+      'getAllHomeSlides',
+      'getAllPartners'
     ])
   }
 }

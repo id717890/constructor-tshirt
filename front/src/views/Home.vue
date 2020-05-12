@@ -102,9 +102,9 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col md="6" cols="12" class="pt-1">
+            <v-col md="6" cols="12" class="pt-3">
               <v-carousel
-                height="auto"
+                height="385"
                 hide-delimiters
                 :interval="7000"
                 :cycle="true"
@@ -134,55 +134,60 @@
                   </v-img>
                 </v-carousel-item>
               </v-carousel>
-              <v-img
-                aspect-ratio="1.5"
-                height="290"
-                class="mt-1 bg-constructor"
-                src="~@/assets/img/konstr-bg.jpg"
-              >
-                <div class="w100 d-flex flex-column align-center pa-6  ">
-                  <div class="t1 align-self-start">
-                    Создай свою форму
-                  </div>
-                  <div class="t2_1 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Minima ullam, expedita aliquid eum, iure cumque cum
-                    laudantium consectetur itaque
-                  </div>
-                  <v-btn
-                    x-large
-                    color="#f5a93c"
-                    rounded
-                    outlined
-                    class="mb-2"
-                    to="/constructor"
-                  >
-                    <img
-                      class="mr-3"
-                      src="~@/assets/img/toy-brick.png"
-                      alt=""
-                    />
-                    Перейти к конструктору
-                  </v-btn>
-                  <v-btn large rounded outlined dark>
-                    <fai class="mr-3" :icon="['fab', 'youtube']" />
-                    Смотреть видеоурок
-                  </v-btn>
-                </div>
-              </v-img>
             </v-col>
             <v-col
               md="6"
               cols="12"
-              class="d-flex flex-column align-center justify-center"
+              class="d-flex flex-column align-center justify-center pt-3"
             >
-              <v-row class="flex-grow-0">
+              <!-- <v-row class="flex-grow-0">
                 <v-col cols="12">
                   <div class="t3 text-center pt-10">Наши партнеры</div>
                 </v-col>
-              </v-row>
+              </v-row> -->
               <v-row>
-                <v-col
+                <v-col cols="12" class="pa-0">
+                  <v-img
+                    aspect-ratio="1.5"
+                    height="385"
+                    class=" bg-constructor"
+                    src="~@/assets/img/konstr-bg.jpg"
+                  >
+                    <div
+                      class="w100 h100 d-flex flex-column align-center justify-center pa-6"
+                    >
+                      <div class="t1 align-self-start">
+                        Создай свою форму
+                      </div>
+                      <div class="t2_1 mb-4">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Minima ullam, expedita aliquid eum, iure cumque
+                        cum laudantium consectetur itaque
+                      </div>
+                      <v-btn
+                        x-large
+                        color="#f5a93c"
+                        rounded
+                        outlined
+                        class="mb-2"
+                        to="/constructor"
+                      >
+                        <img
+                          class="mr-3"
+                          src="~@/assets/img/toy-brick.png"
+                          alt=""
+                        />
+                        Перейти к конструктору
+                      </v-btn>
+                      <v-btn large rounded outlined dark>
+                        <fai class="mr-3" :icon="['fab', 'youtube']" />
+                        Смотреть видеоурок
+                      </v-btn>
+                    </div>
+                  </v-img>
+                </v-col>
+
+                <!-- <v-col
                   cols="6"
                   class="d-flex align-center justify-center"
                   style="border-right: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5"
@@ -219,8 +224,36 @@
                 </v-col>
                 <v-col cols="6" class="d-flex align-center justify-center">
                   <v-img src="~@/assets/img/logo-amd.png"></v-img>
-                </v-col>
+                </v-col> -->
               </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <div class="t3 text-center pt-10">Наши партнеры</div>
+              <swiper
+                ref="partnerSwiper"
+                class="partnerSwiper"
+                :options="swiperOptions"
+              >
+                <swiper-slide
+                  v-for="partner in partners"
+                  :key="partner.id"
+                  class="swiper-element swiper-element__partner"
+                >
+                  <v-img
+                    contain
+                    height="100%"
+                    aspect-ratio="1.6"
+                    :src="img(partner.image)"
+                    max-width="260"
+                  >
+                  </v-img>
+                </swiper-slide>
+                <!-- Стрелки прокрутки моделей -->
+                <div class="swiper-button-prev" slot="button-prev"></div>
+                <div class="swiper-button-next" slot="button-next"></div>
+              </swiper>
             </v-col>
           </v-row>
         </v-col>
@@ -241,11 +274,18 @@ export default {
   mixins: [imageMixin],
   data: () => ({
     slidesHeight: 290,
-    news3: []
+    news3: [],
+    swiperOptions: {
+      ...config.swiperOptions,
+      autoplay: {
+        delay: 5000
+      }
+    }
   }),
   computed: {
     ...mapGetters(['getConfigByKey']),
     ...mapState({
+      partners: state => state.home.allPartners,
       discounts: state => state.discount.allDiscounts,
       news: state => state.news.allNews,
       slides: state => state.home.allHomeSlides

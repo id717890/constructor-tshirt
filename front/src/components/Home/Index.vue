@@ -8,6 +8,7 @@
     <v-col cols="12">
       <home-slider />
       <home-discount />
+      <home-partner />
     </v-col>
   </v-row>
 </template>
@@ -15,10 +16,12 @@
 <script>
 import HomeSlider from './HomeSlider'
 import HomeDiscount from './HomeDiscount'
+import HomePartner from './HomePartner'
 export default {
   components: {
     HomeSlider,
-    HomeDiscount
+    HomeDiscount,
+    HomePartner
   }
 }
 </script>
