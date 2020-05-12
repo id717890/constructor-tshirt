@@ -42,6 +42,7 @@ Route::get('colors', 'ColorController@index');
 Route::get('models', 'ModelController@index');
 Route::get('types', 'TypeController@index');
 
+Route::post('callback/design', 'CallbackController@designChallenge');
 Route::post('callback/correspondent', 'CallbackController@correspondent');
 Route::post('callback/callme', 'CallbackController@callMe');
 Route::post('callback/idea', 'CallbackController@sendIdea');

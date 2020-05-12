@@ -37,47 +37,32 @@
           <v-row>
             <v-col md="6" cols="12" class=" py-0">
               <v-row>
-                <v-col cols="6" class="py-0 pr-1">
+                <v-col cols="12" class="py-0 pr-3" v-if="slideHomeDiscount">
                   <v-img
                     aspect-ratio="1.6"
-                    src="~@/assets/img/konkurs-img.jpg"
+                    :src="img(slideHomeDiscount.value)"
                     height="100%"
-                  ></v-img>
-                </v-col>
-                <v-col cols="6" class=" d-flex flex-column py-0">
-                  <v-row>
-                    <v-col cols="12" class="py-0 pl-0">
-                      <!-- <img
-                        src="~@/assets/img/konkurs-img2.jpg"
-                        alt=""
-                        style="height: 100%"
-                      /> -->
-                      <v-img
-                        aspect-ratio="1.6"
-                        height="auto"
-                        src="~@/assets/img/konkurs-img2.jpg"
-                      ></v-img>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" class="py-0 pl-0 ">
-                      <!-- <img
-                        src="~@/assets/img/konkurs-img2.jpg"
-                        alt=""
-                        style="height: 100%"
-                      /> -->
-
-                      <v-img
-                        aspect-ratio="1.6"
-                        height="auto"
-                        src="~@/assets/img/konkurs-img2.jpg"
-                      ></v-img>
-                    </v-col>
-                  </v-row>
+                    class="home-discount"
+                  >
+                    <div
+                      class="h100 w100 d-flex flex-row align-center justify-center"
+                    >
+                      <v-btn
+                        dark
+                        x-large
+                        rounded
+                        outlined
+                        @click.prevent="designChallengeDialog"
+                      >
+                        <v-icon class="mr-5">mdi-telegram</v-icon>
+                        Отправить заявку
+                      </v-btn>
+                    </div>
+                  </v-img>
                 </v-col>
               </v-row>
             </v-col>
-            <v-col md="6" cols="12" class="py-0">
+            <v-col md="6" cols="12" class="py-0 px-0">
               <div
                 class="h100 d-flex flex-column justify-space-between"
                 v-if="news"
@@ -250,6 +235,7 @@ import moment from 'moment'
 import imageMixin from '../mixins/image'
 import config from '../init/config'
 import Correspondent from '../components/Dialog/BecomeCorrestpondent'
+import DesignChallengeDialog from '../components/Dialog/DesignChallenge'
 
 export default {
   mixins: [imageMixin],
@@ -266,6 +252,9 @@ export default {
     }),
     slidesHeightCfg() {
       return this.getConfigByKey('home_slider_height')
+    },
+    slideHomeDiscount() {
+      return this.getConfigByKey('home_slide_discount')
     }
   },
   watch: {
@@ -286,6 +275,14 @@ export default {
       this.slidesHeight = parseInt(this.slidesHeightCfg.value)
   },
   methods: {
+    designChallengeDialog() {
+      this.$modal.show(
+        DesignChallengeDialog,
+        {},
+        { ...config.modalSettings, clickToClose: true, maxWidth: 400 },
+        {}
+      )
+    },
     openUrl(url) {
       if (
         url.toLowerCase().includes('https') ||

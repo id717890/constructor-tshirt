@@ -15,7 +15,14 @@ class ConfigSeeder extends Seeder
 
         DB::table('configs')->insert([
             'key' => 'home_slider_height',
-            'value' => '100',
+            'value' => '300',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+
+        DB::table('configs')->insert([
+            'key' => 'home_slide_discount',
+            'value' => 'home-discount-1.jpg',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
