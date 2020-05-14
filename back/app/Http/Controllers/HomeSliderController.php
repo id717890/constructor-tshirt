@@ -70,23 +70,43 @@ class HomeSliderController extends Controller
     public function updateDiscountSlide()
     {
         try {
-            $key = Input::get('key');
-            $value = Input::get('value');
-            if ($key === null) return response()->json(['success' => false, 'error' => 'Key is null'], 400);
-            if ($value === null) return response()->json(['success' => false, 'error' => 'Value is null'], 400);
-            $find = Config::where('key', $key)->first();
+            $key1 = Input::get('key1');
+            $value1 = Input::get('value1');
+            $key2 = Input::get('key2');
+            $value2 = Input::get('value2');
+            if ($key1 === null) return response()->json(['success' => false, 'error' => 'Key is null'], 400);
+            if ($value1 === null) return response()->json(['success' => false, 'error' => 'Value is null'], 400);
+            $find = Config::where('key', $key1)->first();
             if ($find === null) {
-                $model = Config::create(Input::all());
+                $model = Config::create(['key' => $key1, 'value' => $value1]);
             } else {
-                if ($find->value !== $value) {
+                if ($find->value !== $value1) {
                     try {
                         if (Storage::exists('images/' . $find->value) === true) Storage::delete('images/' . $find->value);
                     } catch (\Exception $e) {
                     }
                 }
-                $find->value = $value;
+                $find->value = $value1;
                 $find->save();
             }
+            $find2 = Config::where('key', $key2)->first();
+            if ($value2 === null || $value2 === '') {
+                $find2->delete();
+            } else {
+                if ($find2 === null) {
+                    Config::create(['key' => $key2, 'value' => $value2]);
+                } else {
+                    if ($find2->value !== $value2) {
+                        try {
+                            if (Storage::exists('images/' . $find2->value) === true) Storage::delete('images/' . $find2->value);
+                        } catch (\Exception $e) {
+                        }
+                    }
+                    $find2->value = $value2;
+                    $find2->save();
+                }
+            }
+
             return response()->json(['success' => true], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);

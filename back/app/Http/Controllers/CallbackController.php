@@ -15,8 +15,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CallbackController extends Controller
 {
-//    private $email = ['jusupovz@gmail.com', 'vadimnazarovich@mail.ru'];
-    private $email = ['jusupovz@gmail.com'];
+    private $email = ['jusupovz@gmail.com', 'vadimnazarovich@mail.ru'];
+
+//    private $email = ['jusupovz@gmail.com'];
 
     public function  designChallenge(Request $request)
     {
@@ -32,6 +33,7 @@ class CallbackController extends Controller
                 'name' => $name,
                 'phone' => $phone,
                 'text' => $text,
+                'title' => $subject
             ],
                 function ($mail) use ($email, $subject, $fr, $seo) {
                     $mail->from($fr, $seo);
@@ -59,6 +61,8 @@ class CallbackController extends Controller
                 'name' => $name,
                 'phone' => $phone,
                 'text' => $text,
+                'title' => $subject
+
             ],
                 function ($mail) use ($email, $subject, $fr, $seo) {
                     $mail->from($fr, $seo);

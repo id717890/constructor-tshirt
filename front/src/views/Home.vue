@@ -45,8 +45,13 @@
                     class="home-discount"
                   >
                     <div
-                      class="h100 w100 d-flex flex-row align-center justify-center"
+                      class="pa-12 h100 w100 d-flex flex-column align-center justify-space-between"
                     >
+                      <div
+                        v-if="slideHomeDiscountText"
+                        v-html="slideHomeDiscountText.value"
+                        class="t1 mt-12"
+                      ></div>
                       <v-btn
                         dark
                         x-large
@@ -119,9 +124,12 @@
                     position="center center"
                     :src="img(discount.image)"
                   >
-                    <div class="d-flex h100 align-end justify-center">
+                    <div
+                      class="pa-12 d-flex h100 justify-space-between align-center flex-column"
+                    >
+                      <div class="t1 text-cneter" v-html="discount.title"></div>
                       <v-btn
-                        class="mb-10 px-10"
+                        class="px-10"
                         outlined
                         rounded
                         x-large
@@ -295,6 +303,9 @@ export default {
     },
     slideHomeDiscount() {
       return this.getConfigByKey('home_slide_discount')
+    },
+    slideHomeDiscountText() {
+      return this.getConfigByKey('home_slide_discount_text')
     }
   },
   watch: {

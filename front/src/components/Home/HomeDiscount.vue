@@ -21,6 +21,12 @@
                 style="width: 100%; border-radius: 5px"
               />
             </div>
+            <div>
+              <v-text-field
+                v-model="text"
+                label="Текст (не обязательно)"
+              ></v-text-field>
+            </div>
             <v-btn
               color="red"
               dark
@@ -62,15 +68,18 @@ import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
   mixins: [imageMixin],
   data: () => ({
-    homeDiscount: null
+    homeDiscount: null,
+    text: ''
   }),
   methods: {
     ...mapActions(['updateDiscountSlide', 'uploadImage']),
     saveHomeDiscount() {
       if (this.homeDiscount)
         this.updateDiscountSlide({
-          key: 'home_slide_discount',
-          value: this.homeDiscount
+          key1: 'home_slide_discount',
+          value1: this.homeDiscount,
+          key2: 'home_slide_discount_text',
+          value2: this.text
         })
     },
     uploadHomeDiscount(event) {
@@ -87,14 +96,21 @@ export default {
     ...mapGetters(['getConfigByKey']),
     slideHomeDiscount() {
       return this.getConfigByKey('home_slide_discount')
+    },
+    slideHomeDiscountText() {
+      return this.getConfigByKey('home_slide_discount_text')
     }
   },
   mounted() {
     if (this.slideHomeDiscount) this.homeDiscount = this.slideHomeDiscount.value
+    if (this.slideHomeDiscountText) this.text = this.slideHomeDiscountText.value
   },
   watch: {
     slideHomeDiscount(value) {
       if (value) this.homeDiscount = value.value
+    },
+    slideHomeDiscountText(value) {
+      if (value) this.text = value.value
     }
   }
 }
