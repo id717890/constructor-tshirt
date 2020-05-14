@@ -4,6 +4,7 @@
       <v-row>
         <v-col cols="12" md="10" offset-md="1">
           <v-btn
+            v-if="isAuth"
             style="position: fixed; left: 50px; top: 25px"
             text
             icon
@@ -562,6 +563,15 @@
                 <v-col cols="12" md="6">
                   <v-btn
                     large
+                    @click="openDialogDelivery"
+                    color="primary"
+                    class="w100"
+                    >Оплата и доставка</v-btn
+                  >
+                </v-col>
+                <v-col cols="12">
+                  <v-btn
+                    large
                     @click="openDialogZakazAll"
                     color="success"
                     class="w100"
@@ -587,7 +597,9 @@ import DialogZakazTovar from '../components/Dialog/ZakazTovar'
 import DialogZakazNomerFio from '../components/Dialog/ZakazNomerFio'
 import DialogZakazLogos from '../components/Dialog/ZakazLogos'
 import DialogZakazAll from '../components/Dialog/ZakazAll'
+import DialogZakazDelivery from '../components/Dialog/ZakazDelivery'
 import DialogCopy from '../components/Dialog/CopyDialog'
+import Vue from 'vue'
 export default {
   components: {
     TableSize
@@ -684,6 +696,11 @@ export default {
       showDeleteLogo: state => state.canvas.showDeleteBtn,
       copyDialogResult: state => state.dialog.copyDialogResult
     }),
+    isAuth() {
+      let credetnrials = Vue.auth.getCredentials()
+      if (credetnrials === null || credetnrials === undefined) return false
+      return true
+    },
     logoTypesBySize() {
       if (this.currentLogoSize) {
         return this.allLogoTypes.filter(
@@ -898,6 +915,17 @@ export default {
         logoTypeId: logoType.id,
         logoSizeId: logoSize.id
       })
+    },
+    openDialogDelivery() {
+      this.$modal.show(
+        DialogZakazDelivery,
+        { orders: this.orders },
+        {
+          height: 'auto',
+          ...config.modalSettings,
+          scrollable: true
+        }
+      )
     },
     openDialogZakazAll() {
       this.$modal.show(

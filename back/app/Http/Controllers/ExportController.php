@@ -6,12 +6,29 @@ use App\Exports\SizesExport;
 use App\Imports\SizesImport;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 
 
 class ExportController extends Controller
 {
+    public function exportDelivery()
+    {
+        try {
+            $data = [
+                'price' => Input::get('price'),
+                'delivery' => Input::get('delivery'),
+                'payment' => Input::get('payment'),
+            ];
+            $pdf = PDF::loadView('pdf.delivery', $data);
+            return $pdf->download('delivery.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+
+    }
+
     public function exportCatalog(Request $request)
     {
         try {

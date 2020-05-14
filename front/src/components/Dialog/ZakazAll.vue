@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="v-application">
     <v-card-title>
       ПРАВИЛА УХОДА ЗА СПОРТИВНОЙ ФОРМОЙ И ЭКИПИРОВКОЙ С НАНЕСЕНИЕМ
       <v-spacer></v-spacer>

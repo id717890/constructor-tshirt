@@ -1,0 +1,213 @@
+<template>
+  <v-card class="v-application">
+    <v-card-text>
+      <v-alert color="yellow" icon="mdi-cash">
+        Итоговая сумма: {{ totalPrice }} руб.
+      </v-alert>
+      <v-card>
+        <v-card-title>Способ оплаты</v-card-title>
+        <v-card-text>
+          <v-radio-group v-model="payment">
+            <v-radio label="Карта" value="card"></v-radio>
+            <v-radio label="Наличные" value="cash"></v-radio>
+          </v-radio-group>
+        </v-card-text>
+      </v-card>
+      <v-card class="mt-3">
+        <v-card-title>Способ доставки</v-card-title>
+        <v-card-text>
+          <v-radio-group v-model="delivery">
+            <v-radio label="Самовывоз" value="pickup"></v-radio>
+            <v-radio label="Курьер" value="courier"></v-radio>
+            <v-radio
+              label="Транспортная компания 'ДЕЛОВЫЕ ЛИНИИ', 'ПЭК' ИТД"
+              value="tk"
+            ></v-radio>
+          </v-radio-group>
+        </v-card-text>
+      </v-card>
+    </v-card-text>
+    <v-card-actions class="px-4 pb-4">
+      <v-btn @click="$emit('close')" large outlined>
+        <v-icon>mdi-close</v-icon>
+        Отмена
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn
+        @click="print"
+        large
+        color="primary"
+        outlined
+        class="px-6 mr-2"
+        :loading="loadingPrint"
+      >
+        <v-icon>mdi-printer</v-icon>
+        Печать
+      </v-btn>
+      <v-btn @click="save" large color="success" class="px-10">
+        <v-icon>mdi-check</v-icon>
+        Сохранить
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</template>
+
+<script>
+import context from '../../api/api'
+export default {
+  props: ['orders'],
+  data: () => ({
+    totalPrice: 0,
+    payment: 'card',
+    delivery: 'pickup',
+    loadingPrint: false,
+    zakazTovarSum: 0,
+    zakazNumberName: [],
+    zakazLogos: [],
+    zakazLogosSum: 0
+  }),
+  created() {
+    this.prepareZakazTovar()
+    this.prepareZakazLogos()
+    this.totalPrice = this.zakazLogosSum + this.zakazTovarSum
+  },
+  methods: {
+    save() {},
+    print() {
+      let data = {
+        price: this.totalPrice,
+        delivery: '',
+        payment: ''
+      }
+      switch (this.delivery) {
+        case 'pickup':
+          data.delivery = 'Самовывоз'
+          break
+        case 'courier':
+          data.delivery = 'Курьер'
+          break
+        case 'tk':
+          data.delivery = 'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" ИТД'
+          break
+      }
+
+      switch (this.payment) {
+        case 'card':
+          data.payment = 'Карта'
+          break
+        case 'cash':
+          data.payment = 'Наличные'
+          break
+      }
+
+      this.loadingPrint = true
+      context
+        .post('api/export/delivery', data, {
+          // 'content-type': 'application/vnd.ms-excel;charset=UTF-8',
+          responseType: 'blob'
+        })
+        .then(x => {
+          let fileUrl = window.URL.createObjectURL(new Blob([x]))
+          let fileLink = document.createElement('a')
+          fileLink.href = fileUrl
+          fileLink.setAttribute('download', 'delivery.pdf')
+          document.body.appendChild(fileLink)
+          fileLink.click()
+          fileLink.remove()
+          this.loadingPrint = false
+        })
+        .catch(x => {
+          console.log(x)
+          this.loadingPrint = false
+        })
+    },
+    prepareZakazLogos() {
+      let result = []
+      let sumTotal = 0
+      if (this.orders) {
+        this.orders.forEach(order => {
+          let totalSizes = 0
+          if (order.orderedSizes) {
+            order.orderedSizes.forEach(size => {
+              if (size.total) totalSizes += size.total
+            })
+          }
+
+          if (order.orderedLogos) {
+            let logos = order.orderedLogos
+            logos.forEach(logo => {
+              let sum = 0
+              let find = result.find(
+                x =>
+                  x.logoTypeId === logo.logoTypeId &&
+                  x.logoSizeId === logo.logoSizeId
+              )
+              if (!find) {
+                sum = totalSizes * logo.logoType.price
+                result.push({
+                  name: logo.logoType.name + ' ' + logo.logoSize.name,
+                  count: totalSizes,
+                  sum: sum,
+                  logoTypeId: logo.logoTypeId,
+                  logoSizeId: logo.logoSizeId
+                })
+              } else {
+                sum = totalSizes * logo.logoType.price
+                find.count += totalSizes
+                find.sum += sum
+              }
+              sumTotal += sum
+            })
+          }
+          if (order.orderedTexts) {
+            let texts = order.orderedTexts
+            texts.forEach(text => {
+              let sum = 0
+              let find = result.find(
+                x =>
+                  x.type === text.type &&
+                  x.textSizeId === text.textSizeId &&
+                  x.curved === text.curved
+              )
+              if (!find) {
+                sum = totalSizes * text.textSize.price
+                result.push({
+                  name:
+                    (text.type === 'text' ? 'Надпись' : 'Номер') +
+                    ' ' +
+                    text.textSize.name +
+                    ' ' +
+                    text.curved,
+                  count: totalSizes,
+                  sum: sum,
+                  type: text.type,
+                  textSizeId: text.textSizeId
+                })
+              } else {
+                sum = totalSizes * text.textSize.price
+                find.count += totalSizes
+                find.sum += sum
+              }
+              sumTotal += sum
+            })
+          }
+        })
+      }
+      this.zakazLogos = result
+      this.zakazLogosSum = sumTotal
+    },
+    prepareZakazTovar() {
+      if (this.orders)
+        this.orders.forEach(order => {
+          if (order.orderedSizes) {
+            order.orderedSizes.forEach(size => {
+              if (size.total && size.total > 0) {
+                this.zakazTovarSum += size.price * size.total
+              }
+            })
+          }
+        })
+    }
+  }
+}
+</script>

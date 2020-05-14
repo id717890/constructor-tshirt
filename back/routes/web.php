@@ -21,6 +21,7 @@ Route::get('/doc4', 'HomeController@doc4');
 //});
 
 Route::get('/print-pdf', 'HomeController@printPDF');
+Route::get('/delivery', 'HomeController@delivery');
 
 
 

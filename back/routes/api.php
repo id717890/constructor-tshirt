@@ -13,6 +13,7 @@
 |
 */
 
+Route::post('export/delivery', 'ExportController@exportDelivery');
 Route::post('export/catalog', 'ExportController@exportCatalog');
 Route::post('import/sizes', 'ExportController@importSizes');
 Route::post('export/sizes', 'ExportController@exportSizes');

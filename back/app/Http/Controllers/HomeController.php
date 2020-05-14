@@ -74,6 +74,11 @@ class HomeController extends Controller
             ->with('price', 999);
     }
 
+    public function delivery(){
+        return view('pdf.delivery');
+
+    }
+
     public function printPDF()
     {
         // This  $data array will be passed to our PDF blade
