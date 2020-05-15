@@ -203,8 +203,9 @@
         <tr>
             <td>
                 @if($typeCustomer == 'yurik')
-                    @include('email.yurik_doc1',['date'=>$date, 'number'=>$number, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3])
-                    @include('email.yurik_doc2',['date'=>$date, 'number'=>$number, 'fio'=>$fio, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3, 'price' => $price])
+                    @include('pdf.yurik_doc1',['date'=>$date, 'number'=>$number, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3])
+                    <div class="page-break"></div>
+                    @include('pdf.yurik_doc2',['date'=>$date, 'number'=>$number, 'fio'=>$fio, 'field1'=>$field1,  'field2'=>$field2,  'field3'=>$field3, 'price' => $price])
                 @endif
             </td>
         </tr>

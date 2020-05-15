@@ -748,13 +748,13 @@ export default {
   props: ['data'],
   data: () => ({
     yurik: {
-      number: null,
-      date: null,
-      field1: '',
-      field2: '',
-      field3: '',
-      email: '',
-      phone: '',
+      number: 123,
+      date: 333,
+      field1: 'qwe',
+      field2: 'wer',
+      field3: 'rrr',
+      email: 'qwe@qwe.qwe',
+      phone: '12345',
       price: 0,
       agreeContractNanesenie: false,
       agreeContractBuy: false,
@@ -802,5 +802,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

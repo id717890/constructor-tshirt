@@ -24,6 +24,7 @@ class ExportController extends Controller
             $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
 
             $info = Input::get('info');
+            $name = Input::get('name');
             $typeCustomer = Input::get('typeCustomer');
             $date = Input::get('date');
             $number = Input::get('number');
@@ -32,6 +33,13 @@ class ExportController extends Controller
             $field1 = Input::get('field1');
             $field2 = Input::get('field2');
             $field3 = Input::get('field3');
+            $images = $request->file('images');
+            $images2 = [];
+            if (count($images) > 0) {
+                foreach ($images as $image) {
+                    array_push($images2, base64_encode(file_get_contents($image->path())));
+                }
+            }
 
             $data = [
                 'name' => Input::get('name'),
@@ -46,24 +54,19 @@ class ExportController extends Controller
                 'zakazLogos' => $zakazLogos,
                 'zakazLogosSum' => $zakazLogosSum,
                 'zakazNumberName' => $zakazNumberName,
-                'date'=>$date,
-                'number'=>$number,
-                'fio'=>$fio,
-                'price'=>$price,
-                'field1'=>$field1,
-                'field2'=>$field2,
-                'field3'=>$field3,
-                'typeCustomer'=>$typeCustomer,
-                'info'=>$info
+                'date' => $date,
+                'number' => $number,
+                'fio' => $fio,
+                'price' => $price,
+                'field1' => $field1,
+                'field2' => $field2,
+                'field3' => $field3,
+                'typeCustomer' => $typeCustomer,
+                'info' => $info,
+//                'images2' => $images2,
             ];
             $pdf = PDF::loadView('pdf.order', $data);
             return $pdf->download('order.pdf');
-
-
-            $field1 = Input::get('field1');
-            $field2 = Input::get('field2');
-            $field3 = Input::get('field3');
-
 
 //             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
             $images = $request->file('images');

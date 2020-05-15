@@ -191,7 +191,7 @@ export default {
     showDocs: false,
     showAllRules: false,
     agreeRules: true,
-    typeCustomer: 'fizik',
+    typeCustomer: 'yurik',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -213,11 +213,11 @@ export default {
       showContractNanesenie: false
     },
     yurik: {
-      number: null,
+      number: 123,
       date: null,
-      field1: '',
-      field2: '',
-      field3: '',
+      field1: 'qweqwe',
+      field2: 'www',
+      field3: 'eeeqw eq we ',
       email: '',
       phone: '',
       price: 0,
@@ -258,39 +258,29 @@ export default {
         'email',
         this.typeCustomer === 'fizik' ? this.fizik.email : this.yurik.email
       )
-
-      let name = ''
-      if (this.typeCustomer === 'fizik') {
-        name =
-          this.fizik.lastName +
-          ' ' +
-          this.fizik.firstName +
-          ' ' +
-          this.fizik.middleName
-      } else {
-        name =
-          this.yurik.field1 + ' ' + this.yurik.field2 + ' ' + this.yurik.field3
+      const config = {
+        'content-type': 'multipart/form-data',
+        responseType: 'blob'
       }
-      fd.append('name', name)
 
-      context
-        .post('api/export/order', fd, {
-          responseType: 'blob'
-        })
-        .then(x => {
-          let fileUrl = window.URL.createObjectURL(new Blob([x]))
-          let fileLink = document.createElement('a')
-          fileLink.href = fileUrl
-          fileLink.setAttribute('download', 'order.pdf')
-          document.body.appendChild(fileLink)
-          fileLink.click()
-          fileLink.remove()
-          this.loadingPrintAll = false
-        })
-        .catch(x => {
-          console.log(x)
-          this.loadingPrintAll = false
-        })
+      setTimeout(() => {
+        context
+          .post('api/export/order', fd, config)
+          .then(x => {
+            let fileUrl = window.URL.createObjectURL(new Blob([x]))
+            let fileLink = document.createElement('a')
+            fileLink.href = fileUrl
+            fileLink.setAttribute('download', 'order.pdf')
+            document.body.appendChild(fileLink)
+            fileLink.click()
+            fileLink.remove()
+            this.loadingPrintAll = false
+          })
+          .catch(x => {
+            console.log(x)
+            this.loadingPrintAll = false
+          })
+      }, 2000)
     },
     prepareFormData() {
       let fd = new FormData()
@@ -371,7 +361,6 @@ export default {
 
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
-        // console.log(img)
         img.toBlob(data => {
           fd.append('images[]', data, order.id)
         })
