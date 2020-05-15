@@ -936,6 +936,7 @@ export default {
           width: '90%',
           height: 'auto',
           ...config.modalSettings,
+          clickToClose: true,
           scrollable: true
         }
       )

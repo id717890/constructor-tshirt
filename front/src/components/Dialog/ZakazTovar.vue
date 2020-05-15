@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="v-application">
     <v-card-title>
       Заказ Товар
       <v-spacer></v-spacer>

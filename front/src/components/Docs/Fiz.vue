@@ -798,11 +798,11 @@ export default {
     fizik: {
       number: null,
       date: null,
-      firstName: '',
-      lastName: '',
-      middleName: '',
-      email: '',
-      phone: '',
+      firstName: 'ffff',
+      lastName: 'lll',
+      middleName: 'mmm',
+      email: 'eeee',
+      phone: '1234',
       price: 0,
       agreeContractNanesenie: false,
       agreeContractBuy: false,
@@ -857,5 +857,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

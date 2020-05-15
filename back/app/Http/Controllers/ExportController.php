@@ -13,6 +13,107 @@ use PDF;
 
 class ExportController extends Controller
 {
+    public function exportOrderToPdf(Request $request)
+    {
+        try {
+            $zakazTovar = json_decode(Input::get('zakazTovar'), true);
+            $zakazTovarSum = Input::get('zakazTovarSum');
+            $zakazLogosEach = json_decode(Input::get('zakazLogosEach'), true);
+            $zakazLogos = json_decode(Input::get('zakazLogos'), true);
+            $zakazLogosSum = Input::get('zakazLogosSum');
+            $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
+
+            $info = Input::get('info');
+            $typeCustomer = Input::get('typeCustomer');
+            $date = Input::get('date');
+            $number = Input::get('number');
+            $fio = Input::get('fio');
+            $price = Input::get('price');
+            $field1 = Input::get('field1');
+            $field2 = Input::get('field2');
+            $field3 = Input::get('field3');
+
+            $data = [
+                'name' => Input::get('name'),
+                'phone' => Input::get('phone'),
+                'email' => Input::get('email'),
+                'typeCustomerText' => Input::get('typeCustomerText'),
+                'delivery' => Input::get('delivery'),
+                'payment' => Input::get('payment'),
+                'zakazTovar' => $zakazTovar,
+                'zakazTovarSum' => $zakazTovarSum,
+                'zakazLogosEach' => $zakazLogosEach,
+                'zakazLogos' => $zakazLogos,
+                'zakazLogosSum' => $zakazLogosSum,
+                'zakazNumberName' => $zakazNumberName,
+                'date'=>$date,
+                'number'=>$number,
+                'fio'=>$fio,
+                'price'=>$price,
+                'field1'=>$field1,
+                'field2'=>$field2,
+                'field3'=>$field3,
+                'typeCustomer'=>$typeCustomer,
+                'info'=>$info
+            ];
+            $pdf = PDF::loadView('pdf.order', $data);
+            return $pdf->download('order.pdf');
+
+
+            $field1 = Input::get('field1');
+            $field2 = Input::get('field2');
+            $field3 = Input::get('field3');
+
+
+//             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+            $images = $request->file('images');
+            $subject = "Уведомление о заказе";
+            $email = $this->email;
+//            array_push($email, 'jus_za@mail.ru');
+//            array_push($email, 'jusupovz@gmail.com');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru');
+//            array_push($email, 'jusupovz@gmail.com', 'vadimnazarovich@mail.ru', 'info@joma-club.ru');
+            $fr = 'info@joma-club.ru';
+            $seo = 'JOMA-CLUB';
+            Mail::send('email.zakaz', [
+                'typeCustomer' => $typeCustomer,
+                'fio' => $fio,
+                'info' => $info,
+                'date' => $date,
+                'number' => $number,
+                'price' => $price,
+                'field1' => $field1,
+                'field2' => $field2,
+                'field3' => $field3,
+                'zakazTovar' => $zakazTovar,
+                'zakazTovarSum' => $zakazTovarSum,
+                'zakazLogos' => $zakazLogos,
+                'zakazLogosEach' => $zakazLogosEach,
+                'zakazLogosSum' => $zakazLogosSum,
+                'zakazNumberName' => $zakazNumberName
+            ],
+                function ($mail) use ($email, $subject, $fr, $seo, $images) {
+                    $mail->from($fr, $seo);
+                    $mail->to($email);
+                    $mail->subject($subject);
+
+                    if (count($images) > 0) {
+                        foreach ($images as $file) {
+                            $mail->attach($file, array(
+                                    'as' => $file->getClientOriginalName() . '.jpg', // If you want you can chnage original name to custom name
+                                    'mime' => $file->getMimeType())
+                            );
+                        }
+                    }
+
+                });
+
+            return response()->json(200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
     public function exportDelivery()
     {
         try {
@@ -36,7 +137,7 @@ class ExportController extends Controller
 
             $data = [
                 'heading' => 'Каталог товаров',
-                'sizes'=>$sizes,
+                'sizes' => $sizes,
                 'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
             ];
 

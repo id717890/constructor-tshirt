@@ -149,8 +149,21 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
+        @click="printAll"
+        large
+        :disabled="!typeCustomer"
+        :loading="loadingPrintAll"
+        outlined
+        color="primary"
+        class="px-10 mr-3"
+      >
+        <v-icon class="mr-3">mdi-printer</v-icon>
+        Печать
+      </v-btn>
+      <v-btn
         @click="sendForm"
         :disabled="allowSendFormFizik"
+        :loading="loadingZakaz"
         large
         color="success"
         class="px-10"
@@ -173,10 +186,12 @@ export default {
     Yur
   },
   data: () => ({
+    loadingPrintAll: false,
+    loadingZakaz: false,
     showDocs: false,
     showAllRules: false,
-    agreeRules: false,
-    typeCustomer: '',
+    agreeRules: true,
+    typeCustomer: 'fizik',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -223,6 +238,146 @@ export default {
   },
   mounted() {},
   methods: {
+    printAll() {
+      let data = {
+        price: 123,
+        delivery: 'qwe',
+        payment: 'www'
+      }
+      this.loadingPrintAll = true
+      let fd = this.prepareFormData()
+      fd.append(
+        'typeCustomerText',
+        this.typeCustomer === 'fizik' ? 'Физ. лицо' : 'Юр. лицо'
+      )
+      fd.append(
+        'phone',
+        this.typeCustomer === 'fizik' ? this.fizik.phone : this.yurik.phone
+      )
+      fd.append(
+        'email',
+        this.typeCustomer === 'fizik' ? this.fizik.email : this.yurik.email
+      )
+
+      let name = ''
+      if (this.typeCustomer === 'fizik') {
+        name =
+          this.fizik.lastName +
+          ' ' +
+          this.fizik.firstName +
+          ' ' +
+          this.fizik.middleName
+      } else {
+        name =
+          this.yurik.field1 + ' ' + this.yurik.field2 + ' ' + this.yurik.field3
+      }
+      fd.append('name', name)
+
+      context
+        .post('api/export/order', fd, {
+          responseType: 'blob'
+        })
+        .then(x => {
+          let fileUrl = window.URL.createObjectURL(new Blob([x]))
+          let fileLink = document.createElement('a')
+          fileLink.href = fileUrl
+          fileLink.setAttribute('download', 'order.pdf')
+          document.body.appendChild(fileLink)
+          fileLink.click()
+          fileLink.remove()
+          this.loadingPrintAll = false
+        })
+        .catch(x => {
+          console.log(x)
+          this.loadingPrintAll = false
+        })
+    },
+    prepareFormData() {
+      let fd = new FormData()
+      let info = ''
+      if (this.typeCustomer === 'fizik') {
+        fd.append('date', this.fizik.date)
+        fd.append('number', this.fizik.number)
+        fd.append('price', this.fizik.price)
+        fd.append(
+          'fio',
+          this.fizik.lastName +
+            ' ' +
+            this.fizik.firstName +
+            ' ' +
+            this.fizik.middleName
+        )
+        info =
+          'Физ. лицо: ' +
+          this.fizik.lastName +
+          ' ' +
+          this.fizik.firstName +
+          ' ' +
+          this.fizik.middleName +
+          '<br/>'
+        info += 'Телефон: ' + this.fizik.phone + '<br/>'
+        info +=
+          'Договор купли-продажи №' +
+          this.fizik.number +
+          ' от ' +
+          this.fizik.date +
+          '<br/>'
+        info +=
+          'Договор оказания услуг №' +
+          this.fizik.number +
+          ' от ' +
+          this.fizik.date +
+          '<br/>'
+        info += 'Сумма договора: ' + this.fizik.price + ' руб.<br/>'
+        if (this.fizik.email) info += 'E-mail: ' + this.fizik.email + '<br/>'
+      }
+
+      if (this.typeCustomer === 'yurik') {
+        fd.append('date', this.yurik.date)
+        fd.append('number', this.yurik.number)
+        fd.append('price', this.yurik.price)
+        fd.append('field1', this.yurik.field1)
+        fd.append('field2', this.yurik.field2)
+        fd.append('field3', this.yurik.field3)
+        info = 'Юридическое лицо: <br/>' + this.yurik.field1 + '<br/>'
+        info += 'Телефон: ' + this.yurik.phone + '<br/>'
+        if (this.yurik.email) info += 'E-mail: ' + this.yurik.email + '<br/>'
+        if (this.yurik.field2) info += this.yurik.field2 + '<br/>'
+        if (this.yurik.field3) info += this.yurik.field3 + '<br/>'
+        info +=
+          'Договор купли-продажи №' +
+          this.yurik.number +
+          ' от ' +
+          this.yurik.date +
+          '<br/>'
+        info +=
+          'Договор оказания услуг №' +
+          this.yurik.number +
+          ' от ' +
+          this.yurik.date +
+          '<br/>'
+        info += 'Сумма договора: ' + this.yurik.price + ' руб.<br/>'
+      }
+
+      fd.append('info', info)
+      fd.append('price', this.zakazTovarSum + this.zakazLogosSum)
+      fd.append('typeCustomer', this.typeCustomer)
+      fd.append('zakazTovar', JSON.stringify(this.zakazTovar))
+      fd.append('zakazTovarSum', this.zakazTovarSum)
+      fd.append('zakazLogos', JSON.stringify(this.zakazLogos))
+      fd.append('zakazLogosSum', this.zakazLogosSum)
+      fd.append('zakazLogosEach', JSON.stringify(this.zakazLogosEach))
+      fd.append('zakazNumberName', JSON.stringify(this.zakazNumberName))
+
+      this.orders.forEach((order, index) => {
+        const img = document.getElementById('orderCanvas_' + order.id)
+        // console.log(img)
+        img.toBlob(data => {
+          fd.append('images[]', data, order.id)
+        })
+      })
+      return fd
+    },
     sendForm() {
       let fd = new FormData()
       let info = ''
@@ -311,9 +466,18 @@ export default {
       const config = {
         'content-type': 'multipart/form-data'
       }
+      this.loadingZakaz = true
       setTimeout(() => {
-        context.post('api/callback/mail', fd, config)
-        this.$emit('close')
+        context
+          .post('api/callback/mail', fd, config)
+          .then(() => {
+            this.loadingZakaz = false
+            this.$emit('close')
+          })
+          .catch(x => {
+            console.log(x)
+            this.loadingZakaz = false
+          })
       }, 2000)
     },
     prepareZakazLogosEach() {
