@@ -35,7 +35,7 @@
       <v-row>
         <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
           <v-row>
-            <v-col md="6" cols="12" class=" py-0">
+            <v-col md="6" cols="12" class="pt-2 py-0">
               <v-row>
                 <v-col cols="12" class="py-0 pr-3" v-if="slideHomeDiscount">
                   <v-img
@@ -67,7 +67,7 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col md="6" cols="12" class="py-0 px-0">
+            <v-col md="6" cols="12" class="py-0 pt-2 px-0">
               <div
                 class="h100 d-flex flex-column justify-space-between"
                 v-if="news"
@@ -81,24 +81,29 @@
                   <v-icon class="mr-4">mdi-lead-pencil</v-icon>
                   Стань нашим корреспондентом</v-btn
                 >
-                <div
-                  class="news-item"
-                  v-for="news in news3"
-                  :key="news.id"
-                  @click="$router.push('/news/' + news.id)"
-                  style="cursor: pointer"
-                >
-                  <div class="date">
-                    <div class="day">{{ getDay(news.created_at) }}</div>
-                    <div class="month">{{ getMonthYear(news.created_at) }}</div>
-                  </div>
-                  <div>
-                    <div class="title">
-                      {{ news.title }}
+                <div class="flex-grow-1 d-flex flex-column">
+                  <div
+                    class="news-item"
+                    v-for="news in news3"
+                    :key="news.id"
+                    @click="$router.push('/news/' + news.id)"
+                    style="cursor: pointer"
+                  >
+                    <div class="date">
+                      <div class="day">{{ getDay(news.created_at) }}</div>
+                      <div class="month">
+                        {{ getMonthYear(news.created_at) }}
+                      </div>
                     </div>
-                    <div class="text" v-html="news.text"></div>
+                    <div>
+                      <div class="title">
+                        {{ news.title }}
+                      </div>
+                      <div class="text" v-html="news.text"></div>
+                    </div>
                   </div>
                 </div>
+
                 <v-btn color="#f5a93c" class="w100" outlined to="/news">
                   <v-icon class="mr-4">mdi-newspaper</v-icon>
                   Все новости
