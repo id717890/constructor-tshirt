@@ -32,6 +32,16 @@ class ImageController extends Controller
 //        return trim(com_create_guid(), '{}');
     }
 
+    public function imageTemp($filename)
+    {
+        try {
+            $path = Storage::disk('temp')->getAdapter()->getPathPrefix() . $filename;
+            return Response::download($path);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 400);
+        }
+    }
+
     public
     function image($filename)
     {

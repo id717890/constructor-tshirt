@@ -31,29 +31,22 @@
 <table style="width: 100%">
     <tbody>
     <tr>
-        <td style="width: 50%">
-            <img style="max-height: 75px" src="image/logo3.png" alt="">
+        <td style="width: 39%">
+            <img style="max-height: 80px" src="image/logo3.png" alt="">
         </td>
         <td>
-            <div>Способ оплаты и доставки</div>
-            <div>Общая цена: {{$price}} руб.</div>
-            <div>Способ доставки: {{$delivery}}</div>
-            <div>Способ оплаты: {{$payment}}</div>
+            <div>{{$typeCustomerText}}: {{$name}}</div>
+            <div>Телефон: {{$phone}}</div>
+            <div>E-mail: {{$email}}</div>
+            <div style="font-weight: bold">Общая цена: {{$price}} руб.</div>
+            <div>Способ доставки: {{isset($delivery) ? $delivery : ' -'}}</div>
+            <div>Способ оплаты: {{isset($payment) ? $payment : ' -'}}</div>
         </td>
     </tr>
     </tbody>
 
     <table style="width: 100%;">
         <tbody>
-        <tr>
-            <td>{{$typeCustomerText}}: {{$name}}</td>
-        </tr>
-        <tr>
-            <td>Телефон: {{$phone}}</td>
-        </tr>
-        <tr>
-            <td>E-mail: {{$email}}</td>
-        </tr>
         <tr>
             <td>
                 <h3>Заказ товар</h3>
@@ -191,8 +184,20 @@
                 </td>
             </tr>
         @endif
+        @if (isset($images_pdf))
+            @foreach($images_pdf as $image)
+                <tr>
+                    <td>
+                        <div class="page-break"></div>
+                        <h2>Макет заказа "{{$image['name']}}"</h2>
+                        <img src="{{url('api/image_temp/'.$image['url'])}}" alt="">
+                    </td>
+                </tr>
+            @endforeach
+        @endif
         <tr>
             <td>
+                <div class="page-break"></div>
                 @if($typeCustomer == 'fizik')
                     @include('pdf.fizik_doc1',['date'=>$date, 'number'=>$number, 'fio'=>$fio])
                     <div class="page-break"></div>

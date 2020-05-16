@@ -5,7 +5,8 @@ const state = {
   congratulationDialog: false,
   messages: [],
   confirmDialogResult: false,
-  copyDialogResult: null
+  copyDialogResult: null,
+  deliveryDialogResult: null
 }
 
 // getters
@@ -15,6 +16,9 @@ const getters = {
 
 // actions
 const actions = {
+  setDeliveryDialog({ commit }, payload) {
+    commit(types.SET_RESULT_DELIVERY_DIALOG, payload)
+  },
   acceptConfirmDialog({ commit }) {
     commit(types.SET_RESULT_CONFIRM_DIALOG, true)
   },
@@ -40,6 +44,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  [types.SET_RESULT_DELIVERY_DIALOG](state, payload) {
+    state.deliveryDialogResult = payload
+  },
   [types.SET_RESULT_COPY_DIALOG](state, payload) {
     state.copyDialogResult = payload
   },

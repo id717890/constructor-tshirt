@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Illuminate\Support\Facades\Storage;
 
 
 class ExportController extends Controller
@@ -24,7 +25,6 @@ class ExportController extends Controller
             $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
 
             $info = Input::get('info');
-            $name = Input::get('name');
             $typeCustomer = Input::get('typeCustomer');
             $date = Input::get('date');
             $number = Input::get('number');
@@ -34,15 +34,29 @@ class ExportController extends Controller
             $field2 = Input::get('field2');
             $field3 = Input::get('field3');
             $images = $request->file('images');
-            $images2 = [];
+            $images_pdf =[];
+
+            //метод №1
+//            $images = Input::get('images2');
+//            $d = substr($image, strpos($image, ',')+1);
+//            $d2 = base64_decode($d);
+//            Storage::disk('temp')->put('1234',$d2);
+
+            //метод №2
             if (count($images) > 0) {
                 foreach ($images as $image) {
-                    array_push($images2, base64_encode(file_get_contents($image->path())));
+                    $fname = $this->GUID();
+                    $name_file = $image->getClientOriginalName();
+                    $path = $image->storeAs('images/temp', $fname.'.jpeg');
+                    array_push($images_pdf, [
+                        'name'=> $name_file,
+                        'url'=>$fname.'.jpeg'
+                    ]);
                 }
             }
 
             $data = [
-                'name' => Input::get('name'),
+                'name' => $typeCustomer === 'fizik' ? $fio : $field1,
                 'phone' => Input::get('phone'),
                 'email' => Input::get('email'),
                 'typeCustomerText' => Input::get('typeCustomerText'),
@@ -63,9 +77,9 @@ class ExportController extends Controller
                 'field3' => $field3,
                 'typeCustomer' => $typeCustomer,
                 'info' => $info,
-//                'images2' => $images2,
+                'images_pdf' => $images_pdf,
             ];
-            $pdf = PDF::loadView('pdf.order', $data);
+            $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled'=>true])->loadView('pdf.order', $data);
             return $pdf->download('order.pdf');
 
 //             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
@@ -235,5 +249,27 @@ class ExportController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         }
+    }
+
+    function GUID()
+    {
+        if (function_exists('com_create_guid')) {
+            return com_create_guid();
+        } else {
+            mt_srand((double)microtime() * 10000);
+            //optional for php 4.2.0 and up.
+            $set_charid = strtoupper(md5(uniqid(rand(), true)));
+            $set_hyphen = chr(45);
+            // "-"
+            $set_uuid = substr($set_charid, 0, 8) . $set_hyphen
+                . substr($set_charid, 8, 4) . $set_hyphen
+                . substr($set_charid, 12, 4) . $set_hyphen
+                . substr($set_charid, 16, 4) . $set_hyphen
+                . substr($set_charid, 20, 12);
+//                . chr(125);
+            // "}"
+            return $set_uuid;
+        }
+//        return trim(com_create_guid(), '{}');
     }
 }

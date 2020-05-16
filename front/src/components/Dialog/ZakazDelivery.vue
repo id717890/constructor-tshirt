@@ -33,17 +33,6 @@
         Отмена
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn
-        @click="print"
-        large
-        color="primary"
-        outlined
-        class="px-6 mr-2"
-        :loading="loadingPrint"
-      >
-        <v-icon>mdi-printer</v-icon>
-        Печать
-      </v-btn>
       <v-btn @click="save" large color="success" class="px-10">
         <v-icon>mdi-check</v-icon>
         Сохранить
@@ -54,8 +43,9 @@
 
 <script>
 import context from '../../api/api'
+import { mapActions } from 'vuex'
 export default {
-  props: ['orders'],
+  props: ['orders', 'deliveryAndPayment'],
   data: () => ({
     totalPrice: 0,
     payment: 'card',
@@ -71,8 +61,22 @@ export default {
     this.prepareZakazLogos()
     this.totalPrice = this.zakazLogosSum + this.zakazTovarSum
   },
+  mounted() {
+    if (this.deliveryAndPayment && this.deliveryAndPayment.delivery)
+      this.delivery = this.deliveryAndPayment.delivery
+    if (this.deliveryAndPayment && this.deliveryAndPayment.payment)
+      this.payment = this.deliveryAndPayment.payment
+  },
   methods: {
-    save() {},
+    ...mapActions(['setDeliveryDialog']),
+    save() {
+      const payload = {
+        delivery: this.delivery,
+        payment: this.payment
+      }
+      this.setDeliveryDialog(payload)
+      this.$emit('close')
+    },
     print() {
       let data = {
         price: this.totalPrice,
@@ -84,7 +88,7 @@ export default {
           data.delivery = 'Самовывоз'
           break
         case 'courier':
-          data.delivery = 'Курьер'
+          data.delivery = 'Курьер "КУРЬЕВ СЕРВИС"'
           break
         case 'tk':
           data.delivery = 'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" ИТД'
@@ -101,25 +105,26 @@ export default {
       }
 
       this.loadingPrint = true
-      context
-        .post('api/export/delivery', data, {
-          // 'content-type': 'application/vnd.ms-excel;charset=UTF-8',
-          responseType: 'blob'
-        })
-        .then(x => {
-          let fileUrl = window.URL.createObjectURL(new Blob([x]))
-          let fileLink = document.createElement('a')
-          fileLink.href = fileUrl
-          fileLink.setAttribute('download', 'delivery.pdf')
-          document.body.appendChild(fileLink)
-          fileLink.click()
-          fileLink.remove()
-          this.loadingPrint = false
-        })
-        .catch(x => {
-          console.log(x)
-          this.loadingPrint = false
-        })
+      //Перенесено в печать основного заказа
+      // context
+      //   .post('api/export/delivery', data, {
+      //     // 'content-type': 'application/vnd.ms-excel;charset=UTF-8',
+      //     responseType: 'blob'
+      //   })
+      //   .then(x => {
+      //     let fileUrl = window.URL.createObjectURL(new Blob([x]))
+      //     let fileLink = document.createElement('a')
+      //     fileLink.href = fileUrl
+      //     fileLink.setAttribute('download', 'delivery.pdf')
+      //     document.body.appendChild(fileLink)
+      //     fileLink.click()
+      //     fileLink.remove()
+      //     this.loadingPrint = false
+      //   })
+      //   .catch(x => {
+      //     console.log(x)
+      //     this.loadingPrint = false
+      //   })
     },
     prepareZakazLogos() {
       let result = []

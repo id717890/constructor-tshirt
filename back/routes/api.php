@@ -51,6 +51,7 @@ Route::post('callback/callme', 'CallbackController@callMe');
 Route::post('callback/idea', 'CallbackController@sendIdea');
 Route::post('callback/mail', 'CallbackController@sendMail');
 Route::post('callback/create', 'CallbackController@create');
+Route::get('image_temp/{filename}', 'ImageController@imageTemp');
 Route::get('image/{filename}', 'ImageController@image');
 //Route::get('logos','HomeController@logos');
 

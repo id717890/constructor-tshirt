@@ -180,7 +180,7 @@ import Fiz from '../Docs/Fiz'
 import Yur from '../Docs/Yur'
 import context from '../../api/api'
 export default {
-  props: ['orders'],
+  props: ['orders', 'delivery'],
   components: {
     Fiz,
     Yur
@@ -239,11 +239,6 @@ export default {
   mounted() {},
   methods: {
     printAll() {
-      let data = {
-        price: 123,
-        delivery: 'qwe',
-        payment: 'www'
-      }
       this.loadingPrintAll = true
       let fd = this.prepareFormData()
       fd.append(
@@ -285,6 +280,34 @@ export default {
     prepareFormData() {
       let fd = new FormData()
       let info = ''
+
+      if (this.delivery && this.delivery) {
+        switch (this.delivery.delivery) {
+          case 'pickup':
+            fd.append('delivery', 'Самовывоз')
+            break
+          case 'courier':
+            fd.append('delivery', 'Курьер "КУРЬЕВ СЕРВИС"')
+            break
+          case 'tk':
+            fd.append(
+              'delivery',
+              'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" ИТД'
+            )
+            break
+        }
+      }
+
+      if (this.delivery && this.delivery.payment) {
+        switch (this.delivery.payment) {
+          case 'card':
+            fd.append('payment', 'Карта')
+            break
+          case 'cash':
+            fd.append('payment', 'Наличные')
+            break
+        }
+      }
       if (this.typeCustomer === 'fizik') {
         fd.append('date', this.fizik.date)
         fd.append('number', this.fizik.number)
@@ -361,8 +384,12 @@ export default {
 
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
+        //метод №1
+        // const dataUrl = img.toDataURL()
+        // fd.append('images2[]', dataUrl)
+        //метод №2
         img.toBlob(data => {
-          fd.append('images[]', data, order.id)
+          fd.append('images[]', data, order.titleTab)
         })
       })
       return fd
@@ -370,6 +397,33 @@ export default {
     sendForm() {
       let fd = new FormData()
       let info = ''
+      if (this.delivery && this.delivery) {
+        switch (this.delivery.delivery) {
+          case 'pickup':
+            fd.append('delivery', 'Самовывоз')
+            break
+          case 'courier':
+            fd.append('delivery', 'Курьер "КУРЬЕВ СЕРВИС"')
+            break
+          case 'tk':
+            fd.append(
+              'delivery',
+              'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" ИТД'
+            )
+            break
+        }
+      }
+
+      if (this.delivery && this.delivery.payment) {
+        switch (this.delivery.payment) {
+          case 'card':
+            fd.append('payment', 'Карта')
+            break
+          case 'cash':
+            fd.append('payment', 'Наличные')
+            break
+        }
+      }
       if (this.typeCustomer === 'fizik') {
         fd.append('date', this.fizik.date)
         fd.append('number', this.fizik.number)

@@ -655,6 +655,10 @@ export default {
     // selectedType: null,
     currentOrderId: 0,
     orders: [],
+    deliveryAndPayment: {
+      delivery: '',
+      payment: ''
+    },
     showColorPanel: false,
     showColorPanelFio: false,
     isChangeColor: false,
@@ -694,7 +698,8 @@ export default {
       allNumberSizes: state => state.numberSize.allNumberSizes,
       allTextSizes: state => state.textSize.allTextSizes,
       showDeleteLogo: state => state.canvas.showDeleteBtn,
-      copyDialogResult: state => state.dialog.copyDialogResult
+      copyDialogResult: state => state.dialog.copyDialogResult,
+      deliveryDialogResult: state => state.dialog.deliveryDialogResult
     }),
     isAuth() {
       let credetnrials = Vue.auth.getCredentials()
@@ -919,7 +924,7 @@ export default {
     openDialogDelivery() {
       this.$modal.show(
         DialogZakazDelivery,
-        { orders: this.orders },
+        { orders: this.orders, deliveryAndPayment: this.deliveryAndPayment },
         {
           height: 'auto',
           ...config.modalSettings,
@@ -930,7 +935,7 @@ export default {
     openDialogZakazAll() {
       this.$modal.show(
         DialogZakazAll,
-        { orders: this.orders },
+        { orders: this.orders, delivery: this.deliveryAndPayment },
         {
           pivotY: 0.1,
           width: '90%',
@@ -1487,6 +1492,9 @@ export default {
     }
   },
   watch: {
+    deliveryDialogResult(value) {
+      this.deliveryAndPayment = value
+    },
     currentLogoSize(value) {
       if (this.logoTypesBySize && this.logoTypesBySize.length > 0) {
         this.currentLogoType = this.logoTypesBySize[0]

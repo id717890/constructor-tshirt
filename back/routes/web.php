@@ -20,6 +20,7 @@ Route::get('/doc4', 'HomeController@doc4');
 //    return "Cache is cleared";
 //});
 
+Route::get('/test', 'HomeController@test');
 Route::get('/print-pdf', 'HomeController@printPDF');
 Route::get('/delivery', 'HomeController@delivery');
 
