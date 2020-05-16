@@ -1,62 +1,64 @@
 <template>
   <v-card class="v-application">
-    <v-card-title>
-      Заказ Товар
-      <v-spacer></v-spacer>
-      <v-btn
-        color="success"
-        text
-        class="mr-25 px-10"
-        large
-        @click="$emit('close')"
-      >
-        Закрыть
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-card-title>
-    <v-divider></v-divider>
-    <v-card-text>
-      <v-simple-table bordered>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="">Наименование</th>
-              <th class="">Размер</th>
-              <th class="">Количество Москва</th>
-              <th class="">Количество Испания</th>
-              <th class="">Общее количество</th>
-              <th class="">Цена (руб.)</th>
-              <th class="">Сумма (руб.)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, index) in rows" :key="index">
-              <td class="tb">{{ row.name }}</td>
-              <td>{{ row.size }}</td>
-              <td>{{ row.inMoscow }}</td>
-              <td>{{ row.inSpain }}</td>
-              <td>{{ row.total }}</td>
-              <td>{{ row.price }}</td>
-              <td>{{ row.price * row.total }}</td>
-            </tr>
-            <tr>
-              <td
-                colspan="6"
-                class="text-right"
-                style="font-size: 1.3rem; font-weight: 900"
-              >
-                Итого:
-              </td>
-              <td style="font-size: 1.3rem; font-weight: 900">
-                {{ total() }} руб.
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </v-card-text>
-    <!-- <v-divider></v-divider> -->
-    <v-card-actions> </v-card-actions>
+    <div class="w100">
+      <v-card-title>
+        Заказ Товар
+        <v-spacer></v-spacer>
+        <v-btn
+          color="success"
+          text
+          class="mr-25 px-10"
+          large
+          @click="$emit('close')"
+        >
+          Закрыть
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-simple-table bordered>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="">Наименование</th>
+                <th class="">Размер</th>
+                <th class="">Количество Москва</th>
+                <th class="">Количество Испания</th>
+                <th class="">Общее количество</th>
+                <th class="">Цена (руб.)</th>
+                <th class="">Сумма (руб.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, index) in rows" :key="index">
+                <td class="tb">{{ row.name }}</td>
+                <td>{{ row.size }}</td>
+                <td>{{ row.inMoscow }}</td>
+                <td>{{ row.inSpain }}</td>
+                <td>{{ row.total }}</td>
+                <td>{{ row.price }}</td>
+                <td>{{ row.price * row.total }}</td>
+              </tr>
+              <tr>
+                <td
+                  colspan="6"
+                  class="text-right"
+                  style="font-size: 1.3rem; font-weight: 900"
+                >
+                  Итого:
+                </td>
+                <td style="font-size: 1.3rem; font-weight: 900">
+                  {{ total() }} руб.
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-card-text>
+      <!-- <v-divider></v-divider> -->
+      <v-card-actions> </v-card-actions>
+    </div>
   </v-card>
 </template>
 

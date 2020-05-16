@@ -1,177 +1,180 @@
 <template>
   <v-card class="v-application">
-    <v-card-title>
-      ПРАВИЛА УХОДА ЗА СПОРТИВНОЙ ФОРМОЙ И ЭКИПИРОВКОЙ С НАНЕСЕНИЕМ
-      <v-spacer></v-spacer>
-      <v-btn
-        color="success"
-        text
-        class="mr-25 px-10"
-        large
-        @click="$emit('close')"
-      >
-        Закрыть
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-card-title>
-    <v-divider></v-divider>
-    <v-card-text>
-      <div class="rules-for-form" ref="rules-for-form">
-        <p>
-          Чтобы спортивная форма, экипировка с нанесением долго служили и
-          выполняли свое предназначение нужен правильный уход. Всего несколько
-          советов помогут продлить срок службы.
-        </p>
-        <p>
-          В первую очередь ознакомьтесь с правилами стирки указанными на вшивном
-          ярлыке с изнаночной стороны вашего изделия.
-        </p>
-        <p>
-          Самым важным советом по уходу за вещами, будет стирать её после каждой
-          тренировки, не откладывая. Так как на тренировках мы потеем, а пот -
-          это раствор солей и органических веществ, которые могут разрушать
-          ткань. Еще очень важно, не бросать мокрые вещи сразу в сумку. Лучше
-          если это будет пакет, а затем уже сумка, и тогда не придется стирать
-          сумку каждый раз.
-        </p>
-        <ul>
-          <li><strong>Стирайте вещи вывернутыми наизнанку.</strong></li>
-          <li><strong>Замки должны быть застегнуты.</strong></li>
-          <li><strong>Температура не больше 30-40 градусов.</strong></li>
-          <li>
-            <strong>Программу стирки выбираем с минимальным временем.</strong>
-            Так как особых загрязнений нет, этого будет достаточно. Есть
-            программы типа повседневной стирки или быстрой, около полу часа
-            стирки будет более чем достаточно.
-          </li>
-          <li>
-            <strong>Пониженные обороты отжима.</strong> Если есть возможность
-            снизить обороты в вашей стиральной машинке, будет очень кстати, веди
-            высокие обороты разрушают ткань. А такая одежда и так быстро сохнет.
-          </li>
-          <li>
-            <strong>Выбирайте мягкое средство для стирки</strong> (cейчас даже
-            есть специальные, с отметкой SPORT).
-          </li>
-          <li><strong>Не добавляйте смягчающий кондиционер.</strong></li>
-          <li><strong>Не добавляйте отбеливатель.</strong></li>
-          <li>
-            Если требуется
-            <strong>глажка, лучше это сделать отпаривателем,</strong> или на
-            минимальной температуре утюга,
-            <strong>выворачивая наизнанку.</strong>
-          </li>
-        </ul>
-        <p>
-          Эти простые советы помогут продлить срок эксплуатации вашей одежды для
-          тренировок. Проставьте галочку в окне «Я ОЗНАКОМЛЕН С ПРАВИЛАМИ УХОДА»
-          Только после этого вы сможете перейти к подписанию договора.
-        </p>
-      </div>
-      <div class="text-center">
-        <a
-          href="#"
-          class="rules-btn"
-          @click.prevent.stop="toggleRules"
-          v-if="!showAllRules"
-          >Читать далее</a
+    <div class="w100">
+      <v-card-title>
+        ПРАВИЛА УХОДА ЗА СПОРТИВНОЙ ФОРМОЙ И ЭКИПИРОВКОЙ С НАНЕСЕНИЕМ
+        <v-spacer></v-spacer>
+        <v-btn
+          color="success"
+          text
+          class="mr-25 px-10"
+          large
+          @click="$emit('close')"
         >
-        <a
-          href="#"
-          class="rules-btn"
-          @click.prevent.stop="toggleRules"
-          v-if="showAllRules"
-          >Скрыть</a
-        >
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          v-model="agreeRules"
-          :value="agreeRules"
-          id="defaultCheck1"
-        />
-        <label class="form-check-label" for="defaultCheck1">
-          Я ОЗНАКОМЛЕН С ПРАВИЛАМИ УХОДА
-        </label>
-      </div>
-      <div v-if="agreeRules === true">
-        <h3 class="text-center">Вы являетесь</h3>
-        <div class="row">
-          <div class="col-6 text-center">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios1"
-                value="fizik"
-                v-model="typeCustomer"
-              />
-              <label class="form-check-label" for="exampleRadios1">
-                Физическим лицом
-              </label>
-            </div>
-          </div>
-          <div class="col-6 text-center">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios2"
-                value="yurik"
-                v-model="typeCustomer"
-              />
-              <label class="form-check-label" for="exampleRadios2">
-                Юридическим лицом
-              </label>
-            </div>
-          </div>
+          Закрыть
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <div class="rules-for-form" ref="rules-for-form">
+          <p>
+            Чтобы спортивная форма, экипировка с нанесением долго служили и
+            выполняли свое предназначение нужен правильный уход. Всего несколько
+            советов помогут продлить срок службы.
+          </p>
+          <p>
+            В первую очередь ознакомьтесь с правилами стирки указанными на
+            вшивном ярлыке с изнаночной стороны вашего изделия.
+          </p>
+          <p>
+            Самым важным советом по уходу за вещами, будет стирать её после
+            каждой тренировки, не откладывая. Так как на тренировках мы потеем,
+            а пот - это раствор солей и органических веществ, которые могут
+            разрушать ткань. Еще очень важно, не бросать мокрые вещи сразу в
+            сумку. Лучше если это будет пакет, а затем уже сумка, и тогда не
+            придется стирать сумку каждый раз.
+          </p>
+          <ul>
+            <li><strong>Стирайте вещи вывернутыми наизнанку.</strong></li>
+            <li><strong>Замки должны быть застегнуты.</strong></li>
+            <li><strong>Температура не больше 30-40 градусов.</strong></li>
+            <li>
+              <strong>Программу стирки выбираем с минимальным временем.</strong>
+              Так как особых загрязнений нет, этого будет достаточно. Есть
+              программы типа повседневной стирки или быстрой, около полу часа
+              стирки будет более чем достаточно.
+            </li>
+            <li>
+              <strong>Пониженные обороты отжима.</strong> Если есть возможность
+              снизить обороты в вашей стиральной машинке, будет очень кстати,
+              веди высокие обороты разрушают ткань. А такая одежда и так быстро
+              сохнет.
+            </li>
+            <li>
+              <strong>Выбирайте мягкое средство для стирки</strong> (cейчас даже
+              есть специальные, с отметкой SPORT).
+            </li>
+            <li><strong>Не добавляйте смягчающий кондиционер.</strong></li>
+            <li><strong>Не добавляйте отбеливатель.</strong></li>
+            <li>
+              Если требуется
+              <strong>глажка, лучше это сделать отпаривателем,</strong> или на
+              минимальной температуре утюга,
+              <strong>выворачивая наизнанку.</strong>
+            </li>
+          </ul>
+          <p>
+            Эти простые советы помогут продлить срок эксплуатации вашей одежды
+            для тренировок. Проставьте галочку в окне «Я ОЗНАКОМЛЕН С ПРАВИЛАМИ
+            УХОДА» Только после этого вы сможете перейти к подписанию договора.
+          </p>
         </div>
+        <div class="text-center">
+          <a
+            href="#"
+            class="rules-btn"
+            @click.prevent.stop="toggleRules"
+            v-if="!showAllRules"
+            >Читать далее</a
+          >
+          <a
+            href="#"
+            class="rules-btn"
+            @click.prevent.stop="toggleRules"
+            v-if="showAllRules"
+            >Скрыть</a
+          >
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="agreeRules"
+            :value="agreeRules"
+            id="defaultCheck1"
+          />
+          <label class="form-check-label" for="defaultCheck1">
+            Я ОЗНАКОМЛЕН С ПРАВИЛАМИ УХОДА
+          </label>
+        </div>
+        <div v-if="agreeRules === true">
+          <h3 class="text-center">Вы являетесь</h3>
+          <div class="row">
+            <div class="col-6 text-center">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="exampleRadios"
+                  id="exampleRadios1"
+                  value="fizik"
+                  v-model="typeCustomer"
+                />
+                <label class="form-check-label" for="exampleRadios1">
+                  Физическим лицом
+                </label>
+              </div>
+            </div>
+            <div class="col-6 text-center">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="exampleRadios"
+                  id="exampleRadios2"
+                  value="yurik"
+                  v-model="typeCustomer"
+                />
+                <label class="form-check-label" for="exampleRadios2">
+                  Юридическим лицом
+                </label>
+              </div>
+            </div>
+          </div>
 
-        <fiz
-          v-if="typeCustomer === 'fizik' && showDocs === true"
-          :data="fizik"
-          @fizikChanged="fizikChanged($event)"
-          ref="fizikDocs"
-        />
-        <yur
-          v-if="typeCustomer === 'yurik' && showDocs === true"
-          :data="yurik"
-          @yurikChanged="yurikChanged($event)"
-          ref="yurikDocs"
-        />
-      </div>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        @click="printAll"
-        large
-        :disabled="!typeCustomer"
-        :loading="loadingPrintAll"
-        outlined
-        color="primary"
-        class="px-10 mr-3"
-      >
-        <v-icon class="mr-3">mdi-printer</v-icon>
-        Печать
-      </v-btn>
-      <v-btn
-        @click="sendForm"
-        :disabled="allowSendFormFizik"
-        :loading="loadingZakaz"
-        large
-        color="success"
-        class="px-10"
-      >
-        <v-icon>mdi-check</v-icon>
-        Оформить заказ
-      </v-btn>
-    </v-card-actions>
+          <fiz
+            v-if="typeCustomer === 'fizik' && showDocs === true"
+            :data="fizik"
+            @fizikChanged="fizikChanged($event)"
+            ref="fizikDocs"
+          />
+          <yur
+            v-if="typeCustomer === 'yurik' && showDocs === true"
+            :data="yurik"
+            @yurikChanged="yurikChanged($event)"
+            ref="yurikDocs"
+          />
+        </div>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          @click="printAll"
+          large
+          :disabled="!typeCustomer"
+          :loading="loadingPrintAll"
+          outlined
+          color="primary"
+          class="px-10 mr-3"
+        >
+          <v-icon class="mr-3">mdi-printer</v-icon>
+          Печать
+        </v-btn>
+        <v-btn
+          @click="sendForm"
+          :disabled="allowSendFormFizik"
+          :loading="loadingZakaz"
+          large
+          color="success"
+          class="px-10"
+        >
+          <v-icon>mdi-check</v-icon>
+          Оформить заказ
+        </v-btn>
+      </v-card-actions>
+    </div>
   </v-card>
 </template>
 
@@ -190,8 +193,8 @@ export default {
     loadingZakaz: false,
     showDocs: false,
     showAllRules: false,
-    agreeRules: true,
-    typeCustomer: 'yurik',
+    agreeRules: false,
+    typeCustomer: '',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -199,25 +202,25 @@ export default {
     zakazLogosSum: 0,
     zakazLogosEach: [],
     fizik: {
-      number: 1,
-      date: 2,
+      number: null,
+      date: null,
       firstName: '',
       lastName: '',
       middleName: '',
       email: '',
       phone: '',
       price: 0,
-      agreeContractNanesenie: true,
-      agreeContractBuy: true,
+      agreeContractNanesenie: false,
+      agreeContractBuy: false,
       showContractBuy: false,
       showContractNanesenie: false
     },
     yurik: {
-      number: 123,
+      number: null,
       date: null,
-      field1: 'qweqwe',
-      field2: 'www',
-      field3: 'eeeqw eq we ',
+      field1: '',
+      field2: '',
+      field3: '',
       email: '',
       phone: '',
       price: 0,

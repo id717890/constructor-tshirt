@@ -1,43 +1,45 @@
 <template>
   <v-card class="v-application">
-    <v-card-text>
-      <v-alert color="yellow" icon="mdi-cash">
-        Итоговая сумма: {{ totalPrice }} руб.
-      </v-alert>
-      <v-card>
-        <v-card-title>Способ оплаты</v-card-title>
-        <v-card-text>
-          <v-radio-group v-model="payment">
-            <v-radio label="Карта" value="card"></v-radio>
-            <v-radio label="Наличные" value="cash"></v-radio>
-          </v-radio-group>
-        </v-card-text>
-      </v-card>
-      <v-card class="mt-3">
-        <v-card-title>Способ доставки</v-card-title>
-        <v-card-text>
-          <v-radio-group v-model="delivery">
-            <v-radio label="Самовывоз" value="pickup"></v-radio>
-            <v-radio label="Курьер" value="courier"></v-radio>
-            <v-radio
-              label="Транспортная компания 'ДЕЛОВЫЕ ЛИНИИ', 'ПЭК' ИТД"
-              value="tk"
-            ></v-radio>
-          </v-radio-group>
-        </v-card-text>
-      </v-card>
-    </v-card-text>
-    <v-card-actions class="px-4 pb-4">
-      <v-btn @click="$emit('close')" large outlined class="px-10">
-        <v-icon>mdi-close</v-icon>
-        Отмена
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn @click="save" large color="success" class="px-10">
-        <v-icon>mdi-check</v-icon>
-        Сохранить
-      </v-btn>
-    </v-card-actions>
+    <div class="w100">
+      <v-card-text>
+        <v-alert color="yellow" icon="mdi-cash">
+          Итоговая сумма: {{ totalPrice }} руб.
+        </v-alert>
+        <v-card>
+          <v-card-title>Способ оплаты</v-card-title>
+          <v-card-text>
+            <v-radio-group v-model="payment">
+              <v-radio label="Карта" value="card"></v-radio>
+              <v-radio label="Наличные" value="cash"></v-radio>
+            </v-radio-group>
+          </v-card-text>
+        </v-card>
+        <v-card class="mt-3">
+          <v-card-title>Способ доставки</v-card-title>
+          <v-card-text>
+            <v-radio-group v-model="delivery">
+              <v-radio label="Самовывоз" value="pickup"></v-radio>
+              <v-radio label="Курьер" value="courier"></v-radio>
+              <v-radio
+                label="Транспортная компания 'ДЕЛОВЫЕ ЛИНИИ', 'ПЭК' ИТД"
+                value="tk"
+              ></v-radio>
+            </v-radio-group>
+          </v-card-text>
+        </v-card>
+      </v-card-text>
+      <v-card-actions class="px-4 pb-4">
+        <v-btn @click="$emit('close')" large outlined class="px-10">
+          <v-icon>mdi-close</v-icon>
+          Отмена
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="save" large color="success" class="px-10">
+          <v-icon>mdi-check</v-icon>
+          Сохранить
+        </v-btn>
+      </v-card-actions>
+    </div>
   </v-card>
 </template>
 

@@ -1,30 +1,31 @@
 <template>
-  <div class="dialog-body-wrapper v-application">
-    <v-card class="w100">
-      <!-- <v-card-title class="headline grey lighten-2" primary-title>
+  <div class="v-application">
+    <div class="dialog-body-wrapper w100">
+      <v-card class="w100">
+        <!-- <v-card-title class="headline grey lighten-2" primary-title>
         Подтверждение
       </v-card-title> -->
 
-      <v-card-text class="display-1">
-        {{ question }}
-      </v-card-text>
+        <v-card-text class="display-1">
+          {{ question }}
+        </v-card-text>
 
-      <v-divider></v-divider>
+        <v-divider></v-divider>
 
-      <v-card-actions>
-        <v-btn text @click="cancel">
-          <v-icon>mdi-close</v-icon>
-          Отмена
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="success" text @click="confirm">
-          <v-icon>mdi-check</v-icon>
-          Ok
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-card-actions>
+          <v-btn text @click="cancel">
+            <v-icon>mdi-close</v-icon>
+            Отмена
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" text @click="confirm">
+            <v-icon>mdi-check</v-icon>
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
 
-    <!-- <b-container>
+      <!-- <b-container>
     <b-row>
       <b-col class="pt-4 pl-3 pr-3 pb-4">
         <b-container>
@@ -44,6 +45,7 @@
       </b-col>
     </b-row>
   </b-container> -->
+    </div>
   </div>
 </template>
 
