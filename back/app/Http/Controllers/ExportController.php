@@ -34,7 +34,7 @@ class ExportController extends Controller
             $field2 = Input::get('field2');
             $field3 = Input::get('field3');
             $images = $request->file('images');
-            $images_pdf =[];
+            $images_pdf = [];
 
             //метод №1
 //            $images = Input::get('images2');
@@ -47,10 +47,10 @@ class ExportController extends Controller
                 foreach ($images as $image) {
                     $fname = $this->GUID();
                     $name_file = $image->getClientOriginalName();
-                    $path = $image->storeAs('images/temp', $fname.'.jpeg');
+                    $path = $image->storeAs('images/temp', $fname . '.jpeg');
                     array_push($images_pdf, [
-                        'name'=> $name_file,
-                        'url'=>$fname.'.jpeg'
+                        'name' => $name_file,
+                        'url' => $fname . '.jpeg'
                     ]);
                 }
             }
@@ -79,8 +79,18 @@ class ExportController extends Controller
                 'info' => $info,
                 'images_pdf' => $images_pdf,
             ];
-            $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled'=>true])->loadView('pdf.order', $data);
-            return $pdf->download('order.pdf');
+            $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdf.order', $data);
+            $result = $pdf->download('order.pdf');
+            if (count($images_pdf) > 0) {
+                foreach ($images_pdf as $image) {
+                    try {
+                        $path = 'images/temp/' . $image['url'];
+                        if (Storage::exists($path) === true) Storage::delete($path);
+                    } catch (\Exception $e) {
+                    }
+                }
+            }
+            return $result;
 
 //             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
             $images = $request->file('images');

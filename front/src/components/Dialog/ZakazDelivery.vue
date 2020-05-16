@@ -28,7 +28,7 @@
       </v-card>
     </v-card-text>
     <v-card-actions class="px-4 pb-4">
-      <v-btn @click="$emit('close')" large outlined>
+      <v-btn @click="$emit('close')" large outlined class="px-10">
         <v-icon>mdi-close</v-icon>
         Отмена
       </v-btn>

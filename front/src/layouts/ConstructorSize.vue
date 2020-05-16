@@ -67,9 +67,7 @@ export default {
   mounted() {
     // console.log('MOUNTED')
   },
-  updated() {
-    // console.log('UPDATED')
-  },
+  updated() {},
   beforeUpdate() {
     // console.log('BEFORE UPDATED')
     this.data = []
