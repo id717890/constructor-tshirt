@@ -104,6 +104,12 @@
         class="elevation-1"
         hide
       >
+        <template v-slot:item.order="{ item }">
+          <v-text-field
+            v-model="item.order"
+            @blur="orderChanged($event, item)"
+          ></v-text-field>
+        </template>
         <template v-slot:item.image="{ item }">
           <v-img max-width="90" :src="img(item.image)"></v-img>
         </template>
@@ -160,11 +166,20 @@ export default {
       { text: 'Наименование', value: 'name' },
       { text: 'Тип', value: 'type.name' },
       { text: '', value: 'image', width: '150', sortable: false },
+      { text: 'Очередь', value: 'order', width: '100', sortable: false },
       { text: '', value: '', value: 'act', width: '120', sortable: false }
     ]
   }),
   methods: {
-    ...mapActions(['getAllModels', 'resetConfirmDialogResult', 'deleteModel']),
+    ...mapActions([
+      'getAllModels',
+      'resetConfirmDialogResult',
+      'deleteModel',
+      'updateModelOrder'
+    ]),
+    orderChanged(event, model) {
+      this.updateModelOrder(model)
+    },
     uploadSizes(event) {
       const file = event.target.files[0]
       let fd = new FormData()

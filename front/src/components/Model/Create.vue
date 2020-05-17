@@ -39,6 +39,15 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12">
+          <v-text-field
+            type="number"
+            label="Очередность"
+            v-model="form.order"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="6" md="8" sm="12" cols="12">
           <v-btn @click="$refs.file.click()" dark class="mb-5">
             <v-icon>mdi-image</v-icon>
             Загрузить изображение</v-btn
@@ -96,6 +105,7 @@ export default {
       valid: true,
       name: '',
       description: '',
+      order: null,
       type: null
     },
     preview: null
@@ -134,7 +144,8 @@ export default {
           name: this.form.name,
           description: this.form.description,
           type_id: this.form.type.id,
-          image: this.preview
+          image: this.preview,
+          order: this.form.order
         })
       } else this.setLoad(false)
     }

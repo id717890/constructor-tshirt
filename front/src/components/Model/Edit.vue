@@ -29,6 +29,12 @@
             required
             :rules="textField"
           ></v-text-field>
+
+          <v-text-field
+            type="number"
+            label="Очередность"
+            v-model="form.order"
+          ></v-text-field>
         </v-col>
         <v-col lg="6" md="4" sm="12" cols="12" class="pl-6">
           <v-btn @click="$refs.file.click()" dark class="mb-5">
@@ -102,6 +108,7 @@ export default {
       valid: true,
       name: '',
       description: '',
+      order: null,
       type: null
     },
     preview: null
@@ -120,6 +127,7 @@ export default {
         this.form.description = this.model.description
         this.form.type = this.model.type
         this.preview = this.model.image
+        this.form.order = this.model.order
       }
     }, 800)
   },
@@ -163,7 +171,8 @@ export default {
           name: this.form.name,
           description: this.form.description,
           type_id: this.form.type.id,
-          image: this.preview
+          image: this.preview,
+          order: this.form.order
         })
       } else this.setLoad(false)
     }

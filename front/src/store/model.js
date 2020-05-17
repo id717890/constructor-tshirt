@@ -8,6 +8,18 @@ const state = {
 
 // actions
 const actions = {
+  async updateModelOrder({ dispatch, commit }, payload) {
+    await context
+      .post('api/models/update_order/' + payload.id, payload)
+      .then(x => {
+        dispatch('setLoading', false)
+        commit(types.GET_ALL_MODELS, x.models)
+      })
+      .catch(x => {
+        console.log(x)
+        dispatch('setLoading', false)
+      })
+  },
   async updateModel({ dispatch }, payload) {
     await context
       .post('api/models/update/' + payload.id, payload)

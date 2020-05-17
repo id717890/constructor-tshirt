@@ -10,7 +10,7 @@ class ModelT extends Model
 
     protected $table = 'models';
 
-    protected $fillable = array('type_id', 'name', 'description', 'image');
+    protected $fillable = array('type_id', 'name', 'description', 'image', 'order');
 
     protected $hidden = array('created_at','updated_at');
 

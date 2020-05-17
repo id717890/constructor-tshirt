@@ -129,6 +129,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::post('models', 'ModelController@create');
     Route::post('models/delete/{id}', 'ModelController@delete');
+    Route::post('models/update_order/{id}', 'ModelController@updateOrder');
     Route::post('models/update/{id}', 'ModelController@update');
 
     Route::post('types', 'TypeController@create');
