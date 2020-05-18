@@ -29,10 +29,11 @@
           />
         </v-col>
         <v-col cols="12" md="4">
-          <p>
+          <p v-if="color.image_back">
             <strong>Вид сзади</strong>
           </p>
           <img
+            v-if="color.image_back"
             :src="img(color.image_back)"
             style="max-height: 200px; border-radius: 10px"
           />

@@ -1383,43 +1383,65 @@ export default {
         canvas.removeImage('front')
         canvas.removeImage('back')
 
-        canvas.addImage(
-          'front',
-          this.img(order.color.image_front),
-          function(img) {
-            img.set({
-              scaleX: canvas.ctx.width / img.width / 2,
-              scaleY: canvas.ctx.height / img.height,
-              originX: 0,
-              originY: 'top',
-              selectable: false
-            })
-          },
-          this,
-          300,
-          function(img) {
-            img.sendToBack()
-          }
-        )
+        if (order.color.image_back) {
+          canvas.addImage(
+            'front',
+            this.img(order.color.image_front),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: 0,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            this,
+            300,
+            function(img) {
+              img.sendToBack()
+            }
+          )
 
-        canvas.addImage(
-          'back',
-          this.img(order.color.image_back),
-          function(img) {
-            img.set({
-              scaleX: canvas.ctx.width / img.width / 2,
-              scaleY: canvas.ctx.height / img.height,
-              originX: -1,
-              originY: 'top',
-              selectable: false
-            })
-          },
-          this,
-          300,
-          function(img) {
-            img.sendToBack()
-          }
-        )
+          canvas.addImage(
+            'back',
+            this.img(order.color.image_back),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: -1,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            this,
+            300,
+            function(img) {
+              img.sendToBack()
+            }
+          )
+        } else {
+          canvas.addImage(
+            'front',
+            this.img(order.color.image_front),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: -0.5,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            this,
+            300,
+            function(img) {
+              img.sendToBack()
+            }
+          )
+        }
+
         this.isChangeColor = false
         this.isChangeType = false
         order.isDone = true
@@ -1492,6 +1514,29 @@ export default {
                 scaleX: canvas.ctx.width / img.width / 2,
                 scaleY: canvas.ctx.height / img.height,
                 originX: -1,
+                originY: 'top',
+                selectable: false
+              })
+            },
+            this,
+            function(img) {
+              img.sendToBack()
+            }
+          )
+          order.isDone = true
+          this.$forceUpdate()
+        } else if (order && order.color && !order.color.image_back) {
+          let canvas = order.canvas
+          // console.log(this.$refs)
+          // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
+          canvas.addImage(
+            'front',
+            this.img(order.color.image_front),
+            function(img) {
+              img.set({
+                scaleX: canvas.ctx.width / img.width / 2,
+                scaleY: canvas.ctx.height / img.height,
+                originX: -0.5,
                 originY: 'top',
                 selectable: false
               })

@@ -19,7 +19,7 @@ class CreateColorTable extends Migration
             $table->string('name')->nullable(false);
             $table->string('article')->nullable(false);
             $table->string('image_front')->nullable(false);
-            $table->string('image_back')->nullable(false);
+            $table->string('image_back')->nullable(true);
             $table->integer('model_id')->unsigned();
             $table->timestamps();
 

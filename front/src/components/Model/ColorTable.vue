@@ -50,6 +50,17 @@
         >
           <v-icon>mdi-upload</v-icon>
         </v-btn>
+        <v-btn
+          fab
+          text
+          small
+          v-if="item.edit === true"
+          class="ml-2"
+          color="red"
+          @click="item.image_back = null"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
         <input
           style="display: none"
           :ref="'fileForBack_' + item.id"
@@ -213,7 +224,7 @@ export default {
       const file = event.target.files[0]
       let fd = new FormData()
       fd.append('image', file)
-      fd.append('prefix', 'model-')
+      fd.append('prefix', 'model-color-')
       this.uploadImage(fd).then(x => {
         if (type && type === 'front') item.image_front = x.fullname
         if (type && type === 'back') item.image_back = x.fullname
@@ -224,7 +235,7 @@ export default {
     },
     save(item) {
       item.name = item.article
-      if (item.name && item.article && item.image_front && item.image_back) {
+      if (item.name && item.article && item.image_front) {
         if (item.id === 0) {
           this.createColorPromise(item).then(x => {
             item.id = x.id
