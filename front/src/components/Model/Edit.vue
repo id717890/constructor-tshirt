@@ -35,6 +35,11 @@
             label="Очередность"
             v-model="form.order"
           ></v-text-field>
+          <v-row v-if="model">
+            <v-col cols="12">
+              <size-table :model_id="model.id" :sizes="model.model_sizes" />
+            </v-col>
+          </v-row>
         </v-col>
         <v-col lg="6" md="4" sm="12" cols="12" class="pl-6">
           <v-btn @click="$refs.file.click()" dark class="mb-5">
@@ -95,11 +100,13 @@ import loading from '../../mixins/loading'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import config from '../../init/config'
 import ColorTable from './ColorTable'
+import SizeTable from './SizeTable'
 
 export default {
   mixins: [loading],
   components: {
-    ColorTable
+    ColorTable,
+    SizeTable
   },
   props: ['id'],
   data: () => ({
@@ -118,6 +125,17 @@ export default {
     await this.getAllModels()
     await this.getAllColors()
     this.setLoad(false)
+  },
+  watch: {
+    model(value) {
+      if (value) {
+        this.form.name = value.name
+        this.form.description = value.description
+        this.form.type = value.type
+        this.preview = value.image
+        this.form.order = value.order
+      }
+    }
   },
   mounted() {
     setTimeout(() => {

@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ModelSize;
 use App\Models\ModelT;
+use App\Source\ConfigService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
 {
+    private $sizes;
+
+    public function __construct() {
+        $this->sizes = ConfigService::all_sizes();
+    }
+
     public function index()
     {
-        $result = ModelT::with('type')->orderBy('order')->get();
+        $result = ModelT::with('type')->with('model_sizes')->orderBy('order')->get();
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
 
@@ -19,6 +27,12 @@ class ModelController extends Controller
     {
         try {
             $model = ModelT::create(Input::all());
+            foreach($this->sizes as $size) {
+                $model_size = new ModelSize();
+                $model_size->model_id = $model->id;
+                $model_size->size = $size;
+                $model_size->save();
+            }
             return response()->json($model, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
@@ -34,6 +48,29 @@ class ModelController extends Controller
             $find->order = $order;
             $find->save();
             return response()->json(['success' => true, 'models' => ModelT::with('type')->orderBy('order')->get()], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+    }
+
+    public function updateSize(Request $request, $id)
+    {
+        try {
+            $sizes = Input::get('sizes');
+            $find = ModelT::find($id);
+            if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
+            if (count($sizes) > 0) {
+                foreach($sizes as $size) {
+
+                    $findModelSize = ModelSize::find($size['id']);
+
+                    if($findModelSize !== null) {
+                        $findModelSize->is_show = $size['is_show'];
+                        $findModelSize->save();
+                    }
+                }
+            }
+            return response()->json(['success' => true], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
         }

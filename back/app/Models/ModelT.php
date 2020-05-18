@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ModelT extends Model
 {
     use Relation\BelongsTo\Type;
+    use Relation\HasMany\ModelSize;
 
     protected $table = 'models';
 

@@ -45,5 +45,26 @@ class ModelSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+
+        foreach(\App\Source\ConfigService::all_sizes() as $size) {
+            DB::table('model_sizes')->insert([
+                'model_id' => 1,
+                'size' => $size,
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+            DB::table('model_sizes')->insert([
+                'model_id' => 2,
+                'size' => $size,
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+            DB::table('model_sizes')->insert([
+                'model_id' => 3,
+                'size' => $size,
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+        }
     }
 }

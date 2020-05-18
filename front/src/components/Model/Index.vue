@@ -107,6 +107,7 @@
         <template v-slot:item.order="{ item }">
           <v-text-field
             v-model="item.order"
+            type="number"
             @blur="orderChanged($event, item)"
           ></v-text-field>
         </template>

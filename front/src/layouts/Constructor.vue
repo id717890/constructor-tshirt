@@ -1334,6 +1334,22 @@ export default {
     selLogo(logo) {
       this.currentLogo = logo
     },
+    getSizesByColorAndModel(model, sizes) {
+      let result = []
+      if (sizes && sizes.length > 0) {
+        sizes.forEach(size => {
+          if (model && model.model_sizes) {
+            const findColorModel = model.model_sizes.filter(
+              x =>
+                x.size.toLowerCase() === size.size.toLowerCase() &&
+                x.is_show === 1
+            )
+            if (findColorModel && findColorModel.length > 0) result.push(size)
+          }
+        })
+      }
+      return result
+    },
     selColor(color) {
       this.currentColor = color
       // this.tableSizesData = color.sizes.map
@@ -1348,7 +1364,10 @@ export default {
         order.type = this.currentType
         order.model = this.currentModel
         order.color = this.currentColor
-        order.orderedSizes = this.currentColor.sizes
+        order.orderedSizes = this.getSizesByColorAndModel(
+          this.currentModel,
+          this.currentColor.sizes
+        )
         // this.$set(order, 'orderedSizes', this.currentColor.sizes)
         // console.log()
         // this.$refs.tableSize.$forceUpdate()
@@ -1427,7 +1446,10 @@ export default {
         color: this.currentColor,
         canvas: null,
         isDone: false,
-        orderedSizes: color.sizes,
+        orderedSizes: this.getSizesByColorAndModel(
+          this.currentModel,
+          color.sizes
+        ),
         orderedLogos: [],
         orderedTexts: []
       }

@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Color;
 use App\Models\Size;
+use App\Source\ConfigService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 class ColorController extends Controller
 {
-    private $sizes = ['6XS', '5XS', '6XS-5XS', '4XS', '3XS', '4XS-3XS', '2XS', 'XS', 'S', 'M', 'L', 'XL', '2ХL', '3ХL', '2ХL-3ХL'];
+    private $sizes;
+
+    public function __construct() {
+        $this->sizes = ConfigService::all_sizes();
+    }
 
     public function index()
     {

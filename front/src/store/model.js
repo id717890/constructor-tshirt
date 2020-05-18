@@ -1,6 +1,7 @@
 import context from '../api/api'
 import * as types from './mutation-types'
 import router from '../router'
+import Vue from 'vue'
 
 const state = {
   allModels: []
@@ -8,6 +9,19 @@ const state = {
 
 // actions
 const actions = {
+  async updateModelSize({ dispatch, commit }, payload) {
+    await context
+      .post('api/models/update_size/' + payload.id, payload)
+      .then(x => {
+        dispatch('setLoading', false)
+        Vue.noty.success('Сохранено!')
+      })
+      .catch(x => {
+        console.log(x)
+        dispatch('setLoading', false)
+        Vue.noty.error('Ошибка!')
+      })
+  },
   async updateModelOrder({ dispatch, commit }, payload) {
     await context
       .post('api/models/update_order/' + payload.id, payload)
