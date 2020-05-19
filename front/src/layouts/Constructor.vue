@@ -569,7 +569,7 @@
                     >Оплата и доставка</v-btn
                   >
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" md="6">
                   <v-btn
                     large
                     @click="openDialogZakazAll"
@@ -577,6 +577,19 @@
                     class="w100"
                     >Оформить заказ</v-btn
                   >
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    large
+                    @click="printAll"
+                    :loading="loadingPrintAll"
+                    color="orange"
+                    class="w100"
+                    outlined
+                  >
+                    <v-icon>mdi-printer</v-icon>
+                    Печать
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -600,7 +613,9 @@ import DialogZakazAll from '../components/Dialog/ZakazAll'
 import DialogZakazDelivery from '../components/Dialog/ZakazDelivery'
 import DialogCopy from '../components/Dialog/CopyDialog'
 import Vue from 'vue'
+import ZakazMixin from '../mixins/zakaz'
 export default {
+  mixins: [ZakazMixin],
   components: {
     TableSize
   },
@@ -1527,8 +1542,6 @@ export default {
           this.$forceUpdate()
         } else if (order && order.color && !order.color.image_back) {
           let canvas = order.canvas
-          // console.log(this.$refs)
-          // canvas.ctx = this.$refs['mycanv' + newOrder.id].getContext('2d')
           canvas.addImage(
             'front',
             this.img(order.color.image_front),
@@ -1586,28 +1599,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-// @import '../assets/scss/_app';
-/* .swiper-container {
-  height: 300px;
-  width: 100%;
-}
-
-.swiper-wrapper {
-  margin: auto 50px;
-}
-
-.swiper-slide {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  transition: 1s;
-} */
-</style>

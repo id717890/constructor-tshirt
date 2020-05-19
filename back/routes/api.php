@@ -54,6 +54,7 @@ Route::post('callback/create', 'CallbackController@create');
 Route::get('image_temp/{filename}', 'ImageController@imageTemp');
 Route::get('image/{filename}', 'ImageController@image');
 //Route::get('logos','HomeController@logos');
+Route::get('models/auto_size', 'ModelController@autoCreate');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {

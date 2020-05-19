@@ -6,6 +6,7 @@ use App\Models\ModelSize;
 use App\Models\ModelT;
 use App\Source\ConfigService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +14,8 @@ class ModelController extends Controller
 {
     private $sizes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->sizes = ConfigService::all_sizes();
     }
 
@@ -23,11 +25,30 @@ class ModelController extends Controller
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
     }
 
+    public function autoCreate(Request $request)
+    {
+        try {
+            DB::statement('delete from model_sizes');
+            foreach (ModelT::all() as $model) {
+                foreach ($this->sizes as $size) {
+                    $model_size = new ModelSize();
+                    $model_size->model_id = $model->id;
+                    $model_size->size = $size;
+                    $model_size->save();
+                }
+            }
+            return response()->json('success', 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => ['code' => 500, 'message' => $e->getMessage()]], 400);
+        }
+
+    }
+
     public function create(Request $request)
     {
         try {
             $model = ModelT::create(Input::all());
-            foreach($this->sizes as $size) {
+            foreach ($this->sizes as $size) {
                 $model_size = new ModelSize();
                 $model_size->model_id = $model->id;
                 $model_size->size = $size;
@@ -60,11 +81,11 @@ class ModelController extends Controller
             $find = ModelT::find($id);
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
             if (count($sizes) > 0) {
-                foreach($sizes as $size) {
+                foreach ($sizes as $size) {
 
                     $findModelSize = ModelSize::find($size['id']);
 
-                    if($findModelSize !== null) {
+                    if ($findModelSize !== null) {
                         $findModelSize->is_show = $size['is_show'];
                         $findModelSize->save();
                     }
