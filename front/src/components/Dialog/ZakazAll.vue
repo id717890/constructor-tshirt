@@ -159,7 +159,18 @@
           color="primary"
           class="px-10 mr-3"
         >
-          <v-icon class="mr-3">mdi-printer</v-icon>
+          <v-icon class="mr-3">mdi-download</v-icon>
+          Скачать
+        </v-btn>
+        <v-btn
+          @click="openPrintZakaz"
+          large
+          outlined
+          color="success"
+          class="px-10 mr-3"
+          :disabled="!typeCustomer"
+        >
+          <v-icon>mdi-printer</v-icon>
           Печать
         </v-btn>
         <v-btn
@@ -182,6 +193,7 @@
 import Fiz from '../Docs/Fiz'
 import Yur from '../Docs/Yur'
 import context from '../../api/api'
+import { mapActions } from 'vuex'
 export default {
   props: ['orders', 'delivery'],
   components: {
@@ -193,8 +205,8 @@ export default {
     loadingZakaz: false,
     showDocs: false,
     showAllRules: false,
-    agreeRules: false,
-    typeCustomer: '',
+    agreeRules: true,
+    typeCustomer: 'fizik',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -241,6 +253,33 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapActions(['setPrintZakaz']),
+    openPrintZakaz() {
+      let printZakaz = {}
+      let fd = this.prepareFormData()
+      printZakaz.typeCustomerText =
+        this.typeCustomer === 'fizik' ? 'Физ. лицо' : 'Юр. лицо'
+      printZakaz.phone =
+        this.typeCustomer === 'fizik' ? this.fizik.phone : this.yurik.phone
+      printZakaz.email =
+        this.typeCustomer === 'fizik' ? this.fizik.email : this.yurik.email
+      printZakaz.name =
+        this.typeCustomer === 'fizik' ? fd.get('fio') : fd.get('field1')
+
+      printZakaz.price = fd.get('price')
+      printZakaz.delivery = fd.get('delivery')
+      printZakaz.payment = fd.get('payment')
+      printZakaz.zakazTovar = JSON.parse(fd.get('zakazTovar'))
+      printZakaz.zakazLogosEach = JSON.parse(fd.get('zakazLogosEach'))
+      printZakaz.zakazLogos = JSON.parse(fd.get('zakazLogos'))
+      printZakaz.zakazNumberName = JSON.parse(fd.get('zakazNumberName'))
+      printZakaz.zakazLogosSum = fd.get('zakazLogosSum')
+
+      localStorage.setItem('printZakaz', JSON.stringify(printZakaz))
+      setTimeout(() => {
+        window.open('/print_zakaz', '_blank')
+      }, 600)
+    },
     printAll() {
       this.loadingPrintAll = true
       let fd = this.prepareFormData()

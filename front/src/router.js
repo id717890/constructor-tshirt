@@ -104,6 +104,11 @@ const router = new Router({
       ]
     },
     {
+      path: '/print_zakaz',
+      name: 'PrintZakaz',
+      component: () => import('./components/Print/ZakazAll.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('./components/Auth/Login.vue')
