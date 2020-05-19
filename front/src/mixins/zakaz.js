@@ -41,6 +41,8 @@ export default {
   created() {},
   methods: {
     printAll() {
+      window.print()
+      return
       this.prepareDates()
       this.prepareBeforePrint()
       this.loadingPrintAll = true

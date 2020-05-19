@@ -125,7 +125,7 @@ const settings = {
   transition: 'nice-modal-fade',
   clickToClose: false
 }
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 export default {
   props: ['rows', 'color_id'],
@@ -150,12 +150,19 @@ export default {
     ]
   }),
   async created() {
-    this.data = this.rows.map(x => {
+    let buffer = this.rows.map(x => {
       this.$set(x, 'edit', false)
+      this.$set(
+        x,
+        'is_show',
+        this.isSizeOfModelShouldShow(x.color.model_id, x.size) === true
+      )
       return x
     })
+    this.data = buffer.filter(x => x.is_show === true)
   },
   computed: {
+    ...mapGetters(['isSizeOfModelShouldShow']),
     ...mapState({
       confirmDialogResult: state => state.dialog.confirmDialogResult
     })

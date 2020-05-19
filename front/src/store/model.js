@@ -75,6 +75,22 @@ const mutations = {
 const getters = {
   getModelById: state => id => {
     return state.allModels.find(x => Number(x.id) === Number(id))
+  },
+  isSizeOfModelShouldShow: state => (model_id, size) => {
+    let result = false
+    if (state.allModels) {
+      const findModel = state.allModels.find(
+        x => Number(x.id) === Number(model_id)
+      )
+      if (findModel && findModel.model_sizes) {
+        const findSize = findModel.model_sizes.find(
+          x => x.size.toLowerCase() === size.toLowerCase()
+        )
+        if (findSize && findSize.is_show) return findSize.is_show === 1
+      }
+    }
+
+    return result
   }
 }
 
