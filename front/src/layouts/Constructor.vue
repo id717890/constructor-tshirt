@@ -569,7 +569,7 @@
                     >Оплата и доставка</v-btn
                   >
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12">
                   <v-btn
                     large
                     @click="openDialogZakazAll"
@@ -578,7 +578,7 @@
                     >Оформить заказ</v-btn
                   >
                 </v-col>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="6">
                   <v-btn
                     large
                     @click="printAll"
@@ -590,7 +590,7 @@
                     <v-icon>mdi-printer</v-icon>
                     Печать
                   </v-btn>
-                </v-col>
+                </v-col> -->
               </v-row>
             </v-col>
           </v-row>

@@ -194,6 +194,8 @@ import Fiz from '../Docs/Fiz'
 import Yur from '../Docs/Yur'
 import context from '../../api/api'
 import { mapActions } from 'vuex'
+import ZakazAllPrintDialog from '../../components/Dialog/ZakazAllPrintDialog'
+import config from '../../init/config'
 export default {
   props: ['orders', 'delivery'],
   components: {
@@ -205,8 +207,8 @@ export default {
     loadingZakaz: false,
     showDocs: false,
     showAllRules: false,
-    agreeRules: true,
-    typeCustomer: 'fizik',
+    agreeRules: false,
+    typeCustomer: '',
     zakazTovar: [],
     zakazTovarSum: 0,
     zakazNumberName: [],
@@ -255,6 +257,16 @@ export default {
   methods: {
     ...mapActions(['setPrintZakaz']),
     openPrintZakaz() {
+      // this.$modal.show(
+      //   ZakazAllPrintDialog,
+      //   { orders: this.orders },
+      //   {
+      //     ...config.modalSettings,
+      //     width: '100%',
+      //     scrollable: true
+      //   }
+      // )
+      // return
       let printZakaz = {}
       let fd = this.prepareFormData()
       printZakaz.typeCustomerText =
@@ -274,6 +286,26 @@ export default {
       printZakaz.zakazLogos = JSON.parse(fd.get('zakazLogos'))
       printZakaz.zakazNumberName = JSON.parse(fd.get('zakazNumberName'))
       printZakaz.zakazLogosSum = fd.get('zakazLogosSum')
+      printZakaz.typeCustomer = fd.get('typeCustomer')
+      printZakaz.fizik = this.fizik
+      printZakaz.yurik = this.yurik
+
+      let images = []
+      this.orders.forEach((order, index) => {
+        const img = document.getElementById('orderCanvas_' + order.id)
+        //метод №1
+        const dataUrl = img.toDataURL()
+        images.push({
+          id: order.id,
+          name: order.titleTab,
+          imageBase64: dataUrl
+        })
+        //метод №2
+        // img.toBlob(data => {
+        //   fd.append('images[]', data, order.titleTab)
+        // })
+      })
+      printZakaz.images = images
 
       localStorage.setItem('printZakaz', JSON.stringify(printZakaz))
       setTimeout(() => {

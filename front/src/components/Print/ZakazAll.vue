@@ -2,7 +2,9 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <v-btn @click="print" class="w100">Печать</v-btn>
+        <v-btn @click="print" class="w100" tile large text outlined
+          >Печать</v-btn
+        >
       </v-col>
     </v-row>
     <v-row class="v-application">
@@ -28,7 +30,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="12" class="pb-10">
             <h2>Заказ товар</h2>
             <v-simple-table>
               <template v-slot:default>
@@ -59,7 +61,7 @@
           </v-col>
         </v-row>
         <v-row v-for="order in zakaz.zakazLogosEach" :key="order.id">
-          <v-col cols="12">
+          <v-col cols="12" class="pb-10">
             <h2>Заказ нанесение "{{ order.name }}"</h2>
             <v-simple-table>
               <template v-slot:default>
@@ -88,7 +90,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="12" class="pb-10">
             <h2>Заказ нанесение "ИТОГО"</h2>
             <v-simple-table>
               <template v-slot:default>
@@ -115,7 +117,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="12" class="pb-12">
             <h2>Размер-Номер-Фамилия</h2>
             <v-simple-table>
               <template v-slot:default>
@@ -139,18 +141,109 @@
             </v-simple-table>
           </v-col>
         </v-row>
+        <v-row v-for="(image, index) in zakaz.images" :key="index">
+          <v-col cols="12">
+            <h3>{{ image.name }}</h3>
+            <img :src="image.imageBase64" alt="" />
+          </v-col>
+        </v-row>
+        <v-row v-if="zakaz.typeCustomer === 'fizik'">
+          <v-col cols="12">
+            <fiz-for-print :data="zakaz.fizik" />
+          </v-col>
+        </v-row>
+        <v-row v-if="zakaz.typeCustomer === 'yurik'">
+          <v-col cols="12">
+            <yur-for-print :data="zakaz.yurik" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="mt-12">
+            <h3>
+              ПРАВИЛА УХОДА ЗА СПОРТИВНОЙ ФОРМОЙ И ЭКИПИРОВКОЙ С НАНЕСЕНИЕМ
+            </h3>
+            <div ref="rules-for-form">
+              <p>
+                Чтобы спортивная форма, экипировка с нанесением долго служили и
+                выполняли свое предназначение нужен правильный уход. Всего
+                несколько советов помогут продлить срок службы.
+              </p>
+              <p>
+                В первую очередь ознакомьтесь с правилами стирки указанными на
+                вшивном ярлыке с изнаночной стороны вашего изделия.
+              </p>
+              <p>
+                Самым важным советом по уходу за вещами, будет стирать её после
+                каждой тренировки, не откладывая. Так как на тренировках мы
+                потеем, а пот - это раствор солей и органических веществ,
+                которые могут разрушать ткань. Еще очень важно, не бросать
+                мокрые вещи сразу в сумку. Лучше если это будет пакет, а затем
+                уже сумка, и тогда не придется стирать сумку каждый раз.
+              </p>
+              <ul>
+                <li><strong>Стирайте вещи вывернутыми наизнанку.</strong></li>
+                <li><strong>Замки должны быть застегнуты.</strong></li>
+                <li>
+                  <strong>Температура не больше 30-40 градусов.</strong>
+                </li>
+                <li>
+                  <strong
+                    >Программу стирки выбираем с минимальным временем.</strong
+                  >
+                  Так как особых загрязнений нет, этого будет достаточно. Есть
+                  программы типа повседневной стирки или быстрой, около полу
+                  часа стирки будет более чем достаточно.
+                </li>
+                <li>
+                  <strong>Пониженные обороты отжима.</strong> Если есть
+                  возможность снизить обороты в вашей стиральной машинке, будет
+                  очень кстати, веди высокие обороты разрушают ткань. А такая
+                  одежда и так быстро сохнет.
+                </li>
+                <li>
+                  <strong>Выбирайте мягкое средство для стирки</strong>
+                  (cейчас даже есть специальные, с отметкой SPORT).
+                </li>
+                <li>
+                  <strong>Не добавляйте смягчающий кондиционер.</strong>
+                </li>
+                <li><strong>Не добавляйте отбеливатель.</strong></li>
+                <li>
+                  Если требуется
+                  <strong>глажка, лучше это сделать отпаривателем,</strong>
+                  или на минимальной температуре утюга,
+                  <strong>выворачивая наизнанку.</strong>
+                </li>
+              </ul>
+              <p>
+                Эти простые советы помогут продлить срок эксплуатации вашей
+                одежды для тренировок. Проставьте галочку в окне «Я ОЗНАКОМЛЕН С
+                ПРАВИЛАМИ УХОДА» Только после этого вы сможете перейти к
+                подписанию договора.
+              </p>
+            </div>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-btn @click="print" class="w100">Печать</v-btn>
+        <v-btn @click="print" class="w100" tile large text outlined
+          >Печать</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import FizForPrint from '../Docs/FizForPrint'
+import YurForPrint from '../Docs/YurForPrint'
 export default {
+  components: {
+    FizForPrint,
+    YurForPrint
+  },
   data: () => ({
     zakaz: null
   }),

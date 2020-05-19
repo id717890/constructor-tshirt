@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    v-if="rows && data"
     :headers="headers"
     :items="data"
     class="elevation-1"
@@ -150,25 +151,19 @@ export default {
     ]
   }),
   async created() {
-    let buffer = this.rows.map(x => {
-      this.$set(x, 'edit', false)
-      this.$set(
-        x,
-        'is_show',
-        this.isSizeOfModelShouldShow(x.color.model_id, x.size) === true
-      )
-      return x
-    })
-    this.data = buffer.filter(x => x.is_show === true)
+    await this.getAllModels()
+    this.fillData(this.rows)
   },
   computed: {
     ...mapGetters(['isSizeOfModelShouldShow']),
     ...mapState({
+      models: state => state.model.allModels,
       confirmDialogResult: state => state.dialog.confirmDialogResult
     })
   },
   methods: {
     ...mapActions([
+      'getAllModels',
       'getSizes',
       'createSize',
       'deleteSize',
@@ -176,6 +171,14 @@ export default {
       'updatePriceForAllSizes',
       'resetConfirmDialogResult'
     ]),
+    fillData(v) {
+      let buffer = v.map(x => {
+        this.$set(x, 'edit', false)
+        x.is_show = this.isSizeOfModelShouldShow(x.color.model_id, x.size)
+        return x
+      })
+      this.data = [...buffer.filter(x => x.is_show === true)]
+    },
     savePriceForAll() {
       if (this.priceAll) {
         this.updatePriceForAllSizes({
@@ -237,20 +240,17 @@ export default {
     }
   },
   watch: {
+    models(value) {
+      this.fillData(this.rows)
+    },
     rows(value) {
+      this.fillData(value)
       // console.log(value)
       // const d = this.rows.map(x => {
       //   this.$set(x, 'edit', false)
       //   return x
       // })
-      this.data = value.map(x => {
-        // x.edit = false
-        this.$set(x, 'edit', false)
-        return x
-      })
     }
   }
 }
 </script>
-
-<style></style>

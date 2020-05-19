@@ -86,7 +86,7 @@ const getters = {
         const findSize = findModel.model_sizes.find(
           x => x.size.toLowerCase() === size.toLowerCase()
         )
-        if (findSize && findSize.is_show) return findSize.is_show === 1
+        if (findSize && findSize.is_show) return Number(findSize.is_show) === 1
       }
     }
 
