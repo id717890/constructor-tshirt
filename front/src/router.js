@@ -408,4 +408,8 @@ const router = new Router({
 //   }
 // })
 
+router.afterEach((to, from, next) => {
+  window.scrollTo({ top: 1, left: 0, behavior: 'smooth' })
+})
+
 export default router
