@@ -1,6 +1,6 @@
 export default {
-  apiAddress: 'http://localhost/jomafull/back/public/',
-  // apiAddress: 'https://joma-club.ru/api/',
+  // apiAddress: 'http://localhost/jomafull/back/public/',
+  apiAddress: 'https://joma-club.ru/api/',
   swiperOptions: {
     slidesPerView: 4,
     spaceBetween: 10,

@@ -237,6 +237,10 @@
     <div style="font-size: 1.3rem">{!! $info !!}</div>
     <br><br>
 
+    <div style="font-size: 1.3rem">Способ доставки: {!! $delivery !== null && $delivery !== '' ? $delivery : 'не указано'!!}</div>
+    <div style="font-size: 1.3rem">Способ оплаты: {!!  $payment !== null && $payment !== '' ? $payment : 'не указано'!!}</div>
+    <br><br>
+
     <h1>Заказ товар</h1>
     <table class="table table-hover table-bordered"
            style="width: 100%;
