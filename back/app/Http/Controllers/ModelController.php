@@ -105,6 +105,7 @@ class ModelController extends Controller
             $type = Input::get('type_id');
             $image = Input::get('image');
             $order = Input::get('order');
+            $discount = Input::get('discount');
             $find = ModelT::find($id);
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
             if ($find->image !== $image) {
@@ -118,6 +119,7 @@ class ModelController extends Controller
             $find->type_id = $type;
             $find->image = $image;
             $find->order = $order;
+            $find->discount = $discount;
             $find->save();
             return response()->json(['success' => true], 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {

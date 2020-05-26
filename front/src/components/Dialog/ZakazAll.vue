@@ -771,7 +771,7 @@ export default {
           if (order.orderedSizes) {
             order.orderedSizes.forEach(size => {
               if (size.total && size.total > 0) {
-                this.zakazTovarSum += size.price * size.total
+                this.zakazTovarSum += size.price_discount * size.total
                 this.zakazTovar.push({
                   name: order.titleTab,
                   ...size,

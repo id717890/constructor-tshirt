@@ -41,6 +41,17 @@
         <v-col lg="6" md="8" sm="12" cols="12">
           <v-text-field
             type="number"
+            label="Скидка %"
+            min="0"
+            max="100"
+            v-model="form.discount"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="6" md="8" sm="12" cols="12">
+          <v-text-field
+            type="number"
             label="Очередность"
             v-model="form.order"
           ></v-text-field>
@@ -105,12 +116,12 @@ export default {
       valid: true,
       name: '',
       description: '',
+      discount: 0,
       order: null,
       type: null
     },
     preview: null
   }),
-  created() {},
   async mounted() {
     await this.getAllTypes()
     this.setLoad(false)
@@ -143,6 +154,7 @@ export default {
         this.createModel({
           name: this.form.name,
           description: this.form.description,
+          discount: this.form.discount,
           type_id: this.form.type.id,
           image: this.preview,
           order: this.form.order

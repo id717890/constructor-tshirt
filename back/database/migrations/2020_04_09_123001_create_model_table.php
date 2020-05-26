@@ -21,6 +21,7 @@ class CreateModelTable extends Migration
             $table->string('image')->nullable(false);
             $table->integer('type_id')->unsigned();
             $table->integer('order')->nullable(true);
+            $table->integer('discount')->unsigned()->default(0);
             $table->timestamps();
 
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');

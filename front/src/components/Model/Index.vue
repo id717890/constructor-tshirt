@@ -104,6 +104,9 @@
         class="elevation-1"
         hide
       >
+        <template v-slot:item.discount="{ item }">
+          {{ item.discount + '%' }}
+        </template>
         <template v-slot:item.order="{ item }">
           <v-text-field
             v-model="item.order"
@@ -167,6 +170,7 @@ export default {
       { text: 'Наименование', value: 'name' },
       { text: 'Тип', value: 'type.name' },
       { text: '', value: 'image', width: '150', sortable: false },
+      { text: 'Скидка', value: 'discount', width: '100' },
       { text: 'Очередь', value: 'order', width: '100', sortable: false },
       { text: '', value: '', value: 'act', width: '120', sortable: false }
     ]

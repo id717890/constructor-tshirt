@@ -32,6 +32,14 @@
 
           <v-text-field
             type="number"
+            label="Скидка %"
+            min="0"
+            max="100"
+            v-model="form.discount"
+          ></v-text-field>
+
+          <v-text-field
+            type="number"
             label="Очередность"
             v-model="form.order"
           ></v-text-field>
@@ -115,6 +123,7 @@ export default {
       valid: true,
       name: '',
       description: '',
+      discount: 0,
       order: null,
       type: null
     },
@@ -132,6 +141,7 @@ export default {
         this.form.name = value.name
         this.form.description = value.description
         this.form.type = value.type
+        this.form.discount = value.discount
         this.preview = value.image
         this.form.order = value.order
       }
@@ -143,6 +153,7 @@ export default {
       if (this.model) {
         this.form.name = this.model.name
         this.form.description = this.model.description
+        this.form.discount = value.discount
         this.form.type = this.model.type
         this.preview = this.model.image
         this.form.order = this.model.order
@@ -188,6 +199,7 @@ export default {
           id: this.id,
           name: this.form.name,
           description: this.form.description,
+          discount: this.form.discount,
           type_id: this.form.type.id,
           image: this.preview,
           order: this.form.order

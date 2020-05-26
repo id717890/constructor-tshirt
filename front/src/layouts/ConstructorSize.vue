@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  props: ['sizes'],
+  props: ['sizes', 'model'],
   data: () => ({
     data: [],
     hints: hintsData
@@ -81,10 +81,14 @@ export default {
           obj.id = x.id
           obj.size = x.size
           obj.price = x.price
+          obj.discount = this.model.discount
           obj.count = x.count
           obj.inMoscow = 0
           obj.inSpain = 0
           obj.total = 0
+          if (this.model.discount && this.model.discount > 0) {
+            obj.price_discount = x.price - (x.price * this.model.discount) / 100
+          } else obj.price_discount = x.price
           this.data.push(obj)
         })
       }

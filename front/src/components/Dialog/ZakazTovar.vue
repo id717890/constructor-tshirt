@@ -26,8 +26,10 @@
                 <th class="">Количество Москва</th>
                 <th class="">Количество Испания</th>
                 <th class="">Общее количество</th>
-                <th class="">Цена (руб.)</th>
-                <th class="">Сумма (руб.)</th>
+                <th class="">Цена РРЦ (руб.)</th>
+                <th class="">Цена JOMA-CLUB (руб.)</th>
+                <th class="">Сумма РРЦ (руб.)</th>
+                <th class="">Сумма JOMA-CLUB (руб.)</th>
               </tr>
             </thead>
             <tbody>
@@ -38,11 +40,17 @@
                 <td>{{ row.inSpain }}</td>
                 <td>{{ row.total }}</td>
                 <td>{{ row.price }}</td>
+                <td class="success--text font-weight-bold">
+                  {{ row.price_discount }}
+                </td>
                 <td>{{ row.price * row.total }}</td>
+                <td class="success--text font-weight-bold">
+                  {{ row.price_discount * row.total }}
+                </td>
               </tr>
               <tr>
                 <td
-                  colspan="6"
+                  colspan="8"
                   class="text-right"
                   style="font-size: 1.3rem; font-weight: 900"
                 >
@@ -72,7 +80,8 @@ export default {
       this.orders.forEach(order => {
         if (order.orderedSizes) {
           order.orderedSizes.forEach(size => {
-            if (size.price && size.total) sum += size.price * size.total
+            if (size.price_discount && size.total)
+              sum += size.price_discount * size.total
           })
         }
       })

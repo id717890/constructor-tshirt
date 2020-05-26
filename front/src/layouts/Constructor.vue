@@ -528,6 +528,7 @@
                   <table-size
                     ref="tableSize"
                     :sizes="order.orderedSizes"
+                    :model="order.model"
                     @changeOrderedSizes="changeOrderedSizes($event)"
                   />
                 </v-col>
@@ -992,6 +993,7 @@ export default {
       }, delay)
     },
     changeOrderedSizes(e) {
+      console.log(e)
       let order = this.getOrder()
       order.orderedSizes = [...e]
     },

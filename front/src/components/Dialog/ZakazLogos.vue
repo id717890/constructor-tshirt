@@ -1,86 +1,88 @@
 <template>
-  <v-card>
-    <v-card-title>
-      Заказ Нанесение
-      <v-spacer></v-spacer>
-      <v-btn
-        color="success"
-        text
-        class="mr-25 px-10"
-        large
-        @click="$emit('close')"
-      >
-        <v-icon>mdi-close</v-icon>
-        Закрыть
-      </v-btn>
-    </v-card-title>
-    <v-divider></v-divider>
-    <v-card-text>
-      <v-tabs v-model="tab" background-color="primary" no-animation>
-        <v-tab v-for="order in orders" :key="order.id">
-          {{ order.titleTab }}
-        </v-tab>
-        <v-tab>
-          ИТОГО
-        </v-tab>
-      </v-tabs>
+  <div class="v-application">
+    <v-card class=" w100">
+      <v-card-title>
+        Заказ Нанесение
+        <v-spacer></v-spacer>
+        <v-btn
+          color="success"
+          text
+          class="mr-25 px-10"
+          large
+          @click="$emit('close')"
+        >
+          <v-icon>mdi-close</v-icon>
+          Закрыть
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-tabs v-model="tab" background-color="primary" no-animation>
+          <v-tab v-for="order in orders" :key="order.id">
+            {{ order.titleTab }}
+          </v-tab>
+          <v-tab>
+            ИТОГО
+          </v-tab>
+        </v-tabs>
 
-      <v-tabs-items v-model="tab">
-        <v-tab-item v-for="item in orders" :key="item.id">
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="">Нанесение</th>
-                  <th class="">Кол-во</th>
-                  <th class="">Цена (руб.)</th>
-                  <th class="">Сумма (руб.)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, index) in rows(item)" :key="index">
-                  <td>{{ row.logoType }}</td>
-                  <td>{{ row.count }}</td>
-                  <td>{{ row.price }}</td>
-                  <td>{{ row.price * row.count }}</td>
-                </tr>
-                <tr>
-                  <td colspan="3" class="text-right">ИТОГО:</td>
-                  <td>{{ sumByTab(rows(item)) }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-tab-item>
-        <v-tab-item>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="">Нанесение</th>
-                  <th class="">Кол-во</th>
-                  <th class="">Сумма (руб.)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, index) in rowsTotal()" :key="index">
-                  <td>{{ row.name }}</td>
-                  <td>{{ row.count }}</td>
-                  <td>{{ row.sum }}</td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="text-right">ИТОГО:</td>
-                  <td>{{ sumTotal }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card-text>
-    <!-- <v-divider></v-divider> -->
-    <!-- <v-card-actions> </v-card-actions> -->
-  </v-card>
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="item in orders" :key="item.id">
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="">Нанесение</th>
+                    <th class="">Кол-во</th>
+                    <th class="">Цена (руб.)</th>
+                    <th class="">Сумма (руб.)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(row, index) in rows(item)" :key="index">
+                    <td>{{ row.logoType }}</td>
+                    <td>{{ row.count }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.price * row.count }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" class="text-right">ИТОГО:</td>
+                    <td>{{ sumByTab(rows(item)) }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-tab-item>
+          <v-tab-item>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="">Нанесение</th>
+                    <th class="">Кол-во</th>
+                    <th class="">Сумма (руб.)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(row, index) in rowsTotal()" :key="index">
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.count }}</td>
+                    <td>{{ row.sum }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-right">ИТОГО:</td>
+                    <td>{{ sumTotal }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card-text>
+      <!-- <v-divider></v-divider> -->
+      <!-- <v-card-actions> </v-card-actions> -->
+    </v-card>
+  </div>
 </template>
 
 <script>

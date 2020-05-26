@@ -50,10 +50,12 @@ export default {
   props: ['orders', 'deliveryAndPayment'],
   data: () => ({
     totalPrice: 0,
+    totalPriceWoDiscount: 0,
     payment: 'card',
     delivery: 'pickup',
     loadingPrint: false,
     zakazTovarSum: 0,
+    zakazTovarSumWoDiscount: 0,
     zakazNumberName: [],
     zakazLogos: [],
     zakazLogosSum: 0
@@ -62,6 +64,8 @@ export default {
     this.prepareZakazTovar()
     this.prepareZakazLogos()
     this.totalPrice = this.zakazLogosSum + this.zakazTovarSum
+    this.totalPriceWoDiscount =
+      this.zakazLogosSum + this.zakazTovarSumWoDiscount
   },
   mounted() {
     if (this.deliveryAndPayment && this.deliveryAndPayment.delivery)
@@ -209,7 +213,8 @@ export default {
           if (order.orderedSizes) {
             order.orderedSizes.forEach(size => {
               if (size.total && size.total > 0) {
-                this.zakazTovarSum += size.price * size.total
+                this.zakazTovarSum += size.price_discount * size.total
+                this.zakazTovarSumWoDiscount += size.price * size.total
               }
             })
           }
