@@ -21,6 +21,7 @@ Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
+Route::get('catalogs', 'CatalogController@index');
 Route::get('partners', 'HomeSliderController@getPartners');
 Route::get('configs/get', 'ConfigController@index');
 Route::get('home/slides', 'HomeSliderController@getHomeSlides');
@@ -58,6 +59,10 @@ Route::get('models/auto_size', 'ModelController@autoCreate');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('catalogs', 'CatalogController@create');
+    Route::post('catalogs/delete/{id}', 'CatalogController@delete');
+    Route::post('catalogs/update/{id}', 'CatalogController@update');
+
     Route::post('partners', 'HomeSliderController@createPartner');
     Route::post('partners/delete/{id}', 'HomeSliderController@deletePartner');
     Route::post('partners/update/{id}', 'HomeSliderController@updatePartner');

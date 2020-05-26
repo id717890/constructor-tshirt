@@ -35,6 +35,9 @@ export const GET_ALL_PARTNERS = 'GET_ALL_PARTNERS'
 /* HOME_SLIDES */
 export const GET_ALL_HOME_SLIDES = 'GET_ALL_HOME_SLIDES'
 
+/* CATALOGS */
+export const GET_ALL_CATALOGS = 'GET_ALL_CATALOGS'
+
 /* FAQS */
 export const GET_ALL_FAQS = 'GET_ALL_FAQS'
 

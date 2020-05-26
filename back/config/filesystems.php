@@ -53,6 +53,11 @@ return [
             'root' => storage_path('app/images')
         ],
 
+        'catalogs' => [
+            'driver'=> 'local',
+            'root' => storage_path('app/catalogs')
+        ],
+
         'temp' => [
             'driver'=> 'local',
             'root' => storage_path('app/images/temp')

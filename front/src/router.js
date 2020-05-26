@@ -126,6 +126,22 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'catalogs',
+          beforeEnter: authGuard,
+          component: () => import('./components/Catalog/Index.vue')
+        },
+        {
+          path: 'catalog/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Catalog/Create.vue')
+        },
+        {
+          path: 'catalog/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Catalog/Edit.vue')
+        },
+        {
           path: 'home/partner/edit/:id',
           props: true,
           beforeEnter: authGuard,
