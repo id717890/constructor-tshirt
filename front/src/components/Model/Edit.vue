@@ -153,7 +153,7 @@ export default {
       if (this.model) {
         this.form.name = this.model.name
         this.form.description = this.model.description
-        this.form.discount = value.discount
+        this.form.discount = this.model.discount
         this.form.type = this.model.type
         this.preview = this.model.image
         this.form.order = this.model.order

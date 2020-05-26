@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <h2>
+      <h2 class="d-flex">
         Модели футболок
         <v-btn fab small to="/lk/model/create" class="mx-3">
           <v-icon>mdi-plus</v-icon>
@@ -54,11 +54,19 @@
           multiple
           enctype="multipart/form-data"
         />
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Поиск"
+          single-line
+          hide-details
+        ></v-text-field>
       </h2>
     </v-col>
     <v-col cols="12" v-if="view === 'module'" class="d-flex flex-row flex-wrap">
       <v-card
-        v-for="item in tableItems"
+        v-for="item in searchedItems"
         :key="item.id"
         max-width="260"
         class="mr-6 mb-6 d-flex flex-column"
@@ -102,6 +110,7 @@
         :headers="headers"
         :items="tableItems"
         class="elevation-1"
+        :search="search"
         hide
       >
         <template v-slot:item.discount="{ item }">
@@ -164,6 +173,7 @@ import context from '../../api/api'
 
 export default {
   data: () => ({
+    search: '',
     view: 'list',
     removedItem: null,
     headers: [
@@ -250,7 +260,26 @@ export default {
     ...mapState({
       tableItems: state => state.model.allModels,
       confirmDialogResult: state => state.dialog.confirmDialogResult
-    })
+    }),
+    searchedItems() {
+      if (this.search) {
+        return this.tableItems.filter(x => {
+          return (
+            x.name.toLowerCase().match(this.search.toLowerCase()) ||
+            x.type.name.toLowerCase().match(this.search.toLowerCase()) ||
+            x.discount
+              .toString()
+              .toLowerCase()
+              .match(this.search.toLowerCase()) ||
+            x.order
+              .toString()
+              .toLowerCase()
+              .match(this.search.toLowerCase())
+          )
+        })
+      }
+      return this.tableItems
+    }
   },
   async mounted() {
     await this.getAllModels()
