@@ -51,11 +51,21 @@
             v-if="showPanelModels && modelsByType && modelsByType.length > 0"
           >
             <v-col>
-              <h2 class="text-center">Модели</h2>
+              <h2 class="text-center d-flex justify-center align-center">
+                <span class="mt-4">Модели</span>
+                <v-text-field
+                  class="flex-grow-0 ml-3"
+                  style="width: 200px"
+                  v-model="searchModel"
+                  append-icon="mdi-magnify"
+                  label="Поиск"
+                  hide-details
+                ></v-text-field>
+              </h2>
               <swiper ref="mySwiperModel" :options="swiperOptions">
                 <swiper-slide
                   @click.native="selModel(model)"
-                  v-for="model in modelsByType"
+                  v-for="model in searchedModelByType"
                   :key="model.id"
                   class="swiper-element"
                   :class="{
@@ -83,11 +93,21 @@
             v-if="showPanelColors && colorsByModel && colorsByModel.length > 0"
           >
             <v-col cols="12">
-              <h2 class="text-center">Цвета</h2>
+              <h2 class="text-center d-flex justify-center align-center">
+                <span class="mt-4">Цвета</span>
+                <v-text-field
+                  class="flex-grow-0 ml-3"
+                  style="width: 200px"
+                  v-model="searchColor"
+                  append-icon="mdi-magnify"
+                  label="Поиск"
+                  hide-details
+                ></v-text-field>
+              </h2>
               <swiper ref="myswipercolors" :options="swiperOptions">
                 <swiper-slide
                   @click.native="selColor(color)"
-                  v-for="color in colorsByModel"
+                  v-for="color in searchedColorsByModel"
                   :key="color.id"
                   class="swiper-element"
                   :class="{
@@ -625,6 +645,8 @@ export default {
   },
   data: () => ({
     // tableSizesData: [],
+    searchModel: '',
+    searchColor: '',
     tab: 0,
     showPanelTypes: false,
     showPanelModels: false,
@@ -739,10 +761,33 @@ export default {
     allLogosList() {
       return [...this.allLogos, ...this.allCustomLogos]
     },
+    searchedModelByType() {
+      if (this.searchModel) {
+        if (this.modelsByType) {
+          return this.modelsByType.filter(x => {
+            return x.name.toLowerCase().match(this.searchModel.toLowerCase())
+          })
+        }
+      }
+      return this.modelsByType
+    },
     modelsByType() {
       if (this.currentType && this.currentType.id && this.allModels)
         return this.allModels.filter(x => x.type_id === this.currentType.id)
       return []
+    },
+    searchedColorsByModel() {
+      if (this.searchColor) {
+        if (this.colorsByModel) {
+          return this.colorsByModel.filter(x => {
+            return (
+              x.name.toLowerCase().match(this.searchColor.toLowerCase()) ||
+              x.article.toLowerCase().match(this.searchColor.toLowerCase())
+            )
+          })
+        }
+      }
+      return this.colorsByModel
     },
     colorsByModel() {
       if (this.currentModel && this.currentModel.id)
@@ -1368,6 +1413,8 @@ export default {
       return result
     },
     selColor(color) {
+      this.searchModel = ''
+      this.searchColor = ''
       this.currentColor = color
       // this.tableSizesData = color.sizes.map
       if (
