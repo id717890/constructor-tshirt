@@ -6,7 +6,7 @@
           <h1>Редактирование модели</h1>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="model">
         <v-col lg="6" md="8" sm="12" cols="12">
           <v-select
             :items="types"
@@ -73,10 +73,20 @@
       </v-row>
       <v-row>
         <v-col md="8" sm="12" cols="12">
-          <h2>Цвета</h2>
+          <h2 class="d-flex">
+            Цвета
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Поиск"
+              single-line
+              hide-details
+            ></v-text-field>
+          </h2>
           <color-table
             v-if="model && colors"
-            :rows="colors"
+            :rows="searchedItems"
             :model_id="model.id"
           />
         </v-col>
@@ -118,6 +128,7 @@ export default {
   },
   props: ['id'],
   data: () => ({
+    search: '',
     textField: [v => !!v || 'Обязательное поле'],
     form: {
       valid: true,
@@ -170,6 +181,17 @@ export default {
     },
     colors() {
       return this.getColorosByModelId(this.id)
+    },
+    searchedItems() {
+      if (this.search) {
+        return this.colors.filter(x => {
+          return (
+            x.article.toLowerCase().match(this.search.toLowerCase()) ||
+            x.name.toLowerCase().match(this.search.toLowerCase())
+          )
+        })
+      }
+      return this.colors
     }
   },
   methods: {
