@@ -40,18 +40,22 @@
               </div>
 
               <div>
-                <div class="" style="font-family: 'PTSans'">
-                  <v-icon>mdi-map-marker</v-icon>
-                  г.Москва, ул.Краснобогатырская д.89, стр.3
-                </div>
+                <a href="#" @click.prevent="addressMapDialog">
+                  <div class="" style="font-family: 'PTSans'">
+                    <v-icon>mdi-map-marker</v-icon>
+                    г.Москва, ул.Краснобогатырская 89, стр.5
+                  </div>
+                </a>
                 <!-- <div class="t7">
                   <v-icon>mdi-map-marker</v-icon>
                   г.Москва, 2-й Кабельный пр. 2А стр. 45
                 </div>-->
-                <div class="t7">
-                  <v-icon>mdi-email</v-icon>
-                  info@joma-club.ru
-                </div>
+                <a href="mailto:info@joma-club.ru">
+                  <div class="t7">
+                    <v-icon>mdi-email</v-icon>
+                    info@joma-club.ru
+                  </div>
+                </a>
               </div>
 
               <div>
@@ -196,14 +200,19 @@
                   <v-icon>mdi-map-marker</v-icon>
                   г.Москва, 2-й Кабельный пр. 2А стр. 45
                 </div> -->
-                <div class="t7">
-                  <v-icon color="#cdcdcd">mdi-map-marker</v-icon>
-                  г.Москва, ул.Краснобогатырская д.89, стр.3
-                </div>
-                <div class="t7">
-                  <v-icon color="#cdcdcd">mdi-email</v-icon>
-                  info@joma-club.ru
-                </div>
+                <a href="#" @click.prevent="addressMapDialog">
+                  <div class="t7">
+                    <v-icon color="#cdcdcd">mdi-map-marker</v-icon>
+                    г.Москва, ул.Краснобогатырская 89, стр.5
+                  </div>
+                </a>
+
+                <a href="mailto:info@joma-club.ru">
+                  <div class="t7">
+                    <v-icon color="#cdcdcd">mdi-email</v-icon>
+                    info@joma-club.ru
+                  </div>
+                </a>
               </div>
               <!-- <div class="t4">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -261,6 +270,7 @@ import Vue from 'vue'
 import context from '../api/api'
 import config from '../init/config'
 import CallMeDialog from '../components/Dialog/CallDialog'
+import AddressMapDialog from '../components/Dialog/AddressMap'
 import { mapGetters } from 'vuex'
 export default {
   data: () => ({
@@ -279,6 +289,19 @@ export default {
     ]
   }),
   methods: {
+    addressMapDialog() {
+      this.$modal.show(
+        AddressMapDialog,
+        {},
+        {
+          ...config.modalSettings,
+          clickToClose: true,
+          width: '100%',
+          height: '100%'
+        },
+        {}
+      )
+    },
     callMeDialog() {
       this.$modal.show(
         CallMeDialog,

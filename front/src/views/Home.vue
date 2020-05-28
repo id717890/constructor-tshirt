@@ -2,7 +2,7 @@
   <v-row no-gutters>
     <v-col cols="12" class="pa-0">
       <v-row v-if="slides">
-        <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-1">
+        <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-3">
           <v-carousel :height="slidesHeight" hide-delimiters class="home-slide">
             <v-carousel-item
               :src="img(slide.image)"
@@ -334,7 +334,11 @@ export default {
     designChallengeDialog() {
       this.$modal.show(
         DesignChallengeDialog,
-        {},
+        {
+          title: this.slideHomeDiscountText
+            ? this.slideHomeDiscountText.value
+            : ''
+        },
         { ...config.modalSettings, clickToClose: true, maxWidth: 400 },
         {}
       )
