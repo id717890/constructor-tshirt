@@ -5,7 +5,8 @@
         <v-card-title>
           <h3>{{ about.title }}</h3>
         </v-card-title>
-        <v-card-text class="title page" v-html="about.content"> </v-card-text>
+        <v-card-text class="title page text-justify" v-html="about.content">
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>

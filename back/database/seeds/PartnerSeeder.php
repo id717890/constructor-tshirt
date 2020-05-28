@@ -15,6 +15,7 @@ class PartnerSeeder extends Seeder
 
         DB::table('partners')->insert([
             'image' => 'home-partner-amd.png',
+            'url'=>'https://amd.com',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -30,6 +31,7 @@ class PartnerSeeder extends Seeder
         ]);
         DB::table('partners')->insert([
             'image' => 'home-partner-google.png',
+            'url'=>'https://google.com',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);

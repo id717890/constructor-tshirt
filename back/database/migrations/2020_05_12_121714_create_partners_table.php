@@ -17,6 +17,7 @@ class CreatePartnersTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('image')->nullable(false);
+            $table->text('url')->nullable(true);
             $table->timestamps();
         });
     }

@@ -57,10 +57,15 @@
               label="Высота слайдера"
               outlined
             ></v-text-field>
+            <v-text-field
+              class="flex-shrink-0 ma-3"
+              type="number"
+              v-model="slidesInterval"
+              label="Интервал"
+              outlined
+            ></v-text-field>
             <v-btn
-              @click.prevent="
-                saveConfig({ key: 'home_slider_height', value: slidesHeight })
-              "
+              @click.prevent="saveConfig"
               class="mt-1"
               fab
               text
@@ -86,6 +91,7 @@ export default {
   mixins: [imageMixin],
   data: () => ({
     slidesHeight: 290,
+    slidesInterval: 5,
     removedItem: null
   }),
   methods: {
@@ -96,7 +102,11 @@ export default {
       'deleteHomeSlide'
     ]),
     saveConfig(cfg) {
-      this.setConfig(cfg)
+      this.setConfig({ key: 'home_slider_height', value: this.slidesHeight })
+      this.setConfig({
+        key: 'home_slider_interval',
+        value: this.slidesInterval
+      })
     },
     openUrl(url) {
       if (
@@ -133,6 +143,9 @@ export default {
     }),
     slidesHeightCfg() {
       return this.getConfigByKey('home_slider_height')
+    },
+    slidesIntervalCfg() {
+      return this.getConfigByKey('home_slider_interval')
     }
   },
   async created() {
@@ -141,10 +154,15 @@ export default {
   mounted() {
     if (this.slidesHeightCfg)
       this.slidesHeight = parseInt(this.slidesHeightCfg.value)
+    if (this.slidesIntervalCfg)
+      this.slidesInterval = parseInt(this.slidesIntervalCfg.value)
   },
   watch: {
     slidesHeightCfg(value) {
       if (value) this.slidesHeight = parseInt(value.value)
+    },
+    slidesIntervalCfg(value) {
+      if (value) this.slidesInterval = parseInt(value.value)
     }
   }
 }

@@ -134,6 +134,7 @@ class HomeSliderController extends Controller
         try {
             $find = Partner::find($id);
             $image = Input::get('image');
+            $url = Input::get('url');
             if ($find === null) return response()->json(['success' => false, 'error' => 'Model not found'], 400);
             if ($find->image !== $image) {
                 try {
@@ -142,6 +143,7 @@ class HomeSliderController extends Controller
                 }
             }
             $find->image = $image;
+            $find->url= $url;
             $find->save();
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {

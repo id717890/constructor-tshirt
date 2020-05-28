@@ -8,6 +8,7 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12">
+          <v-text-field label="URL" v-model="form.url"></v-text-field>
           <v-btn @click="$refs.file.click()" dark class="mb-5 w100">
             <v-icon>mdi-image</v-icon>
             Загрузить изображение</v-btn
@@ -60,7 +61,8 @@ export default {
   data: () => ({
     form: {
       valid: true,
-      image: ''
+      image: '',
+      url: ''
     }
   }),
   methods: {

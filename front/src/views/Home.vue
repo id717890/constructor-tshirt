@@ -3,7 +3,13 @@
     <v-col cols="12" class="pa-0">
       <v-row v-if="slides">
         <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-3">
-          <v-carousel :height="slidesHeight" hide-delimiters class="home-slide">
+          <v-carousel
+            :height="slidesHeight"
+            hide-delimiters
+            class="home-slide"
+            :interval="slidesInterval"
+            :cycle="true"
+          >
             <v-carousel-item
               :src="img(slide.image)"
               v-for="slide in slides"
@@ -243,7 +249,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="t3 text-center pt-10">Наши партнеры</div>
+              <div class="t3 text-center pt-10">Наши друзья</div>
               <swiper
                 ref="partnerSwiper"
                 class="partnerSwiper"
@@ -255,11 +261,12 @@
                   class="swiper-element swiper-element__partner"
                 >
                   <v-img
+                    @click.prevent="openUrlPartner(partner.url)"
                     contain
                     height="100%"
                     aspect-ratio="1.6"
                     :src="img(partner.image)"
-                    max-width="260"
+                    max-width="370"
                   >
                   </v-img>
                 </swiper-slide>
@@ -287,6 +294,7 @@ export default {
   mixins: [imageMixin],
   data: () => ({
     slidesHeight: 290,
+    slidesInterval: 5000,
     news3: [],
     swiperOptions: {
       ...config.swiperOptions,
@@ -303,6 +311,9 @@ export default {
       news: state => state.news.allNews,
       slides: state => state.home.allHomeSlides
     }),
+    slidesIntervalCfg() {
+      return this.getConfigByKey('home_slider_interval')
+    },
     slidesHeightCfg() {
       return this.getConfigByKey('home_slider_height')
     },
@@ -321,6 +332,9 @@ export default {
     },
     slidesHeightCfg(value) {
       if (value) this.slidesHeight = parseInt(value.value)
+    },
+    slidesIntervalCfg(value) {
+      if (value) this.slidesInterval = parseInt(value.value) * 1000
     }
   },
   mounted() {
@@ -329,6 +343,8 @@ export default {
     }
     if (this.slidesHeightCfg)
       this.slidesHeight = parseInt(this.slidesHeightCfg.value)
+    if (this.slidesIntervalCfg)
+      this.slidesInterval = parseInt(this.slidesIntervalCfg.value) * 1000
   },
   methods: {
     designChallengeDialog() {
@@ -342,6 +358,17 @@ export default {
         { ...config.modalSettings, clickToClose: true, maxWidth: 400 },
         {}
       )
+    },
+    openUrlPartner(url) {
+      if (url) {
+        if (
+          !url.toLowerCase().includes('https') ||
+          !url.toLowerCase().includes('http')
+        ) {
+          url = 'https://' + url
+        }
+        window.open(url, '_blank')
+      }
     },
     openUrl(url) {
       if (

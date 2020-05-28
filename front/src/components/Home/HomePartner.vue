@@ -74,6 +74,17 @@ export default {
       'resetConfirmDialogResult',
       'deletePartner'
     ]),
+    operUrl(url) {
+      if (url) {
+        if (
+          !url.toLowerCase().includes('https') ||
+          !url.toLowerCase().includes('http')
+        ) {
+          url = 'https://' + url
+        }
+        window.open(url, '_blank')
+      }
+    },
     deleteItem(item) {
       this.removedItem = item
       this.$modal.show(
