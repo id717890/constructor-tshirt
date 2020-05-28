@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalog;
 use App\Source\ConfigService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,8 +13,19 @@ class CatalogController extends Controller
 {
     public function index()
     {
-        $result = Catalog::all();
+        $result = Catalog::orderBy('created_at','desc')->get();;
         return response()->json($result, 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function exportCatalogFile(Request $request)
+    {
+        try {
+            $filename = Input::get('filename');
+            $path = Storage::disk('catalogs')->getAdapter()->getPathPrefix() . $filename;
+            return Response::download($path);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 400);
+        }
     }
 
     public function create(Request $request)
@@ -33,6 +45,7 @@ class CatalogController extends Controller
             $newCatalog->name = Input::get('name');
             $newCatalog->image = Input::get('image');
             $newCatalog->file = $name . '.' . $ext;
+            $newCatalog->ext = $ext;
             $newCatalog->save();
             return response()->json($newCatalog, 200);
         } catch (\Exception $e) {
@@ -61,6 +74,7 @@ class CatalogController extends Controller
                     if ($ext !== '') {
                         $file->storeAs('catalogs', $name . '.' . $ext);
                         $find->file = $name . '.' . $ext;
+                        $find->ext = $ext;
                     }
                 } else return response()->json(['success' => false, 'error' => 'File is required'], 400);
             }

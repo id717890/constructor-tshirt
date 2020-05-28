@@ -28,6 +28,7 @@
                 style="display: none"
                 ref="file"
                 type="file"
+                accept="image/*"
                 @change="upload"
               />
               <div v-if="form.image">
@@ -51,6 +52,7 @@
                 style="display: none"
                 ref="doc"
                 type="file"
+                accept=".csv, .pdf, .xls, .xlsx"
                 @change="uploadDoc"
               />
               <div v-if="form.path">{{ form.path }}</div>

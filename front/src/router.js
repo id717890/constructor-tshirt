@@ -21,6 +21,13 @@ const router = new Router({
           }
         },
         {
+          path: 'catalogs',
+          name: 'Catalogs',
+          components: {
+            guest: () => import('./components/Catalog/IndexGuest.vue')
+          }
+        },
+        {
           path: 'news/:id',
           name: 'SingleNews',
           props: {

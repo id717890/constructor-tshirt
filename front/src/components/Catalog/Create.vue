@@ -28,6 +28,7 @@
                 style="display: none"
                 ref="file"
                 type="file"
+                accept="image/*"
                 @change="upload"
               />
               <div v-if="form.image">
@@ -44,13 +45,14 @@
                 dark
                 class="mb-5 w100"
               >
-                <v-icon>mdi-image</v-icon>
+                <v-icon>mdi-file</v-icon>
                 Загрузить файл
               </v-btn>
               <input
                 style="display: none"
                 ref="doc"
                 type="file"
+                accept=".csv, .pdf, .xls, .xlsx"
                 @change="uploadDoc"
               />
               <div v-if="form.path">{{ form.path }}</div>

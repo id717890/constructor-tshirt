@@ -132,10 +132,13 @@
             <v-icon dark>{{ item.icon }}</v-icon>
             <span class="text-center" v-html="item.title"></span>
           </router-link>
-          <a @click.prevent="downloadCatalog" class="d-flex flex-column item">
+          <router-link to="/catalogs" class="d-flex flex-column item">
             <v-icon dark>mdi-download</v-icon>
-            <span class="text-center"> Скачать каталог</span>
-          </a>
+            <span class="text-center">
+              Скачать каталог - <br />
+              Цена - Склад</span
+            >
+          </router-link>
           <router-link to="/lk" class="d-flex flex-column item" v-if="isAuth">
             <v-icon dark>mdi-cogs</v-icon>
             <span class="text-center">ЛК</span>

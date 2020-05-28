@@ -19,6 +19,7 @@ class CreateCatalogsTable extends Migration
             $table->string('name')->nullable(false);
             $table->string('image')->nullable(false);
             $table->string('file')->nullable(false);
+            $table->string('ext')->nullable(true);
             $table->timestamps();
         });
     }
