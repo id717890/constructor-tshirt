@@ -134,3 +134,11 @@
 .photos-carousel .v-window__next {
   right: 0;
 }
+
+.map .v-image__image {
+  height: 100vh;
+}
+
+.map .v-responsive__content {
+  z-index: 10;
+}

@@ -30,6 +30,9 @@
             </v-col>
           </v-row>
         </v-card-text>
+        <v-card-text v-else>
+          <h4>Данные отсутствуют.</h4>
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>

@@ -15,7 +15,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueNoty from 'vuejs-noty-2'
 import AxiosConfig from './api/http-config'
 Vue.$http = AxiosConfig
-
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import 'vuejs-noty-2/dist/vuejs-noty.css'

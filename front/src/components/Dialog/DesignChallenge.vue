@@ -111,12 +111,15 @@ export default {
       // })
     },
     sendForm() {
-      console.log(123456)
-      return
       if (this.$refs.form.validate()) {
         this.loading = true
+        let fd = new FormData()
+        fd.append('file', this.form.file)
+        fd.append('name', this.form.name)
+        fd.append('phone', this.form.phone)
+        fd.append('text', this.form.text)
         context
-          .post('api/callback/design', this.form)
+          .post('api/callback/design', fd)
           .then(x => {
             this.loading = false
             this.$refs.form.reset()

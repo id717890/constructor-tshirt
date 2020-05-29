@@ -116,6 +116,11 @@ const router = new Router({
       component: () => import('./components/Print/ZakazAll.vue')
     },
     {
+      path: '/print_address',
+      name: 'PrintAddress',
+      component: () => import('./components/Print/AddressMap.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('./components/Auth/Login.vue')
