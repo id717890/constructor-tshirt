@@ -29,10 +29,12 @@
                   <v-icon>mdi-phone</v-icon>
                   +7 (495) 123-456-6 (Москва)
                 </div> -->
-                <div class="t7">
-                  <v-icon>mdi-cellphone</v-icon>
-                  +7 (967) 21-92-444 (Москва)
-                </div>
+                <a href="tel:+79672192444">
+                  <div class="t7">
+                    <v-icon>mdi-cellphone</v-icon>
+                    +7 (967) 21-92-444 (Москва)
+                  </div>
+                </a>
                 <!-- <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
                   +7 (495) 123-456-6 (Волгоград)
@@ -182,10 +184,12 @@
                 </div>
               </div>
               <div class="white--text mb-6">
-                <div class="t7">
-                  <v-icon color="#cdcdcd">mdi-phone</v-icon>
-                  +7 (967) 21-92-444 (Москва)
-                </div>
+                <a href="tel:+79672192444">
+                  <div class="t7">
+                    <v-icon color="#cdcdcd">mdi-phone</v-icon>
+                    +7 (967) 21-92-444 (Москва)
+                  </div>
+                </a>
                 <!-- <div class="t7">
                   <v-icon>mdi-cellphone</v-icon>
                   +7 (495) 123-456-6 (Москва)

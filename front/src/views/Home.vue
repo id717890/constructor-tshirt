@@ -266,7 +266,7 @@
                     height="100%"
                     aspect-ratio="1.6"
                     :src="img(partner.image)"
-                    max-width="370"
+                    max-width="300"
                   >
                   </v-img>
                 </swiper-slide>

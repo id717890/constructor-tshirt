@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class CallbackController extends Controller
 {
 //    private $email = ['jusupovz@gmail.com', 'vadimnazarovich@mail.ru'];
-//    private $email_for_contest = ['jusupovz@gmail.com', 'vadimnazarovich@mail.ru'];
+//    private $email_for_contest = ['jusupovz@gmail.com', 'contest@joma-club.ru '];
 
     private $email = ['jusupovz@gmail.com'];
     private $email_for_contest = ['jusupovz@gmail.com'];
