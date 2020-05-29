@@ -17,7 +17,7 @@ class CreateConfigsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('key')->nullable(false);
-            $table->string('value')->nullable(false);
+            $table->text('value')->nullable(false);
             $table->timestamps();
         });
     }

@@ -8,6 +8,7 @@
     <v-col cols="12">
       <home-slider />
       <home-discount />
+      <home-block4 />
       <home-partner />
     </v-col>
   </v-row>
@@ -17,11 +18,13 @@
 import HomeSlider from './HomeSlider'
 import HomeDiscount from './HomeDiscount'
 import HomePartner from './HomePartner'
+import HomeBlock4 from './HomeBlock4'
 export default {
   components: {
     HomeSlider,
     HomeDiscount,
-    HomePartner
+    HomePartner,
+    HomeBlock4
   }
 }
 </script>

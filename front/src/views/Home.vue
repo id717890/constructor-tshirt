@@ -154,53 +154,63 @@
                 </v-carousel-item>
               </v-carousel>
             </v-col>
-            <v-col
-              md="6"
-              cols="12"
-              class="d-flex flex-column align-center justify-center pt-3"
-            >
+            <v-col md="6" cols="12" class="d-flex flex-column  pt-3">
               <!-- <v-row class="flex-grow-0">
                 <v-col cols="12">
                   <div class="t3 text-center pt-10">Наши партнеры</div>
                 </v-col>
               </v-row> -->
               <v-row>
-                <v-col cols="12" class="pa-0">
+                <v-col cols="12" class="pa-0" v-if="slide4">
                   <v-img
+                    v-if="slide4.image"
                     aspect-ratio="1.5"
                     height="385"
                     class=" bg-constructor"
-                    src="~@/assets/img/konstr-bg.jpg"
+                    :src="img(slide4.image)"
                   >
                     <div
                       class="w100 h100 d-flex flex-column align-center justify-center pa-6"
                     >
-                      <div class="t1 align-self-start">
-                        Создай свою форму
+                      <div class="t1 align-self-start" v-if="slide4.title">
+                        {{ slide4.title }}
                       </div>
-                      <div class="t2_1 mb-4">
+                      <div
+                        class="t2_1 mb-4"
+                        v-html="slide4.text"
+                        v-if="slide4.text"
+                      >
                         Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit. Minima ullam, expedita aliquid eum, iure cumque
                         cum laudantium consectetur itaque
                       </div>
                       <v-btn
+                        v-if="slide4.button1Text"
                         x-large
                         color="#f5a93c"
                         rounded
                         outlined
                         class="mb-2"
                         to="/constructor"
+                        @click="openUrl(slide4.button1Url)"
                       >
                         <img
                           class="mr-3"
                           src="~@/assets/img/toy-brick.png"
                           alt=""
                         />
-                        Перейти к конструктору
+                        {{ slide4.button1Text }}
                       </v-btn>
-                      <v-btn large rounded outlined dark>
+                      <v-btn
+                        v-if="slide4.button2Text"
+                        large
+                        rounded
+                        outlined
+                        dark
+                        @click="videoDialog(slide4.button2Iframe)"
+                      >
                         <fai class="mr-3" :icon="['fab', 'youtube']" />
-                        Смотреть видеоурок
+                        {{ slide4.button2Text }}
                       </v-btn>
                     </div>
                   </v-img>
@@ -289,10 +299,12 @@ import imageMixin from '../mixins/image'
 import config from '../init/config'
 import Correspondent from '../components/Dialog/BecomeCorrestpondent'
 import DesignChallengeDialog from '../components/Dialog/DesignChallenge'
+import VideoDialog from '../components/Dialog/VideoDialog'
 
 export default {
   mixins: [imageMixin],
   data: () => ({
+    slide4: null,
     slidesHeight: 290,
     slidesInterval: 5000,
     news3: [],
@@ -311,6 +323,9 @@ export default {
       news: state => state.news.allNews,
       slides: state => state.home.allHomeSlides
     }),
+    block4() {
+      return this.getConfigByKey('home_block4')
+    },
     slidesIntervalCfg() {
       return this.getConfigByKey('home_slider_interval')
     },
@@ -330,6 +345,9 @@ export default {
         this.news3 = value.slice(0, 3)
       }
     },
+    block4(value) {
+      if (value) this.slide4 = JSON.parse(value.value)
+    },
     slidesHeightCfg(value) {
       if (value) this.slidesHeight = parseInt(value.value)
     },
@@ -345,8 +363,22 @@ export default {
       this.slidesHeight = parseInt(this.slidesHeightCfg.value)
     if (this.slidesIntervalCfg)
       this.slidesInterval = parseInt(this.slidesIntervalCfg.value) * 1000
+    if (this.block4) this.slide4 = JSON.parse(this.block4.value)
   },
   methods: {
+    videoDialog(data) {
+      this.$modal.show(
+        VideoDialog,
+        { iframe: data },
+        {
+          ...config.modalSettings,
+          clickToClose: true,
+          width: '60%',
+          height: '60%'
+        },
+        {}
+      )
+    },
     designChallengeDialog() {
       this.$modal.show(
         DesignChallengeDialog,

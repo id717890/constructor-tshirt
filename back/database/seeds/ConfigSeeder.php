@@ -26,5 +26,13 @@ class ConfigSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+
+        DB::table('configs')->insert([
+            'key' => 'home_block4',
+            'value' => '{"button1Text":"Перейти к конструктору1","button1Url":"/constructor","button2Text":"Смотреть видеоролик","button2Iframe":"йцуйц уйц уй цу ","image":"home-block4-{32ACAE69-E8F4-4C43-855D-57359215D2B4}.jpg","title":"Создай свою форму!","text":"<h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima ullam, expedita aliquid eum, iure cumque cum laudantium consectetur itaque</h1>"}',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+
     }
 }
