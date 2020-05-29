@@ -4,7 +4,6 @@
     :headers="headers"
     :items="data"
     class="elevation-1"
-    hide-default-footer
     :options="pagination"
     hide
   >

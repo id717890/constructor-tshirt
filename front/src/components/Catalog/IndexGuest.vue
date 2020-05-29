@@ -2,7 +2,7 @@
   <v-row>
     <v-col md="10" offset-md="1" cols="12">
       <v-card flat style="min-height: 60vh">
-        <v-card-title>
+        <v-card-title class="mb-6">
           <h2>Каталоги</h2>
         </v-card-title>
         <v-card-text v-if="catalogs">

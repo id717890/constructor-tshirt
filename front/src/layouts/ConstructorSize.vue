@@ -203,12 +203,22 @@ const hintsData = [
   {
     size: '2XL',
     hint:
-      "<table class='table table-dark table-hint m-0'><th><td>РФ</td><td>РОСТ</td><td>ГРУДЬ</td><td>ТАЛИЯ</td></th><tr><td>Муж.</td><td>52-54</td><td>189-194</td><td>115-143</td><td>104-134</td></tr><tr><td>Жен.</td><td>56</td><td>173-176</td><td>103-106</td><td>87-90</td></tr></table>"
+      "<table class='table table-dark table-hint m-0'><th><td>РФ</td><td>РОСТ</td><td>ГРУДЬ</td><td>ТАЛИЯ</td></th><tr><td>Муж.</td><td>54</td><td>182-189</td><td>115-120</td><td>104-134</td></tr><tr><td>Жен.</td><td>56</td><td>172-178</td><td>105-110</td><td>87-90</td></tr></table>"
   },
   {
     size: '3XL',
     hint:
       "<table class='table table-dark table-hint m-0'><th><td>РФ</td><td>РОСТ</td><td>ГРУДЬ</td><td>ТАЛИЯ</td></th><tr><td>Муж.</td><td>54-56</td><td>194-198</td><td>143-155</td><td>134-150</td></tr></table>"
+  },
+  {
+    size: '2XL-3XL',
+    hint:
+      "<table class='table table-dark table-hint m-0'><th><td>РФ</td><td>РОСТ</td><td>ГРУДЬ</td></th><tr><td>Муж.</td><td>54-56</td><td>189-195</td><td>115-125</td></tr><tr><td>Жен.</td><td>54-56</td><td>175-180</td><td>105-110</td></tr></table>"
+  },
+  {
+    size: '4XL',
+    hint:
+      "<table class='table table-dark table-hint m-0'><th><td>РФ</td><td>РОСТ</td></th><tr><td>Муж.</td><td>56-58</td><td>195-200</td></tr></table>"
   }
 ]
 </script>

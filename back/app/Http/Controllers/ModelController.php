@@ -28,13 +28,17 @@ class ModelController extends Controller
     public function autoCreate(Request $request)
     {
         try {
-            DB::statement('delete from model_sizes');
+//            DB::statement('delete from model_sizes');
             foreach (ModelT::all() as $model) {
                 foreach ($this->sizes as $size) {
-                    $model_size = new ModelSize();
-                    $model_size->model_id = $model->id;
-                    $model_size->size = $size;
-                    $model_size->save();
+                    $find = ModelSize::where('model_id', $model->id)->where('size', $size)->get();
+//                    dd(count($find));
+                    if (count($find ) === 0) {
+                        $model_size = new ModelSize();
+                        $model_size->model_id = $model->id;
+                        $model_size->size = $size;
+                        $model_size->save();
+                    }
                 }
             }
             return response()->json('success', 200, ['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);

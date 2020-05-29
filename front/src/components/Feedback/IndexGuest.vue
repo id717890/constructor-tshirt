@@ -2,8 +2,8 @@
   <v-row class="v-application">
     <v-col md="10" offset-md="1" sm="12" cols="12" style="min-height: 90vh">
       <v-card height="100%" flat>
-        <v-card-title>
-          <h3>Раздел отзывы и пожелания</h3>
+        <v-card-title class="mb-6">
+          <h2>Отзывы и пожелания</h2>
         </v-card-title>
         <v-card-text>
           <v-form lazy-validation v-model="form.valid" ref="form">

@@ -16,10 +16,12 @@ use Maatwebsite\Excel\Facades\Excel;
 class CallbackController extends Controller
 {
 //    private $email = ['jusupovz@gmail.com', 'vadimnazarovich@mail.ru'];
-//    private $email_for_contest = ['jusupovz@gmail.com', 'contest@joma-club.ru '];
+//    private $email_for_contest = ['jusupovz@gmail.com', 'contest@joma-club.ru'];
+//    private $email_for_correspondent = ['jusupovz@gmail.com', 'news@joma-club.ru'];
 
     private $email = ['jusupovz@gmail.com'];
     private $email_for_contest = ['jusupovz@gmail.com'];
+    private $email_for_correspondent = ['jusupovz@gmail.com'];
 
     public function  designChallenge(Request $request)
     {
@@ -62,8 +64,9 @@ class CallbackController extends Controller
             $name = Input::get('name');
             $phone = Input::get('phone');
             $text = Input::get('text');
+            $file = Input::file('file');
             $subject = "Новая заявка \"Хочу стать корреспондентом\" с JOMA-CLUB.RU";
-            $email = $this->email;
+            $email = $this->email_for_correspondent;
             $fr = 'info@joma-club.ru';
             $seo = 'JOMA-CLUB';
             Mail::send('email.correspondent', [
@@ -73,10 +76,16 @@ class CallbackController extends Controller
                 'title' => $subject
 
             ],
-                function ($mail) use ($email, $subject, $fr, $seo) {
+                function ($mail) use ($email, $subject, $fr, $seo, $file) {
                     $mail->from($fr, $seo);
                     $mail->to($email);
                     $mail->subject($subject);
+                    if ($file !== null) {
+                        $mail->attach($file, array(
+                                'as' => $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension(), // If you want you can chnage original name to custom name
+                                'mime' => $file->getMimeType())
+                        );
+                    }
                 });
 
             return response()->json(200);

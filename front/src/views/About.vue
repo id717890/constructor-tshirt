@@ -3,7 +3,7 @@
     <v-col md="10" offset-md="1" sm="12" cols="12" style="min-height: 90vh">
       <v-card height="100%" flat v-if="about">
         <v-card-title>
-          <h3>{{ about.title }}</h3>
+          <h2 class="mb-6">{{ about.title }}</h2>
         </v-card-title>
         <v-card-text class="title page text-justify" v-html="about.content">
         </v-card-text>

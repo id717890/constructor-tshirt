@@ -13,7 +13,8 @@ class ColorController extends Controller
 {
     private $sizes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->sizes = ConfigService::all_sizes();
     }
 

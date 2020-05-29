@@ -103,12 +103,6 @@ export default {
     attachFile(e) {
       this.form.file = event.target.files[0]
       this.form.path = e.target.value
-      // let fd = new FormData()
-      // fd.append('image', file)
-      // fd.append('prefix', 'catalog-')
-      // this.uploadImage(fd).then(x => {
-      //   this.form.image = x.fullname
-      // })
     },
     sendForm() {
       if (this.$refs.form.validate()) {
