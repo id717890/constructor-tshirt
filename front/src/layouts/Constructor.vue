@@ -176,17 +176,50 @@
                   </canvas>
                   <div class="mt-4">
                     <v-row>
-                      <v-col cols="7">
+                      <v-col cols="12" class="text-justify">
                         {{ order.model.description }}
                       </v-col>
-                      <v-col cols="5">
+                      <v-col cols="12" class="mb-0 pb-0">
                         <div
+                          class="text-center"
                           :style="
-                            'font-family:' + fontExample + '; font-size: 3rem'
+                            'font-family:' + fontExample + '; font-size: 2rem'
                           "
                         >
                           0123456789
                         </div>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col md="6" cols="12" class="my-0 py-0">
+                        <div
+                          class="text-center"
+                          :style="
+                            'font-family:' + fontExample + '; font-size: 2rem'
+                          "
+                        >
+                          JOMA-CLUB
+                        </div>
+                      </v-col>
+                      <v-col md="6" cols="12" class="my-0 py-0">
+                        <div
+                          class="text-center"
+                          :style="
+                            'font-family:' + fontExample + '; font-size: 2rem'
+                          "
+                        >
+                          ДЖОМА-КЛАБ
+                        </div>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-textarea
+                          outlined
+                          label="Примечание по заказу"
+                          v-model="currentComment"
+                          @change="changeComment"
+                        ></v-textarea>
                       </v-col>
                     </v-row>
                   </div>
@@ -660,6 +693,7 @@ export default {
     currentLogoType: null,
     currentNumberSize: null,
     currentNumberText: null,
+    currentComment: '',
     currentFont: 'Nike',
     fontExample: 'Nike',
     currentTextColor: { text: 'Черный', code: '#000000' },
@@ -812,6 +846,9 @@ export default {
       'getAllTextSizes',
       'resetCopyDialogResult'
     ]),
+    changeComment() {
+      this.order.comment = this.currentComment
+    },
     changeFioText(e) {
       this.currentFioText = e.toUpperCase()
     },
@@ -1169,6 +1206,7 @@ export default {
     },
     selectOrder(order) {
       this.currentOrderId = order.id
+      this.currentComment = order.comment
     },
     deleteOrder(order) {
       const find = this.orders.indexOf(order)
@@ -1425,6 +1463,7 @@ export default {
         let canvas = order.canvas
         order.isDone = false
 
+        order.comment = this.currentComment
         order.type = this.currentType
         order.model = this.currentModel
         order.color = this.currentColor
@@ -1521,6 +1560,7 @@ export default {
       this.currentOrderId = id
       let newOrder = {
         id: id,
+        comment: this.currentComment,
         titleTab: this.currentModel.name + ' ' + this.currentColor.name,
         titleCanvas:
           this.currentModel.name +
@@ -1543,6 +1583,7 @@ export default {
       this.currentColor = null
       this.currentModel = null
       this.currentType = null
+      this.currentComment = ''
       let order = this.getOrder()
       if (this.orders.length === 1) this.tab = 0
       else this.tab = this.orders.length

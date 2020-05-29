@@ -4,7 +4,14 @@
       <v-col cols="12" lg="6" offset-lg="3" md="8" offset-md="2">
         <v-row>
           <v-col cols="12">
-            <img class="w100" src="~@/assets/img/joma-map.webp" alt="" />
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?um=constructor%3A65622dca02b6643717de04c5237e3fec1ef211101f2ffbfb43a92ed2ff579f36&amp;source=constructor"
+              width="100%"
+              height="400"
+              frameborder="0"
+            >
+            </iframe>
+            <!-- <img class="w100" src="~@/assets/img/joma-map.webp" alt="" /> -->
           </v-col>
         </v-row>
         <v-row>
