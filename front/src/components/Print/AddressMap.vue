@@ -9,8 +9,7 @@
               width="100%"
               height="400"
               frameborder="0"
-            >
-            </iframe>
+            ></iframe>
             <!-- <img class="w100" src="~@/assets/img/joma-map.webp" alt="" /> -->
           </v-col>
         </v-row>

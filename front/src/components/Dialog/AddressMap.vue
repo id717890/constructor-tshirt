@@ -21,8 +21,7 @@
           width="100%"
           height="100%"
           frameborder="0"
-        >
-        </iframe>
+        ></iframe>
       </v-card-text>
     </div>
   </v-card>
