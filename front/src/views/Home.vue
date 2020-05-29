@@ -191,7 +191,6 @@
                         rounded
                         outlined
                         class="mb-2"
-                        to="/constructor"
                         @click="openUrl(slide4.button1Url)"
                       >
                         <img
