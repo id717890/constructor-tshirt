@@ -197,7 +197,7 @@ import { mapActions } from 'vuex'
 import ZakazAllPrintDialog from '../../components/Dialog/ZakazAllPrintDialog'
 import config from '../../init/config'
 export default {
-  props: ['orders', 'delivery'],
+  props: ['orders', 'delivery', 'promocode'],
   components: {
     Fiz,
     Yur
@@ -215,6 +215,7 @@ export default {
     zakazLogos: [],
     zakazLogosSum: 0,
     zakazLogosEach: [],
+    priceWoPromocode: 0,
     fizik: {
       number: null,
       date: null,
@@ -249,24 +250,24 @@ export default {
     this.prepareZakazFio()
     this.prepareZakazLogosEach()
     this.prepareZakazLogos()
+    this.priceWoPromocode = this.zakazLogosSum + this.zakazTovarSum
     this.fizik.price = this.zakazLogosSum + this.zakazTovarSum
     this.yurik.price = this.zakazLogosSum + this.zakazTovarSum
+    if (
+      this.promocode &&
+      this.promocode.discount &&
+      this.promocode.discount > 0
+    ) {
+      let sum = this.zakazLogosSum + this.zakazTovarSum
+      sum = sum - (sum * this.promocode.discount) / 100
+      this.fizik.price = sum
+      this.yurik.price = sum
+    }
     this.showDocs = true
   },
-  mounted() {},
   methods: {
     ...mapActions(['setPrintZakaz']),
     openPrintZakaz() {
-      // this.$modal.show(
-      //   ZakazAllPrintDialog,
-      //   { orders: this.orders },
-      //   {
-      //     ...config.modalSettings,
-      //     width: '100%',
-      //     scrollable: true
-      //   }
-      // )
-      // return
       let printZakaz = {}
       let fd = this.prepareFormData()
       printZakaz.typeCustomerText =
@@ -471,6 +472,12 @@ export default {
     sendForm() {
       let fd = new FormData()
       let info = ''
+      fd.append(
+        'promocode',
+        this.promocode
+          ? this.promocode.name + ' (Скидка ' + this.promocode.discount + '%)'
+          : 'без промокода'
+      )
       if (this.delivery && this.delivery) {
         switch (this.delivery.delivery) {
           case 'pickup':
@@ -532,6 +539,10 @@ export default {
           this.fizik.date +
           '<br/>'
         info += 'Сумма договора: ' + this.fizik.price + ' руб.<br/>'
+        info +=
+          'Сумма договора (без промокода): ' +
+          this.priceWoPromocode +
+          ' руб.<br/>'
         if (this.fizik.email) info += 'E-mail: ' + this.fizik.email + '<br/>'
       }
 
@@ -560,6 +571,10 @@ export default {
           this.yurik.date +
           '<br/>'
         info += 'Сумма договора: ' + this.yurik.price + ' руб.<br/>'
+        info +=
+          'Сумма договора (без промокода): ' +
+          this.priceWoPromocode +
+          ' руб.<br/>'
       }
 
       fd.append('info', info)

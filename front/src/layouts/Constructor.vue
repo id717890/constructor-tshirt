@@ -623,7 +623,10 @@
                     >Оплата и доставка</v-btn
                   >
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
+                  <promocode @setPromocode="setPromocode" />
+                </v-col>
+                <v-col cols="6">
                   <v-btn
                     large
                     @click="openDialogZakazAll"
@@ -668,16 +671,19 @@ import DialogZakazDelivery from '../components/Dialog/ZakazDelivery'
 import DialogCopy from '../components/Dialog/CopyDialog'
 import Vue from 'vue'
 import ZakazMixin from '../mixins/zakaz'
+import Promocode from '../components/Promocode'
 export default {
   mixins: [ZakazMixin],
   components: {
-    TableSize
+    TableSize,
+    Promocode
   },
   props: {
     source: String
   },
   data: () => ({
     // tableSizesData: [],
+    promocode: null,
     searchModel: '',
     searchColor: '',
     tab: 0,
@@ -846,6 +852,9 @@ export default {
       'getAllTextSizes',
       'resetCopyDialogResult'
     ]),
+    setPromocode(e) {
+      this.promocode = e
+    },
     changeComment() {
       this.order.comment = this.currentComment
     },
@@ -1034,7 +1043,11 @@ export default {
     openDialogZakazAll() {
       this.$modal.show(
         DialogZakazAll,
-        { orders: this.orders, delivery: this.deliveryAndPayment },
+        {
+          orders: this.orders,
+          delivery: this.deliveryAndPayment,
+          promocode: this.promocode
+        },
         {
           pivotY: 0.1,
           width: '90%',
@@ -1075,7 +1088,6 @@ export default {
       }, delay)
     },
     changeOrderedSizes(e) {
-      console.log(e)
       let order = this.getOrder()
       order.orderedSizes = [...e]
     },

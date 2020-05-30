@@ -155,6 +155,7 @@ class CallbackController extends Controller
             $fio = Input::get('fio');
             $date = Input::get('date');
             $number = Input::get('number');
+            $promocode = Input::get('promocode');
             $info = Input::get('info');
             $field1 = Input::get('field1');
             $field2 = Input::get('field2');
@@ -196,7 +197,8 @@ class CallbackController extends Controller
                 'zakazLogosSum' => $zakazLogosSum,
                 'zakazNumberName' => $zakazNumberName,
                 'delivery' => $delivery,
-                'payment' => $payment
+                'payment' => $payment,
+                'promocode' => $promocode
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);

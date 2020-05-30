@@ -21,6 +21,7 @@ Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
+Route::post('promocodes/check', 'PromocodeController@check');
 Route::get('catalogs', 'CatalogController@index');
 Route::get('partners', 'HomeSliderController@getPartners');
 Route::get('configs/get', 'ConfigController@index');
@@ -59,6 +60,10 @@ Route::get('models/auto_size', 'ModelController@autoCreate');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('promocodes', 'PromocodeController@create');
+    Route::post('promocodes/delete/{id}', 'PromocodeController@delete');
+    Route::post('promocodes/update/{id}', 'PromocodeController@update');
+
     Route::post('catalogs', 'CatalogController@create');
     Route::post('catalogs/delete/{id}', 'CatalogController@delete');
     Route::post('catalogs/update/{id}', 'CatalogController@update');

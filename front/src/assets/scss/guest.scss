@@ -142,3 +142,11 @@
 .map .v-responsive__content {
   z-index: 10;
 }
+
+.promocode .v-input__slot {
+  min-height: 46px !important;
+}
+
+.promocode .v-label {
+  top: 13px !important;
+}
