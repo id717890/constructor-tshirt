@@ -60,6 +60,7 @@ Route::get('models/auto_size', 'ModelController@autoCreate');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::get('promocodes', 'PromocodeController@index');
     Route::post('promocodes', 'PromocodeController@create');
     Route::post('promocodes/delete/{id}', 'PromocodeController@delete');
     Route::post('promocodes/update/{id}', 'PromocodeController@update');

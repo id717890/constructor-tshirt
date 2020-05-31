@@ -138,6 +138,22 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'promocodes',
+          beforeEnter: authGuard,
+          component: () => import('./components/Promocode/Index.vue')
+        },
+        {
+          path: 'promocode/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Promocode/Create.vue')
+        },
+        {
+          path: 'promocode/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Promocode/Edit.vue')
+        },
+        {
           path: 'catalogs',
           beforeEnter: authGuard,
           component: () => import('./components/Catalog/Index.vue')

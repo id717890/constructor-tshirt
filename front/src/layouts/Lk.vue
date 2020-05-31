@@ -150,6 +150,14 @@
             <v-list-item-title>Каталоги</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/promocodes">
+          <v-list-item-action>
+            <v-icon small>mdi-label</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Промокоды</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider vertical></v-divider>
         <v-list-item link @click="logoutBtn">
           <v-list-item-action>
