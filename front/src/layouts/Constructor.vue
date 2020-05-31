@@ -179,36 +179,64 @@
                       <v-col cols="12" class="text-justify">
                         {{ order.model.description }}
                       </v-col>
+                      <v-col
+                        cols="12"
+                        v-for="logoType in logoTypesOfOrder"
+                        :key="logoType.id"
+                      >
+                        <p class="ma-0 pa-0">
+                          <b>{{ logoType.name }}</b> -
+                          {{ logoType.description }}
+                        </p>
+                      </v-col>
                       <v-col cols="12" class="mb-0 pb-0">
-                        <div
-                          class="text-center"
-                          :style="
-                            'font-family:' + fontExample + '; font-size: 2.3rem'
-                          "
-                        >
-                          0123456789
+                        <div class="text-center">
+                          <span
+                            :style="
+                              'font-family:' +
+                                currentFont +
+                                '; font-size: 3.5rem'
+                            "
+                          >
+                            0123456789
+                          </span>
+                          <span style="font-size: 2rem">
+                            (шрифт "{{ currentFont }}")</span
+                          >
                         </div>
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col md="6" cols="12" class="my-0 py-0">
-                        <div
-                          class="text-center"
-                          :style="
-                            'font-family:' + fontExample + '; font-size: 2.3rem'
-                          "
-                        >
-                          JOMA-CLUB
+                      <v-col cols="12" class="my-0 py-0">
+                        <div class="text-center">
+                          <span
+                            :style="
+                              'font-family:' +
+                                currentFontFio +
+                                '; font-size: 3.5rem'
+                            "
+                          >
+                            JOMA-CLUB
+                          </span>
+                          <span style="font-size: 2rem">
+                            (шрифт "{{ currentFontFio }}")</span
+                          >
                         </div>
                       </v-col>
-                      <v-col md="6" cols="12" class="my-0 py-0">
-                        <div
-                          class="text-center"
-                          :style="
-                            'font-family:' + fontExample + '; font-size: 2.3rem'
-                          "
-                        >
-                          ДЖОМА-КЛАБ
+                      <v-col cols="12" class="my-0 py-0">
+                        <div class="text-center">
+                          <span
+                            :style="
+                              'font-family:' +
+                                currentFontFio +
+                                '; font-size: 3.5rem'
+                            "
+                          >
+                            ДЖОМА-КЛАБ
+                          </span>
+                          <span style="font-size: 2rem">
+                            (шрифт "{{ currentFontFio }}")</span
+                          >
                         </div>
                       </v-col>
                     </v-row>
@@ -838,6 +866,23 @@ export default {
       if (this.currentOrderId && this.orders && this.orders.length > 0)
         return this.orders.find(x => x.id === this.currentOrderId)
       return null
+    },
+    logoTypesOfOrder() {
+      let logoTypes = []
+      if (this.order) {
+        this.order.orderedLogos.forEach(logo => {
+          const find = logoTypes.filter(
+            x => Number(x.id) === Number(logo.logoType.id)
+          )
+          if (!find || find.length === 0)
+            logoTypes.push({
+              id: logo.logoType.id,
+              name: logo.logoType.name,
+              description: logo.logoType.description
+            })
+        })
+      }
+      return logoTypes
     }
   },
   methods: {
