@@ -166,6 +166,7 @@ class CallbackController extends Controller
             $zakazLogosEach = json_decode(Input::get('zakazLogosEach'), true);
             $zakazLogosSum = Input::get('zakazLogosSum');
             $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
+            $comments = json_decode(Input::get('comments'), true);
 //             return response()->json($price, 200,['Content-Type' => 'application/json; charset=UTF-8'], JSON_UNESCAPED_UNICODE);
             $images = $request->file('images');
             $delivery = Input::get('delivery');
@@ -198,7 +199,8 @@ class CallbackController extends Controller
                 'zakazNumberName' => $zakazNumberName,
                 'delivery' => $delivery,
                 'payment' => $payment,
-                'promocode' => $promocode
+                'promocode' => $promocode,
+                'comments'=>$comments
             ],
                 function ($mail) use ($email, $subject, $fr, $seo, $images) {
                     $mail->from($fr, $seo);

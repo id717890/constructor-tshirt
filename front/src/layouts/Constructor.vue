@@ -183,7 +183,7 @@
                         <div
                           class="text-center"
                           :style="
-                            'font-family:' + fontExample + '; font-size: 2rem'
+                            'font-family:' + fontExample + '; font-size: 2.3rem'
                           "
                         >
                           0123456789
@@ -195,7 +195,7 @@
                         <div
                           class="text-center"
                           :style="
-                            'font-family:' + fontExample + '; font-size: 2rem'
+                            'font-family:' + fontExample + '; font-size: 2.3rem'
                           "
                         >
                           JOMA-CLUB
@@ -205,7 +205,7 @@
                         <div
                           class="text-center"
                           :style="
-                            'font-family:' + fontExample + '; font-size: 2rem'
+                            'font-family:' + fontExample + '; font-size: 2.3rem'
                           "
                         >
                           ДЖОМА-КЛАБ

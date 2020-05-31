@@ -23,6 +23,7 @@ class ExportController extends Controller
             $zakazLogos = json_decode(Input::get('zakazLogos'), true);
             $zakazLogosSum = Input::get('zakazLogosSum');
             $zakazNumberName = json_decode(Input::get('zakazNumberName'), true);
+            $comments = json_decode(Input::get('comments'), true);
 
             $info = Input::get('info');
             $typeCustomer = Input::get('typeCustomer');
@@ -78,6 +79,7 @@ class ExportController extends Controller
                 'typeCustomer' => $typeCustomer,
                 'info' => $info,
                 'images_pdf' => $images_pdf,
+                'comments' => $comments
             ];
             $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdf.order', $data);
             $result = $pdf->download('order.pdf');

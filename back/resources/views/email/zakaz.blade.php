@@ -237,8 +237,10 @@
     <div style="font-size: 1.3rem">{!! $info !!}</div>
     <br><br>
 
-    <div style="font-size: 1.3rem">Способ доставки: {!! $delivery !== null && $delivery !== '' ? $delivery : 'не указано'!!}</div>
-    <div style="font-size: 1.3rem">Способ оплаты: {!!  $payment !== null && $payment !== '' ? $payment : 'не указано'!!}</div>
+    <div style="font-size: 1.3rem">Способ
+        доставки: {!! $delivery !== null && $delivery !== '' ? $delivery : 'не указано'!!}</div>
+    <div style="font-size: 1.3rem">Способ
+        оплаты: {!!  $payment !== null && $payment !== '' ? $payment : 'не указано'!!}</div>
     <div style="font-size: 1.3rem">Промокод: {!! $promocode !!}</div>
     <br><br>
 
@@ -278,6 +280,13 @@
         </tr>
         </tbody>
     </table>
+
+    @if(isset($comments))
+        @foreach($comments as $comment)
+            <h2>Комментарий к заказу {{$comment['name']}}</h2>
+            <p>{{$comment['comment']}}</p>
+        @endforeach
+    @endif
 
     @if(isset($zakazLogosEach))
         @foreach($zakazLogosEach as $order)

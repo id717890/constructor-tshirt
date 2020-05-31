@@ -299,7 +299,8 @@ export default {
         images.push({
           id: order.id,
           name: order.titleTab,
-          imageBase64: dataUrl
+          imageBase64: dataUrl,
+          comment: order.comment
         })
         //метод №2
         // img.toBlob(data => {
@@ -457,8 +458,14 @@ export default {
       fd.append('zakazLogosEach', JSON.stringify(this.zakazLogosEach))
       fd.append('zakazNumberName', JSON.stringify(this.zakazNumberName))
 
+      let comments = []
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
+        if (order.comment)
+          comments.push({
+            name: order.titleTab,
+            comment: order.comment
+          })
         //метод №1
         // const dataUrl = img.toDataURL()
         // fd.append('images2[]', dataUrl)
@@ -467,6 +474,7 @@ export default {
           fd.append('images[]', data, order.titleTab)
         })
       })
+      fd.append('comments', JSON.stringify(comments))
       return fd
     },
     sendForm() {
@@ -587,13 +595,20 @@ export default {
       fd.append('zakazLogosEach', JSON.stringify(this.zakazLogosEach))
       fd.append('zakazNumberName', JSON.stringify(this.zakazNumberName))
 
+      let comments = []
       this.orders.forEach((order, index) => {
         const img = document.getElementById('orderCanvas_' + order.id)
+        if (order.comment)
+          comments.push({
+            name: order.titleTab,
+            comment: order.comment
+          })
         // console.log(img)
         img.toBlob(data => {
           fd.append('images[]', data, order.id)
         })
       })
+      fd.append('comments', JSON.stringify(comments))
       // fd.append("zakazTovar", JSON.stringify(this.tableSizes));
       const config = {
         'content-type': 'multipart/form-data'

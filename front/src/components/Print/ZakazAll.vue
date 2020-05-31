@@ -145,6 +145,10 @@
           <v-col cols="12">
             <h3>{{ image.name }}</h3>
             <img :src="image.imageBase64" alt="" />
+            <div>
+              <h3>Комментарий к заказу</h3>
+              <p>{{ image.comment }}</p>
+            </div>
           </v-col>
         </v-row>
         <v-row v-if="zakaz.typeCustomer === 'fizik'">

@@ -195,6 +195,18 @@
                 </tr>
             @endforeach
         @endif
+        @if (isset($comments))
+            @foreach($comments as $comment)
+                <tr>
+                    <td>
+                        <div class="page-break"></div>
+                        <h2>Комментарий к заказу {{$comment['name']}}</h2>
+                        <p>{{$comment['comment']}}</p>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
         <tr>
             <td>
                 <div class="page-break"></div>
