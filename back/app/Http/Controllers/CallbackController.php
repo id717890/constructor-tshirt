@@ -15,13 +15,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CallbackController extends Controller
 {
-//    private $email = ['jusupovz@gmail.com', 'zakaz@joma-club.ru'];
-//    private $email_for_contest = ['jusupovz@gmail.com', 'contest@joma-club.ru'];
-//    private $email_for_correspondent = ['jusupovz@gmail.com', 'news@joma-club.ru'];
+    private $email = ['jusupovz@gmail.com', 'zakaz@joma-club.ru'];
+    private $email_for_contest = ['jusupovz@gmail.com', 'contest@joma-club.ru'];
+    private $email_for_correspondent = ['jusupovz@gmail.com', 'news@joma-club.ru'];
 
-    private $email = ['jusupovz@gmail.com'];
-    private $email_for_contest = ['jusupovz@gmail.com'];
-    private $email_for_correspondent = ['jusupovz@gmail.com'];
+//    private $email = ['jusupovz@gmail.com'];
+//    private $email_for_contest = ['jusupovz@gmail.com'];
+//    private $email_for_correspondent = ['jusupovz@gmail.com'];
 
     public function  designChallenge(Request $request)
     {

@@ -12,7 +12,7 @@
                 {{ item.question }}
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <div v-html="item.answer"></div>
+                <div v-html="item.answer" class="text-justify"></div>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
