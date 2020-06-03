@@ -360,15 +360,21 @@ export default {
       if (this.delivery && this.delivery) {
         switch (this.delivery.delivery) {
           case 'pickup':
-            fd.append('delivery', 'Самовывоз')
+            fd.append(
+              'delivery',
+              'Самовывоз (адрес склада - Краснобогатырская 89, стр. 5)'
+            )
             break
           case 'courier':
-            fd.append('delivery', 'Курьер "КУРЬЕВ СЕРВИС"')
+            fd.append(
+              'delivery',
+              'Курьер "КУРЬЕР СЕРВИС", ДОСТАВИСТА, И ТД (УКАЗАТЬ адрес получателя)'
+            )
             break
           case 'tk':
             fd.append(
               'delivery',
-              'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" ИТД'
+              'Транспортная компания "ДЕЛОВЫЕ ЛИНИИ", "ПЭК" И ТД (УКАЗАТЬ адрес получателя)'
             )
             break
         }
@@ -377,10 +383,10 @@ export default {
       if (this.delivery && this.delivery.payment) {
         switch (this.delivery.payment) {
           case 'card':
-            fd.append('payment', 'Карта')
+            fd.append('payment', 'БЕЗНАЛИЧНАЯ ОПЛАТА')
             break
           case 'cash':
-            fd.append('payment', 'Наличные')
+            fd.append('payment', 'НАЛИЧНЫЕ')
             break
         }
       }

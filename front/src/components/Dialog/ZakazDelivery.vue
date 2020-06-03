@@ -9,8 +9,8 @@
           <v-card-title>Способ оплаты</v-card-title>
           <v-card-text>
             <v-radio-group v-model="payment">
-              <v-radio label="Карта" value="card"></v-radio>
-              <v-radio label="Наличные" value="cash"></v-radio>
+              <v-radio label="БЕЗНАЛИЧНАЯ ОПЛАТА" value="card"></v-radio>
+              <v-radio label="НАЛИЧНЫЕ" value="cash"></v-radio>
             </v-radio-group>
           </v-card-text>
         </v-card>
@@ -18,10 +18,16 @@
           <v-card-title>Способ доставки</v-card-title>
           <v-card-text>
             <v-radio-group v-model="delivery">
-              <v-radio label="Самовывоз" value="pickup"></v-radio>
-              <v-radio label="Курьер" value="courier"></v-radio>
               <v-radio
-                label="Транспортная компания 'ДЕЛОВЫЕ ЛИНИИ', 'ПЭК' ИТД"
+                label="Самовывоз (адрес склада - Краснобогатырская 89, стр. 5)"
+                value="pickup"
+              ></v-radio>
+              <v-radio
+                label="Курьер 'КУРЬЕР СЕРВИС', ДОСТАВИСТА, И ТД (УКАЗАТЬ адрес получателя)"
+                value="courier"
+              ></v-radio>
+              <v-radio
+                label="Транспортная компания 'ДЕЛОВЫЕ ЛИНИИ', 'ПЭК' И ТД (УКАЗАТЬ адрес получателя)"
                 value="tk"
               ></v-radio>
             </v-radio-group>

@@ -277,7 +277,8 @@
 
                     <h3 class="text-center mb-0">Нанесения логотипа</h3>
                     <div
-                      style="position: relative; height: 150px; max-height: 150px;"
+                      class="d-flex align-center px-3"
+                      style="position: relative; height: 150px; max-height: 150px; background-color: rgb(230, 230, 230); border-radius: 5px"
                     >
                       <swiper :options="swiperOptions" ref="swiperLogos">
                         <!-- Слайды логотипов -->
@@ -315,22 +316,6 @@
                           class="swiper-button-next"
                           slot="button-next"
                         ></div>
-
-                        <!-- <swiper-slide
-                        :class="{ 'swiper-slide_active': i == logoProps.i }"
-                        :style="
-                          'background-image: url(' +
-                            logo.Изображение +
-                            '); background-position: center; background-size: contain; background-repeat: no-repeat; cursor: pointer;'
-                        "
-                        @click.native="setLogoImage(logo.Изображение, i)"
-                        v-for="(logo, i) in logos"
-                      >
-                      </swiper-slide>
-
-                      <div class="swiper-button-prev" slot="button-prev"></div>
-                      <div class="swiper-button-next" slot="button-next"></div>
-                      -->
                       </swiper>
                     </div>
 
@@ -1103,6 +1088,7 @@ export default {
         {
           height: 'auto',
           ...config.modalSettings,
+          width: 800,
           clickToClose: true,
           scrollable: true
         }
@@ -1361,8 +1347,8 @@ export default {
         flipped: false,
         originX: 'center',
         originY: 'center',
-        left: canvas.ctx.width * 0.5,
-        top: canvas.ctx.height * 0.5,
+        left: canvas.ctx.width / 4,
+        top: canvas.ctx.height / 2.3,
         fontFamily: this.currentFontFio,
         fill: this.currentTextColorFio.code,
         centeredScaling: true,
@@ -1461,8 +1447,8 @@ export default {
       canvas.addText(numberId, this.currentNumberText, {
         originX: 'center',
         originY: 'center',
-        left: canvas.ctx.width * 0.5,
-        top: canvas.ctx.height * 0.5,
+        left: canvas.ctx.width / 4,
+        top: canvas.ctx.height / 2.3,
         fontFamily: this.currentFont,
         fontSize: this.currentNumberSize.size * 0.35,
         fill: this.currentTextColor.code,
@@ -1504,8 +1490,8 @@ export default {
           img.set({
             scaleX: scale,
             scaleY: scale,
-            left: canvas.ctx.width / 2,
-            top: canvas.ctx.height / 2,
+            left: canvas.ctx.width / 4,
+            top: canvas.ctx.height / 2.3,
             originX: 'center',
             originY: 'center',
             centeredScaling: true,
