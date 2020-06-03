@@ -150,7 +150,7 @@
                     color="primary"
                     @click="changeColorTshirt"
                   >
-                    Изменить цвет
+                    Изменить артикул
                     <v-icon>mdi-palette</v-icon>
                   </v-btn>
                 </v-col>
@@ -187,6 +187,15 @@
                         <p class="ma-0 pa-0">
                           <b>{{ logoType.name }}</b> -
                           {{ logoType.description }}
+                        </p>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        v-for="(text, index) in textsOfOrder"
+                        :key="index"
+                      >
+                        <p class="ma-0 pa-0">
+                          {{ text.name }}
                         </p>
                       </v-col>
                       <v-col cols="12" class="mb-0 pb-0">
@@ -244,7 +253,7 @@
                       <v-col>
                         <v-textarea
                           outlined
-                          label="Примечание по заказу"
+                          label="Примечания по макету"
                           v-model="currentComment"
                           @change="changeComment"
                         ></v-textarea>
@@ -711,6 +720,7 @@ export default {
   },
   data: () => ({
     // tableSizesData: [],
+    textsOfOrder: [],
     promocode: null,
     searchModel: '',
     searchColor: '',
@@ -872,12 +882,15 @@ export default {
       if (this.order) {
         this.order.orderedLogos.forEach(logo => {
           const find = logoTypes.filter(
-            x => Number(x.id) === Number(logo.logoType.id)
+            x =>
+              Number(x.id) === Number(logo.logoType.id) &&
+              Number(x.logoSizeId) === Number(logo.logoSize.id)
           )
           if (!find || find.length === 0)
             logoTypes.push({
               id: logo.logoType.id,
-              name: logo.logoType.name,
+              logoSizeId: logo.logoSize.id,
+              name: logo.logoType.name + ' ' + logo.logoSize.name,
               description: logo.logoType.description
             })
         })
@@ -897,6 +910,9 @@ export default {
       'getAllTextSizes',
       'resetCopyDialogResult'
     ]),
+    addTextOfOrder(text) {
+      this.textsOfOrder.push(text)
+    },
     setPromocode(e) {
       this.promocode = e
     },
@@ -1035,6 +1051,13 @@ export default {
           const pos = order.orderedTexts.indexOf(find)
           order.orderedTexts.splice(pos, 1)
         }
+      }
+
+      const find = this.textsOfOrder.filter(
+        x => Number(x.id) === Number(textId)
+      )
+      if (find) {
+        this.textsOfOrder.splice(this.textsOfOrder.indexOf(find), 1)
       }
     },
     addTextToOrder(textSize, type, text, textId, curved) {
@@ -1319,6 +1342,18 @@ export default {
         stringId,
         curved
       )
+      this.addTextOfOrder({
+        id: stringId,
+        name:
+          'Надпись "' +
+          this.currentFioText +
+          '", размер ' +
+          this.currentTextSize.name +
+          ', шрифт ' +
+          this.currentFontFio +
+          ', цвет ' +
+          this.currentTextColorFio.text
+      })
 
       let options = {
         diameter: this.diameter * 300,
@@ -1410,6 +1445,18 @@ export default {
         numberId,
         ''
       )
+      this.addTextOfOrder({
+        id: numberId,
+        name:
+          'Номер "' +
+          this.currentNumberText +
+          '", размер ' +
+          this.currentNumberSize.name +
+          ', шрифт ' +
+          this.currentFont +
+          ', цвет ' +
+          this.currentTextColor.text
+      })
       // добавляем номер на холст
       canvas.addText(numberId, this.currentNumberText, {
         originX: 'center',

@@ -283,7 +283,7 @@
 
     @if(isset($comments))
         @foreach($comments as $comment)
-            <h2>Комментарий к заказу {{$comment['name']}}</h2>
+            <h2>Примечание по макету {{$comment['name']}}</h2>
             <p>{{$comment['comment']}}</p>
         @endforeach
     @endif

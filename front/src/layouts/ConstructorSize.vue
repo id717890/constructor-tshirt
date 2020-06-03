@@ -7,7 +7,12 @@
             <th style="width: 200px; font-size: 1.2rem">
               Размерный ряд
             </th>
-            <th v-for="size in data" :key="size.id" style="font-size: 1.2rem">
+            <th
+              v-for="size in data"
+              :key="size.id"
+              style="font-size: 1rem"
+              class="pa-1"
+            >
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <div v-on="on">

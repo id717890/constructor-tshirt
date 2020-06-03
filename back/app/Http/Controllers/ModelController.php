@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Color;
 use App\Models\ModelSize;
 use App\Models\ModelT;
+use App\Models\Size;
 use App\Source\ConfigService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,11 +35,25 @@ class ModelController extends Controller
                 foreach ($this->sizes as $size) {
                     $find = ModelSize::where('model_id', $model->id)->where('size', $size)->get();
 //                    dd(count($find));
-                    if (count($find ) === 0) {
+//                    if ($model->id === 22 && $size === '4XL') dd(count($find));
+                    if (count($find) === 0) {
                         $model_size = new ModelSize();
                         $model_size->model_id = $model->id;
                         $model_size->size = $size;
                         $model_size->save();
+                    }
+                }
+            }
+            foreach (Color::all() as $color) {
+                foreach($this->sizes as $size) {
+                    $find = Size::where('color_id', $color->id)->where('size', $size)->get();
+                    if (count($find) === 0) {
+                        $newSize= new Size();
+                        $newSize->color_id = $color->id;
+                        $newSize->size = $size;
+                        $newSize->price = 0;
+                        $newSize->count = 0;
+                        $newSize->save();
                     }
                 }
             }

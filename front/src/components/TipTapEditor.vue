@@ -151,7 +151,10 @@
           <fai icon="code" />
         </button>
 
-        <button class="menubar__button" @click.prevent="commands.undo">
+        <button
+          class="menubar__button"
+          @click.prevent="commands.horizontal_rule"
+        >
           <fai icon="grip-lines" />
         </button>
 

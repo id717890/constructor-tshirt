@@ -140,10 +140,7 @@
           </router-link>
           <router-link to="/catalogs" class="d-flex flex-column item">
             <v-icon dark>mdi-download</v-icon>
-            <span class="text-center">
-              Скачать каталог - <br />
-              Цена - Склад</span
-            >
+            <span class="text-center">Скачать каталог</span>
           </router-link>
           <router-link to="/lk" class="d-flex flex-column item" v-if="isAuth">
             <v-icon dark>mdi-cogs</v-icon>

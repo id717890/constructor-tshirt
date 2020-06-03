@@ -33,7 +33,7 @@
       <v-spacer></v-spacer>
       <v-btn color="success" @click="saveSizesOfModel">
         <v-icon class="mr-2">mdi-content-save</v-icon>
-        Сохрантиь
+        Сохранить
       </v-btn>
     </v-card-text>
   </v-card>

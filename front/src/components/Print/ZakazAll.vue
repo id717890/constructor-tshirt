@@ -146,7 +146,7 @@
             <h3>{{ image.name }}</h3>
             <img :src="image.imageBase64" alt="" />
             <div>
-              <h3>Комментарий к заказу</h3>
+              <h3>Примечание по макету</h3>
               <p>{{ image.comment }}</p>
             </div>
           </v-col>
