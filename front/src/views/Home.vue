@@ -40,7 +40,8 @@
                 </div>
               </v-img>
               <div v-else>
-                <div v-html="slide.iframe"></div>
+                <div class="youtube-frame" v-html="slide.iframe"></div>
+                <div class="front-black"></div>
               </div>
               <!-- <div class="home-slide__content">
                 <div></div>
