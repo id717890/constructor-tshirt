@@ -1,10 +1,12 @@
 import context from '../api/api'
 import * as types from './mutation-types'
 import router from '../router'
+import Vue from 'vue'
 
 const state = {
   allSizes: [],
-  sizesOfColor: []
+  sizesOfColor: [],
+  allTableSizes: []
 }
 
 // actions
@@ -39,11 +41,59 @@ const actions = {
     context.get('api/sizes').then(x => {
       commit(types.GET_ALL_SIZES, x)
     })
+  },
+  ////////
+  async getAllTableSizes({ commit }, payload) {
+    context.get('api/table_sizes').then(x => {
+      commit(types.GET_ALL_TABLE_SIZES, x)
+    })
+  },
+  async updateTableSize({ dispatch }, payload) {
+    await context
+      .post('api/table_sizes/update/' + payload.id, payload)
+      .then(x => {
+        dispatch('setLoading', false)
+        if (x.success === true) {
+          router.push('/lk/table_sizes')
+        } else {
+          Vue.noty.error(x.error.message)
+        }
+      })
+      .catch(x => {
+        console.log(x)
+        dispatch('setLoading', false)
+      })
+  },
+  async createTableSize({ commit, dispatch }, payload) {
+    await context
+      .post('api/table_sizes', payload)
+      .then(x => {
+        dispatch('setLoading', false)
+        if (x.success === true) {
+          router.push('/lk/table_sizes')
+        } else {
+          Vue.noty.error(x.error.message)
+        }
+      })
+      .catch(x => {
+        dispatch('setLoading', false)
+        console.log(x)
+        Vue.noty.error('Ошибка сохранения!')
+      })
+  },
+  async deleteTableSize({ commit, dispatch }, payload) {
+    context.post('api/table_sizes/delete/' + payload.id).then(x => {
+      dispatch('getAllTableSizes')
+    })
   }
 }
 
 // mutations
 const mutations = {
+  [types.GET_ALL_TABLE_SIZES](state, payload) {
+    state.allTableSizes = payload
+  },
+  /////
   [types.MASS_UPDAT_PRICES_OF_SIZES](state, payload) {
     payload.forEach(size => {
       let find = state.sizesOfColor.find(x => Number(x.id) === Number(size.id))
@@ -64,6 +114,9 @@ const mutations = {
 const getters = {
   getSizeById: state => id => {
     return state.allSizes.find(x => Number(x.id) === Number(id))
+  },
+  getTableSizeById: state => id => {
+    return state.allTableSizes.find(x => Number(x.id) === Number(id))
   }
 }
 

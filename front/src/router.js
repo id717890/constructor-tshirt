@@ -138,6 +138,22 @@ const router = new Router({
       component: () => import('./layouts/Lk.vue'),
       children: [
         {
+          path: 'table_sizes',
+          beforeEnter: authGuard,
+          component: () => import('./components/TableSize/Index.vue')
+        },
+        {
+          path: 'table_size/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/TableSize/Create.vue')
+        },
+        {
+          path: 'table_size/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/TableSize/Edit.vue')
+        },
+        {
           path: 'promocodes',
           beforeEnter: authGuard,
           component: () => import('./components/Promocode/Index.vue')

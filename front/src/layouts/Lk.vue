@@ -77,6 +77,14 @@
             <v-list-item-title>Надпись - размеры</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/lk/table_sizes">
+          <v-list-item-action>
+            <v-icon small>mdi-table</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Размерная сетка</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider vertical></v-divider>
         <v-list-item link to="/lk/discounts">
           <v-list-item-action>
