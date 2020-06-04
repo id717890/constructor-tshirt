@@ -229,6 +229,17 @@ const router = new Router({
           component: () => import('./components/Faq/Edit.vue')
         },
         {
+          path: 'page/about/image/edit/:id',
+          props: true,
+          beforeEnter: authGuard,
+          component: () => import('./components/Page/AboutImageEdit.vue')
+        },
+        {
+          path: 'page/about/image/create',
+          beforeEnter: authGuard,
+          component: () => import('./components/Page/AboutImageCreate.vue')
+        },
+        {
           path: 'page/about',
           beforeEnter: authGuard,
           component: () => import('./components/Page/About.vue')

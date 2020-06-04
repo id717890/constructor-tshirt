@@ -28,6 +28,7 @@ import config from './config'
 import print from './print'
 import catalog from './catalog'
 import promocode from './promocode'
+import about from './about'
 
 Vue.use(Vuex)
 
@@ -64,6 +65,7 @@ export default new Vuex.Store({
     config,
     print,
     catalog,
-    promocode
+    promocode,
+    about
   }
 })

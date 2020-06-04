@@ -288,3 +288,22 @@ $size: 55px !important;
   height: 100%;
   justify-content: space-between;
 }
+
+.about-image-item {
+  max-width: 250px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.about-image-item .about-image-btn {
+  opacity: 0;
+}
+
+.about-image-item:hover .about-image-btn {
+  opacity: 1;
+}
+
+.about-image-item .v-image__image {
+  border-radius: 10px;
+}

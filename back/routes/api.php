@@ -21,6 +21,7 @@ Route::post('export/sizes', 'ExportController@exportSizes');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/reset', 'AuthController@resetEnv');
 
+Route::get('about_images', 'AboutImageController@index');
 Route::post('promocodes/check', 'PromocodeController@check');
 Route::get('catalogs', 'CatalogController@index');
 Route::get('partners', 'HomeSliderController@getPartners');
@@ -60,6 +61,10 @@ Route::get('models/auto_size', 'ModelController@autoCreate');
 
 
 Route::group(['middleware' => ['jwt.auth']], function () {
+    Route::post('about_images', 'AboutImageController@create');
+    Route::post('about_images/delete/{id}', 'AboutImageController@delete');
+    Route::post('about_images/update/{id}', 'AboutImageController@update');
+
     Route::get('promocodes', 'PromocodeController@index');
     Route::post('promocodes', 'PromocodeController@create');
     Route::post('promocodes/delete/{id}', 'PromocodeController@delete');

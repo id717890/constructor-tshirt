@@ -8,21 +8,61 @@
       </v-row>
       <v-row>
         <v-col md="8" sm="12" cols="12">
-          <v-text-field
-            label="Заголовок"
-            v-model="form.title"
-            required
-            :rules="textField"
-          ></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field
+                label="Заголовок"
+                v-model="form.title"
+                required
+                :rules="textField"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row v-if="form.content">
+            <v-col>
+              <tteditor
+                @editorChanged="textChanged($event)"
+                ref="editor"
+                :text="form.content"
+              />
+            </v-col>
+          </v-row>
         </v-col>
-      </v-row>
-      <v-row v-if="form.content">
         <v-col md="8" sm="12" cols="12">
-          <tteditor
-            @editorChanged="textChanged($event)"
-            ref="editor"
-            :text="form.content"
-          />
+          <v-btn dark class="w100" to="/lk/page/about/image/create">
+            <v-icon>mdi-image</v-icon>
+            Добавить изображение
+          </v-btn>
+          <v-row v-if="images">
+            <v-col class="d-flex flex-row flex-wrap">
+              <div
+                class="about-image-item"
+                v-for="image in images"
+                :key="image.id"
+              >
+                <div class="about-image-btn">
+                  <v-btn
+                    fab
+                    text
+                    title="Редакитровать"
+                    color="primary"
+                    :to="'/lk/page/about/image/edit/' + image.id"
+                  >
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn
+                    color="error"
+                    fab
+                    text
+                    @click.prevent="deleteItem(image)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
+                <v-img :src="img(image.image)"></v-img>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <v-row>
@@ -48,12 +88,15 @@
 </template>
 
 <script>
+import config from '../../init/config'
 import loading from '../../mixins/loading'
+import imageMixin from '../../mixins/image'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import TtEditor from '../TipTapEditor'
+import ConfirmDialogModal from '../Dialog/ConfirmDialog'
 
 export default {
-  mixins: [loading],
+  mixins: [loading, imageMixin],
   components: {
     tteditor: TtEditor
   },
@@ -69,6 +112,7 @@ export default {
   }),
   async created() {
     await this.getAllPages()
+    await this.getAllAboutImages()
     this.setLoad(false)
   },
   mounted() {
@@ -89,12 +133,40 @@ export default {
   },
   computed: {
     ...mapGetters(['getPageById']),
+    ...mapState({
+      images: state => state.about.allAboutImages,
+      confirmDialogResult: state => state.dialog.confirmDialogResult
+    }),
     page() {
       return this.getPageById(this.id)
     }
   },
   methods: {
-    ...mapActions(['updatePage', 'getAllPages']),
+    ...mapActions([
+      'updatePage',
+      'getAllPages',
+      'getAllAboutImages',
+      'resetConfirmDialogResult',
+      'deleteAboutImage'
+    ]),
+    deleteItem(item) {
+      this.removedItem = item
+      this.$modal.show(
+        ConfirmDialogModal,
+        { question: 'Удалить запись?' },
+        config.modalSettings,
+        {
+          closed: this.confirmDelete
+        }
+      )
+    },
+    confirmDelete() {
+      if (this.confirmDialogResult === true) {
+        this.resetConfirmDialogResult()
+        this.deleteAboutImage(this.removedItem)
+        this.removedItem = null
+      }
+    },
     textChanged(event) {
       this.form.content = event
     },
