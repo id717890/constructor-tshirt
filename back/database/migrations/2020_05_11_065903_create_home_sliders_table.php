@@ -16,8 +16,10 @@ class CreateHomeSlidersTable extends Migration
         Schema::create('home_slides', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('image')->nullable(false);
+            $table->string('image')->nullable(true);
             $table->string('url')->nullable(true);
+            $table->string('type')->default('image');
+            $table->text('iframe')->nullable(true);
             $table->timestamps();
         });
     }

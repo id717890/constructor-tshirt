@@ -8,10 +8,18 @@
       </v-row>
       <v-row>
         <v-col lg="6" md="8" sm="12" cols="12">
-          <v-text-field label="Ссылка" v-model="form.url"></v-text-field>
+          <v-radio-group @change="changeType" v-model="form.type">
+            <v-radio label="Слайд" value="image"></v-radio>
+            <v-radio label="Видео (YouTube)" value="iframe"></v-radio>
+          </v-radio-group>
+          <v-text-field
+            v-show="form.type === 'image'"
+            label="Ссылка"
+            v-model="form.url"
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="form.type === 'image'">
         <v-col lg="6" md="8" sm="12" cols="12">
           <v-btn @click="$refs.file.click()" dark class="mb-5 w100">
             <v-icon>mdi-image</v-icon>
@@ -29,6 +37,15 @@
               style="width: 100%; border-radius: 5px"
             />
           </div>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col lg="6" md="8" sm="12" cols="12">
+          <v-textarea
+            outlined
+            label="Код встраиваемого видео"
+            v-model="form.iframe"
+          ></v-textarea>
         </v-col>
       </v-row>
       <v-row>
@@ -67,7 +84,9 @@ export default {
     form: {
       valid: true,
       url: '',
-      image: ''
+      image: '',
+      type: '',
+      iframe: null
     }
   }),
   async created() {
@@ -78,6 +97,8 @@ export default {
       if (value) {
         this.form.url = value.url
         this.form.image = value.image
+        this.form.type = value.type
+        this.form.iframe = value.iframe
       }
     }
   },
@@ -89,6 +110,10 @@ export default {
   },
   methods: {
     ...mapActions(['updateHomeSlide', 'getAllHomeSlides', 'uploadImage']),
+    changeType(e) {
+      this.form.image = ''
+      this.form.iframe = null
+    },
     upload(event) {
       const file = event.target.files[0]
       let fd = new FormData()
@@ -100,7 +125,10 @@ export default {
     },
     save() {
       this.setLoad(true)
-      if (this.form.image) {
+      if (
+        (this.form.type === 'iframe' && this.form.iframe) ||
+        (this.form.type === 'image' && this.form.image)
+      ) {
         this.updateHomeSlide({
           ...this.form,
           id: this.id

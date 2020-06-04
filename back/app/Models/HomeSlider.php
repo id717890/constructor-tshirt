@@ -8,7 +8,7 @@ class HomeSlider extends Model
 {
     protected $table = 'home_slides';
 
-    protected $fillable = array('image', 'url');
+    protected $fillable = array('image', 'url', 'type', 'iframe');
 
     protected $hidden = array('updated_at');
 }

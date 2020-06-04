@@ -34,7 +34,7 @@
             <v-list-item-title>Цвета</v-list-item-title>
           </v-list-item-content>
         </v-list-item> -->
-        <v-divider vertical></v-divider>
+        <!-- <v-divider vertical></v-divider> -->
         <v-list-item link to="/lk/logos">
           <v-list-item-action>
             <v-icon small>mdi-drawing</v-icon>
@@ -59,7 +59,7 @@
             <v-list-item-title>Лого - типы</v-list-item-title>
           </v-list-item-content>
         </v-list-item> -->
-        <v-divider vertical></v-divider>
+        <!-- <v-divider vertical></v-divider> -->
         <v-list-item link to="/lk/number_sizes">
           <v-list-item-action>
             <v-icon small>mdi-numeric</v-icon>
@@ -68,7 +68,7 @@
             <v-list-item-title>Номер - размеры</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-divider vertical></v-divider>
+        <!-- <v-divider vertical></v-divider> -->
         <v-list-item link to="/lk/text_sizes">
           <v-list-item-action>
             <v-icon small>mdi-format-text</v-icon>

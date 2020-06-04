@@ -2,20 +2,47 @@
   <v-row no-gutters>
     <v-col cols="12" class="pa-0">
       <v-row v-if="slides">
-        <v-col md="10" offset-md="1" cols="12" class="pa-0 pt-3">
+        <v-col
+          md="10"
+          offset-md="1"
+          cols="12"
+          class="pa-0 pt-3"
+          @mouseover="cycleTopSlider = false"
+          @mouseleave="cycleTopSlider = true"
+        >
           <v-carousel
             :height="slidesHeight"
             hide-delimiters
             class="home-slide"
             :interval="slidesInterval"
-            :cycle="true"
+            :cycle="cycleTopSlider"
           >
-            <v-carousel-item
-              :src="img(slide.image)"
-              v-for="slide in slides"
-              :key="slide.id"
-            >
-              <div class="home-slide__content">
+            <v-carousel-item v-for="slide in slides" :key="slide.id">
+              <v-img
+                :src="img(slide.image)"
+                v-if="slide.type === 'image'"
+                height="100%"
+              >
+                <div class="home-slide__content">
+                  <div></div>
+                  <div class="text-center">
+                    <v-btn
+                      v-if="slide.url"
+                      color="warning"
+                      large
+                      outlined
+                      target="_blank"
+                      @click.prevent="openUrl(slide.url)"
+                    >
+                      Подробнее
+                    </v-btn>
+                  </div>
+                </div>
+              </v-img>
+              <div v-else>
+                <div v-html="slide.iframe"></div>
+              </div>
+              <!-- <div class="home-slide__content">
                 <div></div>
                 <div class="text-center">
                   <v-btn
@@ -29,7 +56,7 @@
                     Подробнее
                   </v-btn>
                 </div>
-              </div>
+              </div> -->
             </v-carousel-item>
             <!-- <v-carousel-item src="~@/assets/img/slider-img.jpg">
             </v-carousel-item>
@@ -303,6 +330,7 @@ import VideoDialog from '../components/Dialog/VideoDialog'
 export default {
   mixins: [imageMixin],
   data: () => ({
+    cycleTopSlider: true,
     slide4: null,
     slidesHeight: 290,
     slidesInterval: 5000,
@@ -365,6 +393,9 @@ export default {
     if (this.block4) this.slide4 = JSON.parse(this.block4.value)
   },
   methods: {
+    hover(val) {
+      console.log(val)
+    },
     videoDialog(data) {
       this.$modal.show(
         VideoDialog,

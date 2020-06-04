@@ -5,41 +5,84 @@
         <v-carousel v-if="slides" :height="slidesHeight" hide-delimiters>
           <v-carousel-item
             class="home-slide"
-            :src="img(slide.image)"
             v-for="slide in slides"
             :key="slide.id"
           >
-            <div class="home-slide__content">
-              <div>
-                <v-btn
-                  fab
-                  text
-                  title="Редакитровать"
-                  color="primary"
-                  :to="'/lk/home/slide/edit/' + slide.id"
-                >
-                  <v-icon>mdi-pen</v-icon>
-                </v-btn>
-                <v-btn
-                  color="error"
-                  fab
-                  text
-                  @click.prevent="deleteItem(slide)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
+            <v-img
+              :src="img(slide.image)"
+              v-if="slide.type === 'image'"
+              height="100%"
+            >
+              <div class="home-slide__content">
+                <div>
+                  <v-btn
+                    fab
+                    text
+                    title="Редакитровать"
+                    color="primary"
+                    :to="'/lk/home/slide/edit/' + slide.id"
+                  >
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn
+                    color="error"
+                    fab
+                    text
+                    @click.prevent="deleteItem(slide)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
+                <div class="text-center">
+                  <v-btn
+                    v-if="slide.url"
+                    color="warning"
+                    large
+                    outlined
+                    target="_blank"
+                    @click.prevent="openUrl(slide.url)"
+                  >
+                    Подробнее
+                  </v-btn>
+                </div>
               </div>
-              <div class="text-center">
-                <v-btn
-                  v-if="slide.url"
-                  color="warning"
-                  large
-                  outlined
-                  target="_blank"
-                  @click.prevent="openUrl(slide.url)"
-                >
-                  Подробнее
-                </v-btn>
+            </v-img>
+            <div v-else>
+              <div v-html="slide.iframe"></div>
+              <div style="position: absolute; top: 0" class="">
+                <div class="home-slide__content">
+                  <div>
+                    <v-btn
+                      fab
+                      text
+                      title="Редакитровать"
+                      color="primary"
+                      :to="'/lk/home/slide/edit/' + slide.id"
+                    >
+                      <v-icon>mdi-pen</v-icon>
+                    </v-btn>
+                    <v-btn
+                      color="error"
+                      fab
+                      text
+                      @click.prevent="deleteItem(slide)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </div>
+                  <!-- <div class="text-center">
+                    <v-btn
+                      v-if="slide.url"
+                      color="warning"
+                      large
+                      outlined
+                      target="_blank"
+                      @click.prevent="openUrl(slide.url)"
+                    >
+                      Подробнее
+                    </v-btn>
+                  </div> -->
+                </div>
               </div>
             </div>
           </v-carousel-item>
@@ -101,6 +144,9 @@ export default {
       'resetConfirmDialogResult',
       'deleteHomeSlide'
     ]),
+    guid() {
+      return Math.floor(Math.random() * 1000000000000000)
+    },
     saveConfig(cfg) {
       this.setConfig({ key: 'home_slider_height', value: this.slidesHeight })
       this.setConfig({

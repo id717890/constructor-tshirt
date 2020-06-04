@@ -40,6 +40,8 @@ class HomeSliderController extends Controller
                 }
             }
             $find->image = $image;
+            $find->type = Input::get('type');;
+            $find->iframe = Input::get('iframe');;
             $find->url = Input::get('url');
             $find->save();
             return response()->json(['success' => true], 200);
