@@ -21,7 +21,7 @@
     "gsap": "^3.2.6",
     "moment": "^2.24.0",
     "register-service-worker": "^1.6.2",
-    "swiper": "^5.3.6",
+    "swiper": "^6.5.1",
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.29.1",
     "vue": "^2.6.10",
